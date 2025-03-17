@@ -1,0 +1,8 @@
+.user-info-body-wrap{
+    position: relative;
+}
+
+.user-info-body-wrap img{
+    position: absolute;
+    height:400px;
+}

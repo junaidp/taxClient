@@ -1,0 +1,128 @@
+.common-header-wrap {
+  height: 354px;
+  gap: 0px;
+  opacity: 0px;
+  background: linear-gradient(90deg, #003049 0%, #003049 100%);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.common-header-right-wrap {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+}
+
+.common-header-right-wrap p {
+  color: #ffffff;
+  font-family: "Archivo", serif;
+  margin-top: 14px;
+}
+
+.common-header-right-wrap img {
+  height: 50px;
+  width: 50px;
+}
+
+.success-container,
+.failure-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Archivo", serif !important;
+}
+
+.success-box,
+.failure-box {
+  text-align: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.success-box,
+.failure-box h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.success-box,
+.failure-box p {
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.buton {
+  background-color: #28a745;
+  color: white;
+  padding: 15px 30px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: "Archivo", serif !important;
+}
+
+.buton:hover {
+  background-color: #218838;
+}
+
+.buton:active {
+  background-color: #1e7e34;
+}
+
+.icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.success-box .icon {
+  color: #28a745;
+}
+
+.failure-box .icon {
+  color: #dc3545;
+}
+
+@media screen and (max-width: 900px) {
+  .logo-wrapper img {
+    width: 300px;
+  }
+  .common-header-right-wrap {
+    padding: 6px;
+  }
+  .common-header-right-wrap img {
+    height: 30px;
+    width: 30px;
+  }
+
+  .common-header-right-wrap p {
+    margin-top: 6px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .logo-wrapper img {
+    width: 200px;
+  }
+  .common-header-right-wrap img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .common-header-right-wrap p {
+    margin-top: 2px;
+    font-size: 14px;
+  }
+}

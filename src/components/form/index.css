@@ -1,0 +1,1106 @@
+.initial-card-content-wrap {
+  margin-top: 58px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.initial-card-checkbox-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.initial-card-checkbox-wrap input {
+  width: 30px;
+  height: 30px;
+  border-radius: 50% !important;
+}
+
+.initial-card-checkbox-wrap .content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.initial-card-checkbox-wrap .content h1 {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #003049;
+}
+
+.initial-card-checkbox-wrap .content p {
+  font-family: "Archivo", serif;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 22.85px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #9eb0b9;
+}
+
+.form-title {
+  font-family: "Jaldi", serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 67.6px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #003049;
+}
+
+.form-sub-title {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.7px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #0030499c;
+}
+
+.form-sub-title span {
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.form-second-sub-title {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.7px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #0030499c;
+  margin: 38px 0px;
+}
+
+.form-light-sub-title {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.7px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(158, 176, 185, 1);
+  margin: 38px 0px;
+}
+
+.form-back-button {
+  border: 1px solid #b7c0c5;
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #5e7d8c;
+  border-radius: 4px !important;
+}
+
+.form-next-button {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  border-radius: 4px !important;
+}
+
+.form-next-button img {
+  height: 22px !important;
+  width: 22px !important;
+}
+
+.form-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-input-wrap label {
+  font-family: "Archivo", serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 23.94px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #003049;
+}
+
+.form-input-wrap input {
+  height: 62px;
+  top: 634px;
+  left: 530px;
+  gap: 0px;
+  border-radius: 4px 0px 0px 0px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  border: 1px solid #c4c4c4;
+  padding: 0px 10px;
+}
+
+.form-login-hmrc-btn {
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #003049;
+  width: 70%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.form-login-hmrc-btn p {
+  color: rgba(255, 255, 255, 1);
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.form-login-download-btn {
+  height: 54px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.form-login-download-btn p {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.73px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.form-collected-data {
+  background-color: rgba(248, 250, 251, 1);
+  border-radius: 8px;
+  padding: 20px 30px;
+  margin-top: 30px;
+}
+
+.single-collected-data {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.single-collected-data h1 {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 1);
+}
+
+.single-collected-data p {
+  font-family: "Archivo", serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 30.46px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 0.64);
+  margin-left: 10px;
+}
+
+.reporting-period-sub-text {
+  font-family: "Jaldi", serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 33.8px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 0.61);
+  text-align: center;
+  padding: 17px 0px;
+}
+
+.business-type-input-wrap {
+  position: relative;
+  margin-top: 40px;
+}
+
+.business-type-input-wrap input {
+  border: 1px solid rgba(196, 196, 196, 1);
+  width: 100%;
+  height: 56px;
+  padding: 0px 50px;
+}
+
+.business-type-input-wrap img {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+}
+
+.business-check-items-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid rgba(196, 196, 196, 1);
+  border-top: none;
+  padding: 22px;
+}
+
+.single-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.single-check-item input {
+  height: 23px;
+  width: 23px;
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+}
+
+.single-check-item p {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.final-form-header p {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.7px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 0.61);
+}
+
+.final-form-input-wrap {
+  position: relative;
+}
+
+.final-form-input-main-wrap {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+/* .final-form-input-main-wrap label {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 1);
+} */
+.expenses-label {
+  font-family: "Archivo", serif !important;
+  font-size: 24px !important;
+  font-weight: 400 !important;
+  line-height: 26.11px !important;
+  letter-spacing: 0.01em !important;
+  text-align: left !important;
+  text-underline-position: from-font !important;
+  text-decoration-skip-ink: none !important;
+  color: rgba(6, 38, 62, 1) !important;
+}
+
+.add-expense-wrap p {
+  color: #06263e;
+  font-family: "Archivo", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+
+.final-form-input-wrap input {
+  width: 287px;
+  height: 45px;
+  top: 249px;
+  left: 997px;
+  gap: 0px;
+  border-radius: 4px;
+  border: 1px 0px 0px 0px;
+  opacity: 0px;
+  border: 1px solid #c4c4c4;
+}
+
+.final-form-input-wrap p {
+  position: absolute;
+  top: 8px;
+  right: 17px;
+}
+
+.expense-input-wrap {
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 13px;
+  margin-bottom: 13px;
+}
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+.expense-item label {
+  font-family: "Archivo", serif;
+  font-weight: 200;
+  line-height: 21.76px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #c4c4c4;
+  font-size: 20px;
+}
+
+.finished-last-wrap {
+  display: flex;
+  align-items: center;
+  gap: 31px;
+}
+
+.finished-card-last-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.finished-card-last-content p {
+  font-family: "Jaldi", serif;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(30, 30, 30, 1);
+}
+
+.total-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.total-card-wrap .main-title {
+  font-family: "Jaldi", serif;
+  font-size: 35px;
+  font-weight: 400;
+  line-height: 59.15px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.boxes-wrap {
+  display: flex;
+  width: 100%;
+  gap: 40px;
+}
+
+.boxes-wrap .net-earning-wrap {
+  flex: 1;
+  background-color: rgba(248, 250, 251, 1);
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.boxes-wrap .net-earning-wrap h1 {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 67.6px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.boxes-wrap .net-earning-wrap .img-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.boxes-wrap .net-earning-wrap .img-wrap h1 {
+  position: absolute;
+  left: 35%;
+}
+
+.boxes-wrap .net-earning-wrap .img-wrap img {
+  height: 200px;
+  width: 200px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.boxes-wrap .tax-due-wrap {
+  flex: 1;
+  background-color: rgba(248, 250, 251, 1);
+  border-radius: 4px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.boxes-wrap .tax-due-wrap h1 {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 67.6px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.boxes-wrap .tax-due-wrap .para-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.boxes-wrap .tax-due-wrap .para-wrap img {
+  height: 30px;
+  width: 30px;
+  margin-top: 6px;
+}
+
+.boxes-wrap .tax-due-wrap .para-wrap p {
+  font-family: "Jaldi", serif;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 0.61);
+}
+
+.review-grid-wrap {
+  margin-top: 25px;
+}
+
+.grid-header {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.grid-header h1 {
+  font-family: "Jaldi", serif;
+  font-size: 25px;
+  font-weight: 600;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.grid-header p {
+  font-family: "Jaldi", serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 0.61);
+  margin-top: 10px;
+}
+
+.single-grid-body {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  background-color: rgba(248, 250, 251, 1);
+  margin-bottom: 10px;
+}
+
+.single-grid-body p {
+  font-family: "Jaldi", serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 0.61);
+  margin-top: 10px;
+}
+
+.payment-details-wrap {
+  display: flex;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+}
+
+.payment-left-overlay {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255, 255, 255, 1);
+  flex: 2;
+  background-color: #D9D9D91A !important;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  padding: 34px;
+
+}
+
+.one-time-payment {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.one-time-payment h6 {
+  font-family: "Jaldi", serif;
+  font-size: 73px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  line-height: 60px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.one-time-payment p {
+  font-family: "Jaldi", serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 33.8px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.sub-total-wrap {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 21px;
+}
+
+.sub-total-wrap p {
+  font-family: "Jaldi", serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 37.18px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.amount-bar {
+  height: 2px;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.payment-right-overlay {
+  flex: 2;
+  padding-left: 30px;
+  padding-right: 10px;
+  background-color: #FFFFFF !important;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  padding: 34px;
+}
+
+.payment-right-overlay h1 {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.7px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #003049;
+  font-weight: bold;
+}
+
+.payment-input-overlay {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 33px;
+  align-items: start;
+}
+
+.payment-input-overlay p {
+  font-family: "Archivo", serif;
+  font-size: 20px;
+  font-weight: 200;
+  line-height: 21.76px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+  flex: 1;
+}
+
+.payment-card-overlay {
+  display: flex;
+  justify-content: space-between;
+}
+
+.payment-card-overlay,
+.payment-input-overlay-terms p {
+  font-family: "Archivo", serif;
+  font-size: 20px;
+  font-weight: 200;
+  line-height: 21.76px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.payment-input-overlay input {
+  background-color: rgba(255, 255, 255, 1) !important;
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+  border-radius: 4px;
+  padding: 0px 10px;
+  height: 50px;
+  flex: 2;
+}
+
+.card-element {
+  background-color: rgba(255, 255, 255, 1) !important;
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+  border-radius: 4px;
+  height: 26px;
+  padding: 13px 10px;
+  width: 100%;
+}
+.payment-input-overlay input:focus {
+  background-color: rgba(255, 255, 255, 1) !important;
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+}
+
+.payment-terms {
+  display: flex;
+  gap: 12px;
+}
+
+.payment-terms p span {
+  text-decoration: underline;
+}
+
+.payment-terms input {
+  width: 20px;
+  height: 20px;
+}
+
+.register-form-wrap,
+.otp-form-wrap {
+  width: 80%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.register-single-text-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.register-single-text-field label {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 1);
+}
+
+.register-single-text-field input {
+  font-family: "Archivo", serif;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 1) !important;
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+  height: 50px;
+  padding: 10px 20px;
+}
+
+.already-user-text {
+  display: flex;
+  gap: 15px;
+}
+
+.already-user-text p {
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 0.61);
+}
+.already-user-text span {
+  font-family: Jaldi;
+  font-size: 30px;
+  font-weight: 400;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #003049;
+}
+
+.create-account-btn,
+.verify-btn {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #003049;
+}
+
+.create-account-btn,
+.verify-btn p {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.skip-step-btn,
+.go-back-btn {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(183, 192, 197, 1);
+}
+
+.skip-step-btn,
+.go-back-btn p {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.resend-code-btn {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.resend-code-btn p {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.otp-input-wrap {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.otp-form-wrap .otp-input-wrap input {
+  width: 82px !important;
+  height: 145px !important;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 8px;
+}
+
+.remaining-time {
+  text-align: center;
+  font-family: "Jaldi", serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 50.73px;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.login-dialog-wrap {
+  padding: 40px;
+}
+
+.login-dialog-wrap .login-header h1 {
+  font-family: "Jaldi", serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 67.6px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(0, 48, 73, 1);
+}
+
+.login-dialog-wrap .login-header p {
+  font-family: "Archivo", serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 21.76px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 0.53);
+}
+
+.login-dialog-text-fields-wrap {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.login-single-text-field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.login-single-text-field-wrap label {
+  font-family: "Archivo", serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.11px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 1);
+}
+
+.login-dialog-text-fields-wrap input {
+  background: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(196, 196, 196, 1) !important;
+  border-radius: 8px;
+  height: 50px;
+  padding: 10px 20px;
+  font-family: "Archivo", serif;
+}
+
+.login-dialog-btn-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.login-dialog-btn-wrap .l-btn {
+  width: 235px;
+  height: 46px;
+  gap: 0px;
+  border-radius: 2px;
+  opacity: 0px;
+  background-color: rgba(0, 48, 73, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.login-dialog-btn-wrap .l-btn p {
+  font-family: "Archivo", serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 21.76px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.login-dialog-forget-password-text {
+  font-family: "Archivo", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.58px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 0.59);
+}
+
+.login-options-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-options-wrap p {
+  font-family: "Archivo", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.58px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 0.59);
+}
+
+.logn-register-option {
+  display: flex;
+  gap: 10px;
+}
+
+.logn-register-option p {
+  font-family: "Archivo", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.58px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 0.68);
+}
+
+.logn-register-option span {
+  font-family: "Archivo", serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.58px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgb(0 0 0 / 85%);
+}
+
+.card-number-wrap {
+  position: relative;
+}
+
+.card-number-wrap img {
+  position: absolute;
+  top: 19px;
+  left: 5px;
+  width: 16px;
+}
+
+.card-number-wrap input {
+  padding: 0px 22px;
+}
+
+.register-first-label {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login-btn-first-wrap {
+  display: flex;
+  gap: 20px;
+}
+
+.remember-me-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.remember-me-wrap p {
+  font-family: Archivo;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.58px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: rgba(6, 38, 62, 1);
+}
+
+.remember-me-wrap input {
+  height: 18px;
+  width: 18px;
+}
+
+.expiry-date-wrap {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
