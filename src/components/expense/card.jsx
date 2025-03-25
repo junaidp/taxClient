@@ -4,147 +4,41 @@ import Progress from "../common/progress";
 import cross from "../../assets/cross.svg";
 import ExpenseDialog from "./expense-dialog";
 import { useNavigate } from "react-router-dom";
+import { services } from '../../config/constants'
 
 const Card = () => {
   const navigate = useNavigate();
   const [showExpenseDialog, setShowExpenseDialog] = React.useState(false);
-  const [items, setItems] = React.useState([
-    {
-      id: 1,
-      name: "Bank fees",
-      selected: false,
-      locked: true,
-    },
-    {
-      id: 2,
-      name: "Directors salaries",
-      selected: false,
-      locked: true,
-    },
-    {
-      id: 3,
-      name: "Directors trivial benefit",
-      selected: true,
-      locked: false,
-    },
-    {
-      id: 4,
-      name: "Dividends",
-      selected: true,
-      locked: false,
-    },
-    {
-      id: 5,
-      name: "Employee wages & salaries",
-      selected: true,
-      locked: false,
-    },
-    {
-      id: 6,
-      name: "Employers NI",
-      selected: true,
-      locked: false,
-    },
-    {
-      id: 7,
-      name: "Entertaining",
-      selected: true,
-      locked: false,
-    },
-    {
-      id: 8,
-      name: "Equipment expensed (phone, computer, etc.)",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 9,
-      name: "Insurance",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 10,
-      name: "Interest - bank (overdraft fees)",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 11,
-      name: "Management fees",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 12,
-      name: "Other legal & professional fees",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 13,
-      name: "Pension contributions",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 14,
-      name: "Postage",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 15,
-      name: "Rates (Property tax from rented space)",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 16,
-      name: "Rent",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 17,
-      name: "Repairs and maintenance",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 18,
-      name: "Software",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 19,
-      name: "Telephone/ Internet",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 20,
-      name: "Travel and subsistence",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 21,
-      name: "Use of home",
-      selected: false,
-      locked: false,
-    },
-    {
-      id: 22,
-      name: "Water",
-      selected: false,
-      locked: false,
-    },
-  ]);
+  const [items, setItems] = React.useState([]);
   const handleNext = async () => {
     navigate("/review");
   };
+
+  React.useEffect(() => {
+    let items = JSON.parse(sessionStorage.getItem('selectedBusinessTypes'));
+    items = services?.filter((service) => items?.includes(service?.name));
+
+    let filteredItems = [];
+
+    items?.forEach((item) => {
+      item?.expenses?.forEach((expense) => {
+        filteredItems.push(expense);
+      });
+    });
+
+    items = [...new Set(filteredItems)]
+
+    const newItems = items?.map((item) => {
+      return {
+        name: item,
+        locked: false,
+        selected: false
+      }
+    })
+
+    setItems(newItems)
+
+  }, [])
 
   return (
     <div className="card-positioning-wrap">

@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/common/header";
 import bars from "../assets/user-info/bars.svg";
 import Card from "../components/business-types/card";
+import { services } from "../config/constants"
 import "./index.css";
 
 const BusinessTypes = ({ selectedBusinessTypes, setSelectedBusinessTypes }) => {
@@ -14,6 +15,7 @@ const BusinessTypes = ({ selectedBusinessTypes, setSelectedBusinessTypes }) => {
       <Card
         selectedBusinessTypes={selectedBusinessTypes}
         setSelectedBusinessTypes={setSelectedBusinessTypes}
+        services={services}
       />
     </div>
   );

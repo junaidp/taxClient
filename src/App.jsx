@@ -22,7 +22,7 @@ import "./App.css";
 
 const App = () => {
   const [selectedOption, setSelectedOption] = React.useState("");
-  const [selectedBusinessTypes, setSelectedBusinessTypes] = React.useState([]);
+  const [selectedBusinessTypes, setSelectedBusinessTypes] = React.useState(JSON.parse(sessionStorage.getItem("selectedBusinessTypes")) || []);
   return (
     <div>
       <ToastContainer />

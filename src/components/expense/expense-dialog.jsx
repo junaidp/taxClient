@@ -5,10 +5,10 @@ import lock from "../../assets/lock.svg";
 import "../form/index.css";
 
 const ExpenseDialog = ({ items, setItems, setShowExpenseDialog }) => {
-  function handleClick(id) {
+  function handleClick(name) {
     setItems((pre) => {
       return pre?.map((item) =>
-        item?.id === id ? { ...item, selected: !item?.selected } : item
+        item?.name === name ? { ...item, selected: !item?.selected } : item
       );
     });
   }
@@ -25,21 +25,20 @@ const ExpenseDialog = ({ items, setItems, setShowExpenseDialog }) => {
                 <img
                   src={plus}
                   className="pointer"
-                  onClick={() => handleClick(item?.id)}
+                  onClick={() => handleClick(item?.name)}
                 />
               )}
               {!item?.selected && item?.locked === false && (
                 <img
                   src={minus}
                   className="pointer"
-                  onClick={() => handleClick(item?.id)}
+                  onClick={() => handleClick(item?.name)}
                 />
               )}
 
               <p
-                className={`archivo ${
-                  item?.selected ? "text-[#06263E]" : "text-[#5E7D8C]"
-                } text-[24px]`}
+                className={`archivo ${item?.selected ? "text-[#06263E]" : "text-[#5E7D8C]"
+                  } text-[24px]`}
               >
                 {item?.name}
               </p>
