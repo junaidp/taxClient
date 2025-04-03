@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import tick from "../../assets/tick.svg";
 
 const Card = ({ loading }) => {
-  const { token, hmrc } = useSelector((state) => state?.auth);
+  const { token } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -78,16 +78,14 @@ const Card = ({ loading }) => {
             Back
           </button>
           <button
-            className={`next-btn-hmrc active-color form-next-button ${
-              (!token || !Object.keys(hmrc)?.length) && "opacity-[.5]"
-            } ${
-              !token || !Object.keys(hmrc)?.length
+            className={`next-btn-hmrc active-color form-next-button ${!token && "opacity-[.5]"
+              } ${!token
                 ? "cursor-not-allowed"
                 : "pointer"
-            }`}
+              }`}
             onClick={() => {
-              if (token && Object.keys(hmrc)?.length) {
-                navigate("/confirm-detail");
+              if (token) {
+                navigate("/insurance-number");
               }
             }}
           >
@@ -96,11 +94,10 @@ const Card = ({ loading }) => {
             ) : (
               <>
                 <p
-                  className={` ${
-                    !token || !Object.keys(hmrc)?.length
-                      ? "cursor-not-allowed"
-                      : "pointer"
-                  }`}
+                  className={` ${!token
+                    ? "cursor-not-allowed"
+                    : "pointer"
+                    }`}
                 >
                   Next
                 </p>

@@ -28,7 +28,7 @@ const RegisterDialog = ({ setShowLoginDialog, setRegisterDialog }) => {
     },
     validationSchema: Yup.object({
       fullName: Yup.string().required("Full name is required"),
-      nino: Yup.string().required("Nino is required"),
+      nino: Yup.string(),
       email: Yup.string()
         .email("Invalid email address")
         .required("Email is required"),
@@ -98,13 +98,13 @@ const RegisterDialog = ({ setShowLoginDialog, setRegisterDialog }) => {
             <p className="error">{formik.errors.fullName}</p>
           )}
         </div>
-        <div className="register-single-text-field">
+        {/* <div className="register-single-text-field">
           <label>Nino</label>
           <input name="nino" {...formik.getFieldProps("nino")} />
           {formik.touched.nino && formik.errors.nino && (
             <p className="error">{formik.errors.nino}</p>
           )}
-        </div>
+        </div> */}
         <div className="register-single-text-field">
           <label>Email</label>
           <input name="email" {...formik.getFieldProps("email")} />

@@ -6,16 +6,14 @@ import axios from "axios";
 import { BASE_URL } from "../config/constants";
 import { useLocation } from "react-router-dom";
 import {
-  handleSetToken,
-  handleSetHMRC,
+  handleSetToken
 } from "../global-redux/reducers/auth/slice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./index.css";
 
 const AccessDetails = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { user } = useSelector((state) => state?.auth);
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
@@ -37,7 +35,6 @@ const AccessDetails = () => {
             },
           }
         );
-
         const token = response?.data;
         if (
           token === "Failed to get token Token request failed: invalid_request"
@@ -47,38 +44,10 @@ const AccessDetails = () => {
         }
         dispatch(handleSetToken(token));
         sessionStorage.setItem("token", token);
-
-        if (!user?.nino) {
-          console.error("User NINO is missing.");
-          return;
-        }
-
-        // First API call
-        const firstResponse = await axios.get(
-          `${BASE_URL}/api/external/individualCalculationsGetId?nino=${user.nino}&token=${token}&taxYear=2024-25&calculationType=in-year`,
-          {
-            headers: {
-              "ngrok-skip-browser-warning": "true",
-            },
-          }
-        );
-
-        if (firstResponse.status === 200 || firstResponse.status === 201) {
-          // Second API call
-          const secondResponse = await axios.get(
-            `${BASE_URL}/api/external/individualCalculations?nino=${user.nino}&token=${token}&taxYear=2024-25&calculationId=${firstResponse?.data?.calculationId}`,
-            {
-              headers: {
-                "ngrok-skip-browser-warning": "true",
-              },
-            }
-          );
-          dispatch(handleSetHMRC(secondResponse?.data));
-          sessionStorage.setItem("hmrc", JSON.stringify(secondResponse?.data));
-          setLoading(false);
-        }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching token or calculation data:", error);
+        setLoading(false);
       }
     };
 

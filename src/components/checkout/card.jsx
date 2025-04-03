@@ -190,7 +190,7 @@ const CheckoutForm = ({
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="text-[rgba(6,38,62,0.34)] rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]"
+              className="rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]"
             />
           </div>
           <div className="mt-[20px]">
@@ -220,7 +220,7 @@ const CheckoutForm = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Full name on card"
-              className="text-[rgba(6,38,62,0.34)] rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]"
+              className=" rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]"
             />
           </div>
           <div className="flex items-center gap-[30px] mt-[35px]">

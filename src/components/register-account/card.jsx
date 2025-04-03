@@ -19,7 +19,7 @@ const validationSchema = Yup.object({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Confirm password is required"),
-  nino: Yup.string().required("NINO is required"),
+  nino: Yup.string(),
 });
 
 const Card = ({ setShowLoginDialog }) => {
@@ -107,13 +107,13 @@ const Card = ({ setShowLoginDialog }) => {
                   <p className="error">{formik.errors.confirmPassword}</p>
                 )}
             </div>
-            <div className="register-single-text-field">
+            {/* <div className="register-single-text-field">
               <label>NINO</label>
               <input type="text" {...formik.getFieldProps("nino")} />
               {formik.touched.nino && formik.errors.nino && (
                 <p className="error">{formik.errors.nino}</p>
               )}
-            </div>
+            </div> */}
             <div className="flex items-center gap-[13px]">
               <input
                 type="checkbox"

@@ -43,7 +43,7 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
             <input placeholder="search..." />
           </div>
         </div>
-        <div className="business-check-items-wrap">
+        <div className="business-check-items-wrap max-h-[500px] overflow-y-auto">
 
           {
             services?.map((item, ind) => {

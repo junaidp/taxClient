@@ -1,13 +1,10 @@
 import React from "react";
 import arrow from "../../assets/home/arrow.svg";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import "./index.css";
 
 const Hero = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state?.auth);
-  const nino = sessionStorage.getItem("nino") || "";
 
   return (
     <div className="home-hero-wrap">
@@ -19,17 +16,14 @@ const Hero = () => {
           <p className="pointer">Learn more</p>
         </div>
         <div
-          className={`free-btn ${!user?.username && "opacity-[.5]"} ${
-            !user?.username && "cursor-not-allowed"
-          }`}
+          className={`free-btn`}
           onClick={() => {
-            if (nino) {
-              navigate("/start");
-            }
+            navigate("/start");
+
           }}
         >
           <p
-            className={`${!user?.username ? "cursor-not-allowed" : "pointer"}`}
+            className={`pointer`}
           >
             Start for free
           </p>

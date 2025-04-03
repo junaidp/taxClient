@@ -41,13 +41,14 @@ const Card = () => {
   }, [])
 
   return (
-    <div className="card-positioning-wrap">
+    <div className="card-positioning-wrap" >
       <Progress title="55% complete" width="55%" />
       <div className="main-card-wrap">
         {showExpenseDialog && (
-          <div className="model-parent">
+          <div className="model-parent"
+          >
             <div
-              className="absolute top-[0px] left-[0px] botton-[0px] right-[0px] bg-[#40B7B0] min-h-[100vh] w-[100%] opacity-[0.14]"
+              className="absolute top-[0px] left-[0px]  right-[0px] bg-[#40B7B0] h-[100%] w-[100%] opacity-[0.14]"
               onClick={() => setShowExpenseDialog(false)}
             ></div>
             <div className="model-wrap-expense">
