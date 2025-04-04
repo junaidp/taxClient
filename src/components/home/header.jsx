@@ -32,7 +32,7 @@ const Header = ({ setShowLoginDialog, setShowMyProfileDialog }) => {
         <p className={pathname === "/contact" && "inline-block border-b-2 border-black"} onClick={() => navigate("/contact")}>Contact</p>
         <div className="line"></div>
 
-        <p className={pathname === "/faq" && "inline-block border-b-2 border-black"}>FAQ</p>
+        <p className={pathname === "/faq" && "inline-block border-b-2 border-black"} onClick={() => navigate("/faq")}>FAQ</p>
         <div className="line"></div>
       </div>
       <div className="home-login-btn-wrap">

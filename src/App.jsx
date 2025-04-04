@@ -20,6 +20,7 @@ import Finished from "./pages/finished";
 import About from "./pages/about";
 import Pricing from "./pages/pricing"
 import Contact from "./pages/contact"
+import FAQ from "./pages/faq";
 import InsuranceNumber from "./pages/insurance-number";
 import LoginDialog from "./components/home/login-dialog";
 import MyProfileDialog from "./components/home/my-profile-dialog";
@@ -119,7 +120,7 @@ const App = () => {
       <ToastContainer />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home setShowLoginDialog={setShowLoginDialog} setShowMyProfileDialog />} />
+          <Route path="/" element={<Home setShowLoginDialog={setShowLoginDialog} setShowMyProfileDialog={setShowMyProfileDialog} />} />
           <Route
             path="/start"
             element={
@@ -135,6 +136,8 @@ const App = () => {
           <Route path="/pricing" element={<Pricing setShowLoginDialog={setShowLoginDialog}
             setShowMyProfileDialog={setShowMyProfileDialog} />} />
           <Route path="/contact" element={<Contact setShowLoginDialog={setShowLoginDialog}
+            setShowMyProfileDialog={setShowMyProfileDialog} />} />
+          <Route path="/faq" element={<FAQ setShowLoginDialog={setShowLoginDialog}
             setShowMyProfileDialog={setShowMyProfileDialog} />} />
           <Route path="/insurance-number" element={<InsuranceNumber />} />
           <Route path="/confirm-detail" element={<ConfirmDetails />} />
