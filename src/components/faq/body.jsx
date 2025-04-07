@@ -1,11 +1,17 @@
 import React from 'react'
-import arrow from "../../assets/about-arrow.svg"
-
+import plus from "../../assets/plus-icon.svg"
+import minus from "../../assets/minus-icon.svg"
 import search from "../../assets/search.svg";
 import { useNavigate } from 'react-router-dom'
+import { faqsArray } from "../../config/constants"
 
 const Body = () => {
     const navigate = useNavigate()
+    const [questions, setQuestions] = React.useState(faqsArray || [])
+
+    function handleClick(id) {
+        setQuestions((pre) => pre?.map((item) => item?.id === id ? { ...item, selected: !item?.selected } : { ...item, selected: false }))
+    }
     return (
         <div>
             <div className='pt-[130px] px-[90px]'>
@@ -20,9 +26,43 @@ const Body = () => {
                     <button className='h-[58px] bg-[#003049] px-[56px] rounded-[2px] py-[10px] archivo text-[24px] text-[#FFFFFF]' onClick={() => navigate("/contact")}>Contact Us</button>
                 </div>
             </div>
-            <div className='pt-[130px] px-[90px] mt-[66px]' style={{ background: "rgba(217, 217, 217, 0.75)" }}>
+            <div className='pt-[51px] px-[33px] mt-[66px]' style={{ background: "rgba(217, 217, 217, 0.75)" }}>
+  <div className='grid grid-cols-1 md:grid-cols-2 gap-[27px] auto-rows-auto place-items-start'>
+    {questions?.map((item, ind) => (
+      <div
+        key={ind}
+        className={`transition-all duration-500 ease-in-out bg-white rounded-[8px] border border-[#C4C4C4] px-[26px] py-[20px] w-full`}
+      >
+        <div className='flex justify-between items-center'>
+          <p className='archivo text-[18px] leading-[33px] font-bold' style={{ color: !item?.selected ? "rgba(6, 38, 62, 0.64)" : "rgba(6, 38, 62, 0.9)" }}>
+            {item?.question}
+          </p>
+          <img
+            src={item?.selected ? minus : plus}
+            className='cursor-pointer'
+            onClick={() => handleClick(item?.id)}
+          />
+        </div>
 
-            </div>
+        <div
+          className='transition-all duration-500 ease-in-out overflow-hidden'
+          style={{
+            maxHeight: item?.selected ? "500px" : "0px",
+            marginTop: item?.selected ? "23px" : "0px",
+          }}
+        >
+          <p
+            className='archivo leading-[30px] text-[24px]'
+            style={{ color: "rgba(6, 38, 62, 0.53)", opacity: item?.selected ? 1 : 0 }}
+          >
+            {item?.answer}
+          </p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
         </div>
     )
 }

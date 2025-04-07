@@ -348,7 +348,7 @@ const services = [
   },
 ];
 
-const faqs = [
+const faqsArray = [
   {
     id: "1",
     question: "What is this app used for?",
@@ -378,6 +378,20 @@ const faqs = [
     selected: false,
   },
   {
+    id: "7",
+    question: "How do I pay for the service?",
+    answer:
+      "We use Stripe to securely process payments for the service. Once you’ve completed your tax return and are ready to submit, you can make a payment through the app. Simply follow the prompts, and you’ll be directed to a secure payment page.",
+    selected: false,
+  },
+  {
+    id: "13",
+    question: "How often should I submit a tax return?",
+    answer:
+      "In the UK, sole traders are required to submit a self-assessment tax return to HMRC once a year. The tax year typically runs from April 6th to April 5th, and your return is due by January 31st of the following year. TIf you have created an account with the app, we will send you a reminder email before the deadline, so you don’t have to worry about forgetting.",
+    selected: false,
+  },
+  {
     id: "5",
     question: "Can I submit my tax return if I have multiple income streams?",
     answer:
@@ -391,13 +405,7 @@ const faqs = [
       "You will need the following information: Income details (e.g., invoices, sales receipts, or payslips), allowable business expenses (e.g., receipts for equipment, office supplies, or travel), and your HMRC login and National Insurance Number (NINO).",
     selected: false,
   },
-  {
-    id: "7",
-    question: "How do I pay for the service?",
-    answer:
-      "We use Stripe to securely process payments for the service. Once you’ve completed your tax return and are ready to submit, you can make a payment through the app. Simply follow the prompts, and you’ll be directed to a secure payment page.",
-    selected: false,
-  },
+
   {
     id: "8",
     question: "Do I need an accountant to use this app?",
@@ -433,13 +441,7 @@ const faqs = [
       "If you encounter any issues or have any questions, our customer support team is here to help! You can reach us via the contact section within the app, or you can contact us directly at support@taxreadyuk.com. We’ll make sure to assist you as quickly as possible.",
     selected: false,
   },
-  {
-    id: "13",
-    question: "How often should I submit a tax return?",
-    answer:
-      "In the UK, sole traders are required to submit a self-assessment tax return to HMRC once a year. The tax year typically runs from April 6th to April 5th, and your return is due by January 31st of the following year. TIf you have created an account with the app, we will send you a reminder email before the deadline, so you don’t have to worry about forgetting.",
-    selected: false,
-  },
+
   {
     id: "14",
     question: "Can I use this app for other types of taxes (e.g., VAT)?",
@@ -456,4 +458,4 @@ const faqs = [
   },
 ];
 
-export { BASE_URL, REDIRECT_URL, services, faqs };
+export { BASE_URL, REDIRECT_URL, services, faqsArray };

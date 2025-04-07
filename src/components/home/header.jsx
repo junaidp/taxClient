@@ -15,7 +15,7 @@ const Header = ({ setShowLoginDialog, setShowMyProfileDialog }) => {
     <div className="home-header-wrap">
       <div className="home-logo-text-wrap">
         <div className="home-logo-wrap">
-          <img src={logo} />
+          <img src={logo} className="pointer" onClick={() => navigate("/")} />
         </div>
       </div>
       <div className="home-links">

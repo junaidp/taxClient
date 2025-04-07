@@ -10,7 +10,7 @@ const Body = () => {
         <div className='bg-gradient-to-t from-[#0073AF] to-[#003049] pl-[84px] pt-[100px] pb-[50px]'>
             <h1 className='archivo font-bold text-[60px] text-[#FFFFFF] mb-[34px]'>Made by Accountants with <br /> simplicity in mind. </h1>
             <div className='flex  flex flex-col lg:flex-row'>
-                <div className='flex flex-col gap-[34px]' style={{ flex: '2' }}>
+                <div className='flex flex-col gap-[34px]' style={{ flex: '1' }}>
                     <button className='h-[46px] w-[196px] bg-[#40B7B0] rounded-[4px] flex flex-row justify-center items-center gap-[5px]'>
                         <p className='archivo text-[20px] text-[#FFFFFF]' onClick={() => navigate("/start")}>Start for free</p>
                         <div className='h-[29px] w-[29px] flex justify-center'>
@@ -51,7 +51,7 @@ const Body = () => {
                 </div>
                 <div style={{ flex: '1' }} className='relative'>
                     <img src={computer} />
-                    <img src={phone} className='absolute top-[42px] h-[200px] left-[80px]' />
+                    <img src={phone} className='absolute top-[62px] h-[300px] left-[150px]' />
                 </div>
 
             </div>
