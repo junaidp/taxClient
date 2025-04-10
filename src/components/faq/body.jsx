@@ -14,10 +14,10 @@ const Body = () => {
     }
     return (
         <div>
-            <div className='pt-[130px] px-[90px]'>
-                <h1 className='text-[60px] font-bold text-[#003049]'>Frequently asked questions</h1>
-                <p className='archivo text-[28px] leading-[43px]' style={{ color: 'rgba(6, 38, 62, 0.64)' }}>Search for for any questions you have or contact us directly.</p>
-                <div className='flex justify-between items-center'>
+            <div className='pt-[40px] md:pt-[130px] px-[20px] md:px-[90px]'>
+                <h1 className='text-[30px] md:text-[60px] font-bold text-[#003049]'>Frequently asked questions</h1>
+                <p className='archivo text-[20px] md:text-[28px] leading-[43px]' style={{ color: 'rgba(6, 38, 62, 0.64)' }}>Search for for any questions you have or contact us directly.</p>
+                <div className='flex flex-col md:flex-row gap-[10px] justify-between items-start md:items-center'>
 
                     <div className='h-[70px] w-[70%] relative mt-[9px]'>
                         <img src={search} className='absolute top-[20px] left-[6px]' />

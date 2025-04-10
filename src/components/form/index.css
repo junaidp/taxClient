@@ -1104,3 +1104,11 @@
   gap: 5px;
   flex-direction: column;
 }
+
+@media screen and (max-width:800px) {
+  .login-dialog-btn-wrap{
+    flex-direction: column;
+    gap: 30px;
+    align-items: start;  
+  }
+}

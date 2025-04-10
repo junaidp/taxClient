@@ -109,3 +109,14 @@ video {
   right: -167px;
   overflow-y: auto;
 }
+
+@media screen  and (max-width:800px){
+  .model-wrap,.model-wrap-expense{
+    width: 80%;
+  }
+}
+@media screen  and (max-width:600px){
+  .model-wrap,.model-wrap-expense{
+    width: 90%;
+  }
+}

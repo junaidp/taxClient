@@ -73,7 +73,7 @@ const MyProfileDialog = ({ setShowMyProfileDialog }) => {
           />
           <p>I’d like to receive marketing email updates from TaxReady.uk </p>
         </div> */}
-        <div className="mt-[60px] flex items-center justify-between">
+        <div className="mt-[60px] flex flex-col md:flex-row items-start md:items-center gap-[30px] justify-between">
           {/* <button
             onClick={() => setShowDeleteAccount(true)}
             className="pointer"

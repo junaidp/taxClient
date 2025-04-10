@@ -4,11 +4,11 @@ import conatct from "../../assets/contact.svg"
 const Body = () => {
     return (
         <div>
-            <div className='mt-[66px] mx-[130px] flex flex-col md:flex-row gap-[50px]'>
+            <div className='mt-[40px] md:mt-[66px] mx-[20px] md:mx-[130px] flex flex-col md:flex-row gap-[50px]'>
                 <div className='flex flex-col gap-[22px] flex-1'>
                     <div className='flex flex-col gap-[10px]'>
-                        <h1 className='archivo text-[60px] font-bold' style={{ color: "rgba(0, 48, 73, 1)" }}>Contact us</h1>
-                        <p className='archivo text-[28px] leading-[43px]' style={{ color: "rgba(6, 38, 62, 0.64)" }}>Need help with something?  Get in touch with our friendly  team and we’ll get back to you within 2 hours.</p>
+                        <h1 className='archivo text-[30px] md:text-[60px] font-bold' style={{ color: "rgba(0, 48, 73, 1)" }}>Contact us</h1>
+                        <p className='archivo text-[20px] md:text-[28px] leading-[43px]' style={{ color: "rgba(6, 38, 62, 0.64)" }}>Need help with something?  Get in touch with our friendly  team and we’ll get back to you within 2 hours.</p>
                     </div>
                     <div>
                         <label className='text-[24px] archivo' style={{ color: "rgba(6, 38, 62, 1)" }}>Name</label>
