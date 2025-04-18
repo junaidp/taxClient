@@ -12,7 +12,10 @@ const PasswordResetDialog = ({
         <div>
           <h1 className="form-title">Password reset</h1>
           <p className="form-sub-title">
-            Enter the code emailed to tyrion@sevenkingdoms.com
+            Enter the code emailed to
+            <span className="font-bold">
+             tyrion@sevenkingdoms.com
+            </span>
           </p>
         </div>
 

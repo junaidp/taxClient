@@ -8,7 +8,7 @@ const ForgotPasswordDialog = ({
 }) => {
   return (
     <div className="login-dialog-wrap">
-      <h1 className="jaldi text-[40px] leading-[40px] text-[#003049]">
+      <h1 className="jaldi text-[40px] leading-[40px] text-[#003049] font-bold mb-[20px]">
         Forgot password{" "}
       </h1>
       <h1 className="archivo text-[24px] leading-[26px] text-[#06263E87] mt-[4px]">
@@ -21,7 +21,7 @@ const ForgotPasswordDialog = ({
             Email
           </p>
           <input
-            className="h-[60px] px-[21px] py-[16px] rounded-[8px] border border-[1px] border-[#C4C4C4] archivo text-[#06263EA3]"
+            className="h-[60px] px-[21px] py-[16px] rounded-[8px] border border-[1px] border-[#C4C4C4] archivo text-[#06263EA3] text-[24px]"
             placeholder="tyrionlannister@sevenkingdoms.com"
           />
         </div>

@@ -13,14 +13,14 @@ const Card = ({ hmrc }) => {
           <h1 className="form-title">Confirm details</h1>
           <p className="form-sub-title">
             Are the details listed below correct? If not, please click the back
-            button and try logging in again, or contact the HMRC.{" "}
+            button and try logging in again, or contact the <span className="underline pointer" onClick={() => window.open("https://www.gov.uk/contact-hmrc")} style={{ fontWeight: "100" }}>HMRC.</span>
           </p>
         </div>
 
         <div className="form-collected-data">
           <div className="single-collected-data">
             <h1>Date of Birth</h1>
-            <p>{hmrc?.inputs?.personalInformation?.dateOfBirth}</p>
+            <p style={{ color: "rgba(6, 38, 62, 0.64)", marginLeft: "30px" }}>{hmrc?.inputs?.personalInformation?.dateOfBirth}</p>
           </div>
           <div className="single-collected-data">
             <h1>Identifier</h1>
@@ -47,7 +47,7 @@ const Card = ({ hmrc }) => {
         <div className="card-button-wrap mt-40">
           <button
             className="back form-back-button not-allowed"
-            onClick={() => navigate("/access-detail")}
+            onClick={() => navigate("/insurance-number")}
           >
             Back
           </button>
@@ -56,7 +56,7 @@ const Card = ({ hmrc }) => {
             onClick={() => navigate("/reporting-period")}
           >
             <p>Next</p>
-            <img src={buttonArrow} />
+            <img src={buttonArrow} style={{ marginTop: "6px" }} />
           </button>{" "}
         </div>
       </div>

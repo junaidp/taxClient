@@ -74,7 +74,7 @@ const Card = ({ selectedOption, setSelectedOption }) => {
             }
           >
             <p>Next</p>
-            <img src={buttonArrow} className="w-[24px] h-[24px]" />
+            <img src={buttonArrow} className="w-[24px] h-[24px] mt-[6px]" style={{marginTop:"6px"}} />
           </button>
         </div>
       </div>

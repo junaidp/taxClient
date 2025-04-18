@@ -5,12 +5,12 @@ import "../form/index.css";
 const NewPasswordDialog = ({ setNewPasswordDialog }) => {
   return (
     <div className="login-dialog-wrap">
-      <h1 className="jaldi text-[40px] leading-[40px] text-[#003049]">
+      <h1 className="jaldi text-[40px] leading-[40px] text-[#003049] font-bold">
         Set a new password{" "}
       </h1>
-      <h1 className="archivo text-[24px] leading-[26px] text-[#06263E87] mt-[4px]">
+      <h1 className="archivo text-[24px] leading-[26px] text-[#06263E87] mt-[20px]">
         Enter the code emailed to{" "}
-        <span className="text-[#FFFFF]" style={{ color: "black" }}>
+        <span className="text-[#FFFFF] font-bold">
           tyrion@sevenkingdoms.com
         </span>
       </h1>

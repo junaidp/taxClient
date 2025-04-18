@@ -2,6 +2,7 @@ import React from "react";
 import lightTick from "../../assets/light-tick.svg";
 import dimTick from "../../assets/dim-tick.svg";
 import { useNavigate } from "react-router-dom";
+import errorImg from "../../assets/error.svg"
 
 const Card = ({ setShowSubmitDialog }) => {
   const navigate = useNavigate();
@@ -38,13 +39,21 @@ const Card = ({ setShowSubmitDialog }) => {
         </div>
         <div className="form-input-wrap">
           <label>Your email address</label>
-          <input
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              validateEmail(e.target.value);
-            }}
-          />
+          <div className="w-[100%] relative">
+            <input
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                validateEmail(e.target.value);
+              }}
+              className="rounded-[4px] w-[100%]"
+              style={{ border: error === "Please enter a valid email address" && "2px solid rgba(211, 152, 78, 1)" }}
+            />
+            {
+              error &&
+              <img src={errorImg} className="absolute top-[15px] right-[20px]" />
+            }
+          </div>
           {error && (
             <p className="error-text jaldi text-[#D3984E] text-[26px] leading-[36px]">
               {error}
@@ -59,9 +68,8 @@ const Card = ({ setShowSubmitDialog }) => {
             Back
           </button>
           <button
-            className={`next-btn  flex items-center gap-[7px] ${
-              email && !error ? "active-color form-next-button" : ""
-            }`}
+            className={`next-btn  flex items-center gap-[7px] ${email && !error ? "active-color form-next-button" : ""
+              }`}
             style={{ cursor: email && !error ? "pointer" : "not-allowed" }}
             disabled={!!error}
             onClick={handleSubmit}

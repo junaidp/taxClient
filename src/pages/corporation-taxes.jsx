@@ -12,7 +12,7 @@ const CorporationTaxes = () => {
       {showSubmitDialog && (
         <div className="model-parent">
           <div className="absolute top-[0px] left-[0px] bottom-[0px] right-[0px] bg-[#40B7B0] min-h-[100vh] w-[100%] opacity-[0.14]"></div>
-          <div className="model-wrap">
+          <div className="model-wrap" style={{marginTop:"12%"}}>
             <SubmitDialog setShowSubmitDialog={setShowSubmitDialog} />
           </div>
         </div>

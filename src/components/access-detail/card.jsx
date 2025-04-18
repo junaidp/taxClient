@@ -31,9 +31,13 @@ const Card = ({ loading }) => {
           </p>
         </div>
         <div>
-          <p className="form-second-sub-title">
-            Click the button below to login to link to your HMRC account:
-          </p>
+          {
+            !token ?
+              <p className="form-second-sub-title">
+                Click the button below to login to link to your HMRC account:
+              </p> : <p className="form-second-sub-title">HMRC login successful!  Please click the next button to continue.</p>
+          }
+
         </div>
         {!token ? (
           <div className="form-login-hmrc-btn pointer" onClick={handleLogin}>
@@ -48,27 +52,50 @@ const Card = ({ loading }) => {
           </div>
         )}
 
-        <div>
-          <p className="form-light-sub-title">
-            If you do not have a HMRC login, please set one up by
-            <span
-              style={{
-                color: "rgba(158, 176, 185, 1)",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-              onClick={() =>
-                window.open(
-                  "https://www.gov.uk/log-in-register-hmrc-online-services",
-                  "__blank"
-                )
-              }
-            >
-              {" "}
-              clicking here.
-            </span>
-          </p>
-        </div>
+        {
+          !token ?
+            <div>
+              <p className="form-light-sub-title">
+                If you do not have a HMRC login, please set one up by
+                <span
+                  style={{
+                    color: "rgba(158, 176, 185, 1)",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    window.open(
+                      "https://www.gov.uk/log-in-register-hmrc-online-services",
+                      "__blank"
+                    )
+                  }
+                >
+                  {" "}
+                  clicking here.
+                </span>
+              </p>
+            </div> :
+            <div>
+              <p className="form-light-sub-title">
+                To log into a different account             <span
+                  style={{
+                    color: "rgba(158, 176, 185, 1)",
+                    fontWeight: "600",
+                    cursor: "pointer",
+                  }}
+                  onClick={() =>
+                    window.open(
+                      "https://www.gov.uk/log-in-register-hmrc-online-services",
+                      "__blank"
+                    )
+                  }
+                >
+                  {" "}
+                  click here.
+                </span>
+              </p>
+            </div>
+        }
 
         <div className="card-button-wrap mt-40">
           <button
@@ -101,7 +128,7 @@ const Card = ({ loading }) => {
                 >
                   Next
                 </p>
-                <img src={buttonArrow} />
+                <img src={buttonArrow} style={{ marginTop: "6px" }} />
               </>
             )}
           </button>{" "}
