@@ -1,30 +1,52 @@
-import React from "react";
-import buttonArrow from "../../assets/user-info/button-arrow.png";
+import React, { useState } from "react";
+import buttonArrow from "../../assets/button-arrow.png";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
+import info from '../../assets/info.svg'
+import Tooltip from "../../components/common/tooltip"
 
 const Card = () => {
   const navigate = useNavigate();
+  const [selected, setSelected] = useState("");
+
   return (
     <div className="card-positioning-wrap">
       <Progress title="45% complete" width="45%" />
       <div className="main-card-wrap">
         <div>
-          <h1 className="form-title">Do you employ people?</h1>
-          <p className="form-sub-title">
-            Select yes if you have employee’s working under the sole trader
-            company.{" "}
-          </p>
+          <h1 className="form-title">Did you employ people during this period?</h1>
+          <div className="flex">
+            <p className="form-sub-title">
+              Select ‘yes’ if you had employee’s working for your <span className="font-bold"> Delivery Driver </span>service during the period of April 5, 2025 - June 1, 2025.
+              <span className="inline-flex items-center">
+                <Tooltip text="Indicate whether you paid any employees during the specified period. Your response will help us customize your expense worksheet on the next screen.">
+                  <img src={info} alt="info" className="ml-1 w-4 h-4 inline" />
+                </Tooltip>
+              </span>
+            </p>
+          </div>
           <div className="initial-card-content-wrap">
             <div className="initial-card-checkbox-wrap">
-              <input type="radio" />
+              <input
+                type="radio"
+                name="employ"
+                value="no"
+                checked={selected === "no"}
+                onChange={() => setSelected("no")}
+              />
               <div className="content">
                 <h1>No</h1>
                 <p>No you do not currently employ people</p>
               </div>
             </div>
             <div className="initial-card-checkbox-wrap">
-              <input type="radio" />
+              <input
+                type="radio"
+                name="employ"
+                value="yes"
+                checked={selected === "yes"}
+                onChange={() => setSelected("yes")}
+              />
               <div className="content">
                 <h1>Yes</h1>
                 <p>Yes you currently employ people.</p>
@@ -45,8 +67,8 @@ const Card = () => {
             onClick={() => navigate("/expenses")}
           >
             <p>Next</p>
-            <img src={buttonArrow} />
-          </button>{" "}
+            <img src={buttonArrow} style={{ marginTop: "6px" }} />
+          </button>
         </div>
       </div>
     </div>

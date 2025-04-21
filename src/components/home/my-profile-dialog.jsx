@@ -1,6 +1,6 @@
 import React from "react";
 import close from "../../assets/close.svg";
-import flag from "../../assets/common/flag.svg";
+import flag from "../../assets/flag.svg";
 import DeleteProfile from "./delete-profile-dialog";
 import { useSelector, useDispatch } from "react-redux";
 import { handleResetUser } from "../../global-redux/reducers/auth/slice";

@@ -1,5 +1,5 @@
 import React from "react";
-import buttonArrow from "../../assets/user-info/button-arrow.png";
+import buttonArrow from "../../assets/button-arrow.png";
 import cross from "../../assets/cross-icon.svg";
 import select from "../../assets/business-select.svg";
 import Progress from "../common/progress";
@@ -114,7 +114,9 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
                   navigate("/information-window");
                 }
                 else {
-                  navigate("/employ-people");
+                  if (selectedBusinessTypes?.length === 1) {
+                    navigate("/employ-people");
+                  }
                 }
               }}
               style={{

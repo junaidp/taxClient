@@ -1,5 +1,5 @@
 import React from "react";
-import buttonArrow from "../../assets/user-info/button-arrow.png";
+import buttonArrow from "../../assets/button-arrow.png";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import { REDIRECT_URL } from "../../config/constants";

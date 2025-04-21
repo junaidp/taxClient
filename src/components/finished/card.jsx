@@ -2,7 +2,7 @@ import React from "react";
 import Progress from "../common/progress";
 import line from "../../assets/line.svg";
 import down from "../../assets/down.svg";
-import action from "../../assets/common/action.png";
+import action from "../../assets/action.png";
 import { useNavigate } from "react-router-dom";
 
 const Card = () => {

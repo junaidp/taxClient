@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../assets/logo.png";
-import flag from "../../assets/common/flag.svg";
+import flag from "../../assets/flag.svg";
 import { useLocation } from "react-router-dom";
 import "./index.css";
 import { useSelector } from "react-redux";

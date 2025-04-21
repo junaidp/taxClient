@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../components/common/header";
-import bars from "../assets/user-info/bars.svg";
+import bars from "../assets/bars.svg";
 import Card from "../components/business-types/card";
 import { services } from "../config/constants"
 import "./index.css";

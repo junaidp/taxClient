@@ -2,7 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import buttonArrow from "../../assets/user-info/button-arrow.png";
+import buttonArrow from "../../assets/button-arrow.png";
 import Progress from "../common/progress";
 import {
   setupRegister,

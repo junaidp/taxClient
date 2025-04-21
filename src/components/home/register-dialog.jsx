@@ -6,9 +6,9 @@ import {
   setupRegister,
   resetAuthAddSuccess,
 } from "../../global-redux/reducers/auth/slice";
-import apple from "../../assets/form/apple.svg";
-import google from "../../assets/form/google.svg";
-import facebook from "../../assets/form/facebook.svg";
+import apple from "../../assets/apple.svg";
+import google from "../../assets/google.svg";
+import facebook from "../../assets/facebook.svg";
 import close from "../../assets/close.svg";
 import "../form/index.css";
 

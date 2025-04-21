@@ -1,6 +1,6 @@
 import React from 'react'
 import arrow from "../../assets/about-arrow.svg"
-import computer from "../../assets/home/computer.svg";
+import computer from "../../assets/computer.svg";
 import phone from "../../assets/phone.svg";
 import { useNavigate } from 'react-router-dom'
 

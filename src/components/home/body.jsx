@@ -1,6 +1,6 @@
 import React from "react";
-import computer from "../../assets/home/computer.svg";
-import bars from "../../assets/home/bars.svg";
+import computer from "../../assets/computer.svg";
+import bars from "../../assets/bars.svg";
 
 const Body = () => {
   return (

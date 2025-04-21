@@ -8,7 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import buttonArrow from "../../assets/user-info/button-arrow.png";
+import buttonArrow from "../../assets/button-arrow.png";
 import Progress from "../common/progress";
 import discount from "../../assets/discount.svg";
 import { useNavigate } from "react-router-dom";

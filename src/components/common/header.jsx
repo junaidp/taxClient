@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 import logo from "../../assets/dark-logo.png";
-import flag from "../../assets/common/flag.svg";
+import flag from "../../assets/flag.svg";
 import { useNavigate } from "react-router-dom";
 
 const header = () => {
