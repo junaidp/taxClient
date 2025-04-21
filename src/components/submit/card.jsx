@@ -53,7 +53,7 @@ const Card = () => {
                 onClick={() =>
                   window.open(
                     "https://www.gov.uk/pay-corporation-tax",
-                    "__blank"
+                    "_blank"
                   )
                 }
               >

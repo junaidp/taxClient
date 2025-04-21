@@ -13,34 +13,22 @@ const Card = ({ hmrc }) => {
           <h1 className="form-title">Confirm details</h1>
           <p className="form-sub-title">
             Are the details listed below correct? If not, please click the back
-            button and try logging in again, or contact the <span className="underline pointer" onClick={() => window.open("https://www.gov.uk/contact-hmrc")} style={{ fontWeight: "100" }}>HMRC.</span>
+            button and try logging in again, or contact the <span className="underline pointer" onClick={() => window.open("https://www.gov.uk/contact-hmrc", "_blank")} style={{ fontWeight: "100" }}>HMRC.</span>
           </p>
         </div>
 
         <div className="form-collected-data">
           <div className="single-collected-data">
+            <h1>Individual name</h1>
+            <p style={{ color: "rgba(6, 38, 62, 0.64)", marginLeft: "30px" }}>Jamie Lannister</p>
+          </div>
+          <div className="single-collected-data">
             <h1>Date of Birth</h1>
-            <p style={{ color: "rgba(6, 38, 62, 0.64)", marginLeft: "30px" }}>{hmrc?.inputs?.personalInformation?.dateOfBirth}</p>
+            <p>04-02-1980</p>
           </div>
           <div className="single-collected-data">
-            <h1>Identifier</h1>
-            <p>{hmrc?.inputs?.personalInformation?.identifier}</p>
-          </div>
-          <div className="single-collected-data">
-            <h1>Marriage Allowance</h1>
-            <p>{hmrc?.inputs?.personalInformation?.marriageAllowance}</p>
-          </div>
-          <div className="single-collected-data">
-            <h1>State Pension Age Date</h1>
-            <p>{hmrc?.inputs?.personalInformation?.statePensionAgeDate}</p>
-          </div>
-          <div className="single-collected-data">
-            <h1>Tax Regime</h1>
-            <p>{hmrc?.inputs?.personalInformation?.taxRegime}</p>
-          </div>
-          <div className="single-collected-data">
-            <h1>Unique Taxpayer Reference</h1>
-            <p>{hmrc?.inputs?.personalInformation?.uniqueTaxpayerReference}</p>
+            <h1>Unique Tax Payer Reference (UTR)</h1>
+            <p>12345678</p>
           </div>
         </div>
 

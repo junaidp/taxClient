@@ -13,8 +13,8 @@ const Body = () => {
                 <div className='bg-gradient-to-t from-[#0073AF] to-[#003049] py-[47px] px-[56px] flex-1 rounded-[10px] flex flex-col gap-[22px]'>
                     <h1 className='font-bold text-[30px] md:text-[60px]' style={{ color: "rgba(255, 255, 255, 1)" }}>Simple Pricing</h1>
                     <h1 className='archivo  text-[25px] md:text-[43px] font-semibold' style={{ color: "rgba(255, 255, 255, 1)" }}>£ 12.00 / per filing</h1>
-                    <button className='h-[46px] w-[196px] bg-[#40B7B0] rounded-[4px] flex flex-row justify-center items-center gap-[5px]'>
-                        <p className='archivo text-[20px] text-[#FFFFFF]' onClick={() => navigate("/start")}>Start for free</p>
+                    <button className='h-[46px] w-[196px] bg-[#40B7B0] rounded-[4px] flex flex-row justify-center items-center gap-[5px]' onClick={() => navigate("/start")}>
+                        <p className='archivo text-[20px] text-[#FFFFFF]'>Start for free</p>
                         <div className='h-[29px] w-[29px] flex justify-center'>
                             <img src={arrow} />
                         </div>

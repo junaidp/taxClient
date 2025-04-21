@@ -1,12 +1,27 @@
 import React from "react";
 import buttonArrow from "../../assets/user-info/button-arrow.png";
-import select from "../../assets/business-select.svg"
+import cross from "../../assets/cross-icon.svg";
+import select from "../../assets/business-select.svg";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
+
+const SelectedItem = ({ name, onRemove }) => {
+  return (
+    <div className="flex items-center gap-[6px] archivo rounded-[4px] px-[8px] py-[3px] border border-[#C4C4C4]">
+      <p className="text-sm archivo text-[#757E82]">{name}</p>
+      <img
+        src={cross}
+        className="w-[14px] h-[14px] cursor-pointer"
+        onClick={onRemove}
+      />
+    </div>
+  );
+};
 
 const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => {
   const [search, setSearch] = React.useState("");
   const navigate = useNavigate();
+
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
     setSelectedBusinessTypes((prevSelected) =>
@@ -18,13 +33,11 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
 
   React.useEffect(() => {
     if (selectedBusinessTypes?.length) {
-      sessionStorage.setItem("selectedBusinessTypes", JSON.stringify(selectedBusinessTypes))
+      sessionStorage.setItem("selectedBusinessTypes", JSON.stringify(selectedBusinessTypes));
+    } else {
+      sessionStorage.setItem("selectedBusinessTypes", JSON.stringify([]));
     }
-    else {
-      sessionStorage.setItem("selectedBusinessTypes", JSON.stringify([]))
-    }
-
-  }, [selectedBusinessTypes])
+  }, [selectedBusinessTypes]);
 
   return (
     <div className="card-positioning-wrap">
@@ -37,36 +50,55 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
           </p>
         </div>
 
-        <div className="business-type-search-wrap">
-          <div className="business-type-input-wrap">
-            <img src={search} />
-            <div className="relative">
-              <input placeholder="search..." className="text-[24px]" />
-              <img src={select} className="absolute top-[10px]" />
-            </div>
+        <div className="business-type-search-wrap mt-4">
+          <div className="flex items-center flex-wrap gap-2 border border-gray-300 rounded-md p-2 min-h-[50px]">
+            {selectedBusinessTypes.map((name) => (
+              <SelectedItem
+                key={name}
+                name={name}
+                onRemove={() =>
+                  setSelectedBusinessTypes((prev) =>
+                    prev.filter((item) => item !== name)
+                  )
+                }
+              />
+            ))}
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-1 text-base focus:outline-none min-w-[150px]"
+            />
           </div>
         </div>
-        <div className="business-check-items-wrap max-h-[500px] overflow-y-auto">
 
-          {
-            services?.map((item, ind) => {
-              return <div className="single-check-item" key={ind}>
-                <input
-                  type="checkbox"
-                  checked={selectedBusinessTypes.includes(item?.name)}
-                  onChange={handleCheckboxChange}
-                  value={item?.name}
-                />
-                <p>{item?.name}</p>
-              </div>
-            })
-          }
+        <div className="business-check-items-wrap max-h-[200px] overflow-y-auto">
+          {services
+            ?.filter((item) =>
+              item.name.toLowerCase().includes(search.toLowerCase())
+            )
+            .map((item, ind) => {
+              return (
+                <div className="single-check-item" key={ind}>
+                  <input
+                    type="checkbox"
+                    checked={selectedBusinessTypes.includes(item?.name)}
+                    onChange={handleCheckboxChange}
+                    value={item?.name}
+                  />
+                  <p>{item?.name}</p>
+                </div>
+              );
+            })}
         </div>
+
         <div className="mt-40">
-          {
-            !selectedBusinessTypes?.length ?
-            <p className="archivo text-[16px] text-end mb-[14px]" style={{ color: "rgba(211, 152, 78, 1)" }}>Please enter at least total income before continuing.</p>:null
-          }
+          {!selectedBusinessTypes?.length ? (
+            <p className="archivo text-[16px] text-end mb-[14px]" style={{ color: "rgba(211, 152, 78, 1)" }}>
+              Please enter at least total income before continuing.
+            </p>
+          ) : null}
           <div className="card-button-wrap">
             <button
               className="back form-back-button"
@@ -78,7 +110,10 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
               className={`next-btn ${selectedBusinessTypes.length && "active-color form-next-button"
                 }`}
               onClick={() => {
-                if (selectedBusinessTypes?.length) {
+                if (selectedBusinessTypes?.length > 1) {
+                  navigate("/information-window");
+                }
+                else {
                   navigate("/employ-people");
                 }
               }}

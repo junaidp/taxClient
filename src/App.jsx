@@ -29,6 +29,7 @@ import ForgotPasswordDialog from "./components/register-account/forgot-password-
 import PasswordResetDialog from "./components/register-account/password-reset-dialog";
 import NewPasswordDialog from "./components/register-account/new-password-dialog";
 import RegisterDialog from "./components/home/register-dialog";
+import InformationWindow from "./pages/information-window"
 import { ToastContainer } from "react-toastify";
 import "./App.css";
 
@@ -153,6 +154,7 @@ const App = () => {
             }
           />
           <Route path="/employ-people" element={<EmployPeople />} />
+          <Route path="/information-window" element={<InformationWindow />} />
           <Route path="/expenses" element={<Expense />} />
           <Route path="/review" element={<Review />} />
           <Route path="/checkout" element={<CheckOut />} />

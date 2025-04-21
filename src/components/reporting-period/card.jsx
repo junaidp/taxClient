@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import buttonArrow from "../../assets/user-info/button-arrow.png";
+import info from "../../assets/info.svg"
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
+import Tooltip from "../common/tooltip";
 
 const Card = () => {
   const navigate = useNavigate();
@@ -19,9 +21,15 @@ const Card = () => {
       <div className="main-card-wrap">
         <div>
           <h1 className="form-title">Select reporting period </h1>
-          <p className="form-sub-title">
-            Which period would you like to fill a tax return for.
-          </p>
+
+          <div className="flex flex-row items-center gap-[8px] pointer">
+            <p className="form-sub-title">
+              Which period would you like to fill a tax return for.
+            </p>
+            <Tooltip text="The periods are provided directly by HMRC.  If you do not see a period listed it means that it is currently not due.  If you need to revise a previously submitted return click here.  If you do not see a period listed that you believe should be please contact the HMRC.">
+              <img src={info} />
+            </Tooltip>
+          </div>
         </div>
 
         <div className="flex flex-col gap-[37px] mt-[68px]">
@@ -87,7 +95,7 @@ const Card = () => {
 
         <div className="mt-[80px]">
           <p className="jaldi text-[30px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
-            If you need to revise a previously completed submission click here.
+            If you need to revise a previously completed submission <span className="underline pointer">click here.</span>
           </p>
 
           <div className="card-button-wrap mt-40">
@@ -107,7 +115,7 @@ const Card = () => {
               style={{ cursor: isButtonActive ? "pointer" : "not-allowed" }}
             >
               <p>Next</p>
-              <img src={buttonArrow} alt="next" style={{marginTop:"6px"}} />
+              <img src={buttonArrow} alt="next" style={{ marginTop: "6px" }} />
             </button>
           </div>
         </div>

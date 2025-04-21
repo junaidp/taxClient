@@ -2,6 +2,7 @@ import React from "react";
 import buttonArrow from "../../assets/user-info/button-arrow.png";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
+import Tooltip from "../common/tooltip";
 
 const Card = ({ selectedOption, setSelectedOption }) => {
   const navigate = useNavigate();
@@ -59,23 +60,24 @@ const Card = ({ selectedOption, setSelectedOption }) => {
           >
             Back
           </button>
-          <button
-            className={`next-btn  ${
-              selectedOption && "form-next-button active-color text-[24px]"
-            }`}
-            style={{ cursor: selectedOption ? "pointer" : "not-allowed" }}
-            onClick={() =>
-              selectedOption &&
-              navigate(
-                selectedOption === "Corporation"
-                  ? "/corporation-taxes"
-                  : "/access-detail"
-              )
-            }
-          >
-            <p>Next</p>
-            <img src={buttonArrow} className="w-[24px] h-[24px] mt-[6px]" style={{marginTop:"6px"}} />
-          </button>
+          <Tooltip text={!selectedOption && "please select one of the options listed above"}>
+            <button
+              className={`next-btn  ${selectedOption && "form-next-button active-color text-[24px]"
+                }`}
+              style={{ cursor: selectedOption ? "pointer" : "not-allowed" }}
+              onClick={() =>
+                selectedOption &&
+                navigate(
+                  selectedOption === "Corporation"
+                    ? "/corporation-taxes"
+                    : "/access-detail"
+                )
+              }
+            >
+              <p>Next</p>
+              <img src={buttonArrow} className="w-[24px] h-[24px] mt-[6px]" style={{ marginTop: "6px" }} />
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>

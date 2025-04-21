@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import logo from "../../assets/user-info/logo.svg";
+import logo from "../../assets/dark-logo.png";
 import flag from "../../assets/common/flag.svg";
 import { useNavigate } from "react-router-dom";
 

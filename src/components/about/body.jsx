@@ -11,8 +11,8 @@ const Body = () => {
             <h1 className='archivo font-bold text-[30px] md:text-[60px] text-[#FFFFFF] mb-[34px]'>Made by Accountants with <br /> simplicity in mind. </h1>
             <div className='flex  flex flex-col lg:flex-row'>
                 <div className='flex flex-col gap-[34px]' style={{ flex: '1' }}>
-                    <button className='h-[46px] w-[196px] bg-[#40B7B0] rounded-[4px] flex flex-row justify-center items-center gap-[5px]'>
-                        <p className='archivo text-[20px] text-[#FFFFFF]' onClick={() => navigate("/start")}>Start for free</p>
+                    <button className='h-[46px] w-[196px] bg-[#40B7B0] rounded-[4px] flex flex-row justify-center items-center gap-[5px]' onClick={() => navigate("/start")}>
+                        <p className='archivo text-[20px] text-[#FFFFFF]' >Start for free</p>
                         <div className='h-[29px] w-[29px] flex justify-center'>
                             <img src={arrow} />
                         </div>

@@ -12,7 +12,7 @@ const Hero = () => {
         <h1>Tax Made Simple.</h1>
       </div>
       <div className="home-hero-btn-wrap">
-        <div className="learn-more-btn">
+        <div className="learn-more-btn pointer" onClick={()=>navigate("/about")}>
           <p className="pointer">Learn more</p>
         </div>
         <div

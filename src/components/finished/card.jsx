@@ -12,7 +12,7 @@ const Card = () => {
       <Progress title="100% complete" width="100%" />
       <div className="main-card-wrap">
         <div className="flex flex-col gap-[18px] text-center">
-          <h1 className="jaldi text-[50px] leading-[85px] text-[#003049]">
+          <h1 className="jaldi text-[50px] leading-[85px] text-[#003049] font-bold">
             You’re Finished!{" "}
           </h1>
           <p className="jaldi text-[30px] leading-[50px] text-[#0030499C]">
@@ -69,7 +69,7 @@ const Card = () => {
                 onClick={() =>
                   window.open(
                     "https://www.gov.uk/pay-corporation-tax",
-                    "__blank"
+                    "_blank"
                   )
                 }
               >

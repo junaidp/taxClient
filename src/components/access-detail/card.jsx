@@ -3,6 +3,7 @@ import buttonArrow from "../../assets/user-info/button-arrow.png";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import { REDIRECT_URL } from "../../config/constants";
+import Tooltip from "../../components/common/tooltip"
 import { useSelector } from "react-redux";
 import tick from "../../assets/tick.svg";
 
@@ -16,7 +17,7 @@ const Card = ({ loading }) => {
 
   return (
     <div className="card-positioning-wrap">
-      <Progress title="10% complete" width="10%" />
+      <Progress title="9% complete" width="9%" />
       <div className="main-card-wrap">
         <div>
           <h1 className="form-title">Access your details</h1>
@@ -66,7 +67,7 @@ const Card = ({ loading }) => {
                   onClick={() =>
                     window.open(
                       "https://www.gov.uk/log-in-register-hmrc-online-services",
-                      "__blank"
+                      "_blank"
                     )
                   }
                 >
@@ -86,7 +87,7 @@ const Card = ({ loading }) => {
                   onClick={() =>
                     window.open(
                       "https://www.gov.uk/log-in-register-hmrc-online-services",
-                      "__blank"
+                      "_blank"
                     )
                   }
                 >
@@ -104,34 +105,37 @@ const Card = ({ loading }) => {
           >
             Back
           </button>
-          <button
-            className={`next-btn-hmrc active-color form-next-button ${!token && "opacity-[.5]"
-              } ${!token
-                ? "cursor-not-allowed"
-                : "pointer"
-              }`}
-            onClick={() => {
-              if (token) {
-                navigate("/insurance-number");
-              }
-            }}
-          >
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <>
-                <p
-                  className={` ${!token
-                    ? "cursor-not-allowed"
-                    : "pointer"
-                    }`}
-                >
-                  Next
-                </p>
-                <img src={buttonArrow} style={{ marginTop: "6px" }} />
-              </>
-            )}
-          </button>{" "}
+          <Tooltip text={!token && "Please click the Login to HMRC Gateway button first below continuing"}>
+            <button
+              className={`next-btn-hmrc active-color form-next-button ${!token && "opacity-[.5]"
+                } ${!token
+                  ? "cursor-not-allowed"
+                  : "pointer"
+                }`}
+              onClick={() => {
+                if (token) {
+                  navigate("/insurance-number");
+                }
+              }}
+            >
+              {loading ? (
+                <p>Loading...</p>
+              ) : (
+                <>
+                  <p
+                    className={` ${!token
+                      ? "cursor-not-allowed"
+                      : "pointer"
+                      }`}
+                  >
+                    Next
+                  </p>
+                  <img src={buttonArrow} style={{ marginTop: "6px" }} />
+                </>
+              )}
+            </button>{" "}
+          </Tooltip>
+
         </div>
       </div>
     </div>
