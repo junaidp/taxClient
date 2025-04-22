@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Tooltip = ({ text, children }) => {
+const Tooltip = ({ text, children, left }) => {
     const [show, setShow] = useState(false);
 
     return (
@@ -11,7 +11,7 @@ const Tooltip = ({ text, children }) => {
         >
             {children}
 
-            {show && text && <div className="tooltip-box">{text}</div>}
+            {show && text && <div className="tooltip-box" style={{ left: left ? "400%" : "50%" }}>{text}</div>}
         </div>
     );
 };

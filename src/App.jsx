@@ -34,7 +34,7 @@ import { ToastContainer } from "react-toastify";
 import "./App.css";
 
 const App = () => {
-  const [selectedOption, setSelectedOption] = React.useState("");
+  const [selectedOption, setSelectedOption] = React.useState(sessionStorage.getItem("selectedOption") || "");
   const [showLoginDialog, setShowLoginDialog] = React.useState(false);
   const [showMyProfileDialog, setShowMyProfileDialog] = React.useState(false);
   const [inCorrectLoginDialog, setInCorrectLoginDialog] = React.useState(false);

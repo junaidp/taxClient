@@ -16,19 +16,18 @@ const Card = ({ hmrc }) => {
             button and try logging in again, or contact the <span className="underline pointer" onClick={() => window.open("https://www.gov.uk/contact-hmrc", "_blank")} style={{ fontWeight: "100" }}>HMRC.</span>
           </p>
         </div>
-
         <div className="form-collected-data">
           <div className="single-collected-data">
             <h1>Individual name</h1>
-            <p style={{ color: "rgba(6, 38, 62, 0.64)", marginLeft: "30px" }}>Jamie Lannister</p>
+            <p style={{ color: "rgba(6, 38, 62, 0.64)", marginLeft: "30px" }}>{hmrc?.inputs?.personalInformation?.identifier}</p>
           </div>
           <div className="single-collected-data">
             <h1>Date of Birth</h1>
-            <p>04-02-1980</p>
+            <p>{hmrc?.inputs?.personalInformation?.dateOfBirth}</p>
           </div>
           <div className="single-collected-data">
             <h1>Unique Tax Payer Reference (UTR)</h1>
-            <p>12345678</p>
+            <p>{hmrc?.inputs?.personalInformation?.uniqueTaxpayerReference}</p>
           </div>
         </div>
 

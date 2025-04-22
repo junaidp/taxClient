@@ -7,7 +7,12 @@ import Tooltip from "../../components/common/tooltip"
 
 const Card = () => {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(sessionStorage.getItem("employPeople") || "");
+  let selectedBusinessTypes = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
+
+  React.useEffect(() => {
+    sessionStorage.setItem("employPeople", selected)
+  }, [selected])
 
   return (
     <div className="card-positioning-wrap">
@@ -58,17 +63,20 @@ const Card = () => {
         <div className="card-button-wrap mt-40">
           <button
             className="back form-back-button"
-            onClick={() => navigate("/business-types")}
+            onClick={() => selectedBusinessTypes.length > 1 ? navigate("/information-window") : navigate("/business-types")}
           >
             Back
           </button>
-          <button
-            className="next-btn active-color form-next-button"
-            onClick={() => navigate("/expenses")}
-          >
-            <p>Next</p>
-            <img src={buttonArrow} style={{ marginTop: "6px" }} />
-          </button>
+          <Tooltip text={!selected && "Please select one of the options above in order to continue"}>
+            <button
+              className={`next-btn  ${selected && "form-next-button active-color text-[24px]"
+                }`} onClick={() => selected && navigate("/expenses")}
+              style={{ cursor: selected ? "pointer" : 'not-allowed' }}
+            >
+              <p>Next</p>
+              <img src={buttonArrow} style={{ marginTop: "6px" }} />
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>

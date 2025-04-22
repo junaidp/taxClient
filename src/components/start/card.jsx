@@ -10,6 +10,10 @@ const Card = ({ selectedOption, setSelectedOption }) => {
     setSelectedOption(event.target.value);
   };
 
+  React.useEffect(() => {
+    sessionStorage.setItem("selectedOption", selectedOption)
+  }, [selectedOption])
+
   return (
     <div className="card-positioning-wrap">
       <Progress title="0% complete" width="2%" />

@@ -1,133 +1,198 @@
 import React from "react";
-import buttonArrow from "../../assets/button-arrow.png";
-import Progress from "../common/progress";
-import cross from "../../assets/cross.svg";
-import ExpenseDialog from "./expense-dialog";
 import { useNavigate } from "react-router-dom";
-import { services } from '../../config/constants'
+import { v4 as uuidv4 } from 'uuid';
+
+import buttonArrow from "../../assets/button-arrow.png";
+import cross from "../../assets/cross.svg";
+
+import Progress from "../common/progress";
+import ExpenseDialog from "./expense-dialog";
+
+import { services } from '../../config/constants';
 
 const Card = () => {
   const navigate = useNavigate();
+
   const [showExpenseDialog, setShowExpenseDialog] = React.useState(false);
-  const [items, setItems] = React.useState([]);
-  const handleNext = async () => {
-    navigate("/review");
-  };
+  const [items, setItems] = React.useState(JSON.parse(sessionStorage.getItem("items")) || []);
+  const [count, setCount] = React.useState(JSON.parse(sessionStorage.getItem("count")) || 0);
+
+  const isNextEnabled = React.useMemo(() => {
+    return items[count]?.expenses?.some(exp => exp.value?.toString().trim() !== "");
+  }, [items, count]);
+
+
+  function handleExpenseChange(event, mainId, subId) {
+    const { value } = event.target;
+    setItems(prevItems =>
+      prevItems.map(businessType =>
+        businessType.id === mainId
+          ? {
+            ...businessType,
+            expenses: businessType.expenses.map(expense =>
+              expense.id === subId ? { ...expense, value } : expense
+            ),
+          }
+          : businessType
+      )
+    );
+  }
+
+  function handleClickBack() {
+    if (count === 0) {
+      navigate("/employ-people");
+    } else {
+      setCount(prev => prev - 1);
+    }
+  }
+
+  function handleClickNext() {
+    if (!isNextEnabled) return
+    const countVal = count + 1;
+    if (countVal === items.length) {
+      navigate("/review");
+    } else {
+      setCount(prev => prev + 1);
+    }
+  }
 
   React.useEffect(() => {
-    let items = JSON.parse(sessionStorage.getItem('selectedBusinessTypes'));
-    items = services?.filter((service) => items?.includes(service?.name));
+    const storageItems = JSON.parse(sessionStorage.getItem("items"));
+    setItems(storageItems);
 
-    let filteredItems = [];
+    if (storageItems && storageItems.length) return;
 
-    items?.forEach((item) => {
-      item?.expenses?.forEach((expense) => {
-        filteredItems.push(expense);
-      });
+    let selected = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
+    const filteredItems = services?.filter(service => selected?.includes(service?.name));
+
+    const newItems = filteredItems?.map(item => {
+      const mappedExpenses = item.expenses.slice(0, 9).map(expense => ({
+        name: expense,
+        selected: true,
+        locked: false,
+        id: uuidv4(),
+        value: "",
+      }));
+
+      return {
+        ...item,
+        expenses: [
+          {
+            name: "Bank fees",
+            selected: true,
+            locked: true,
+            id: uuidv4(),
+            value: "",
+          },
+          ...mappedExpenses,
+        ],
+      };
     });
 
-    items = [...new Set(filteredItems)]
+    setItems(newItems);
+    sessionStorage.setItem("items", JSON.stringify(newItems));
+  }, []);
 
-    const newItems = items?.map((item) => {
-      return {
-        name: item,
-        locked: false,
-        selected: false
-      }
-    })
+  React.useEffect(() => {
+    sessionStorage.setItem("items", JSON.stringify(items));
+  }, [items]);
 
-    setItems(newItems)
+  React.useEffect(() => {
+    sessionStorage.setItem("count", JSON.stringify(count));
+  }, [count]);
 
-  }, [])
+  const selectedBusiness = items[count];
 
   return (
-    <div className="card-positioning-wrap" >
+    <div className="card-positioning-wrap">
       <Progress title="55% complete" width="55%" />
       <div className="main-card-wrap">
         {showExpenseDialog && (
-          <div className="model-parent"
-          >
+          <div className="model-parent">
             <div
-              className="absolute top-[0px] left-[0px]  right-[0px] bg-[#40B7B0] h-[100%] w-[100%] opacity-[0.14]"
+              className="absolute top-0 left-0 right-0 bg-[#40B7B0] h-full w-full opacity-[0.14]"
               onClick={() => setShowExpenseDialog(false)}
-            ></div>
+            />
             <div className="model-wrap-expense">
               <ExpenseDialog
                 setShowExpenseDialog={setShowExpenseDialog}
-                items={items}
                 setItems={setItems}
+                selectedExpenses={selectedBusiness.expenses.map(exp => exp.name)}
+                businessTypeId={selectedBusiness?.id}
               />
             </div>
           </div>
         )}
+
         <div>
           <p className="jaldi text-[30px] leading-[50px] text-[#0030499C]">
             For your{" "}
-            <span className="text-[rgb(196, 196, 196)]">Delivery Driver</span>{" "}
-            services, enter the income and expense totals only for period: April
-            1, 2024 to June 30, 2024
+            <span className="text-[rgb(196, 196, 196)] font-bold">
+              {selectedBusiness?.name === "Landlord" ? "Landlord (UK Property)" : selectedBusiness?.name}
+            </span>{" "}
+            services, enter the income and expense totals {selectedBusiness?.name === "Landlord" ? "for all relevant properties" : "only"} for period: April 1, 2024 to June 30, 2024
           </p>
         </div>
-        <div>
-          <div className="final-form-input-main-wrap">
-            <label className="archivo text-[24px] leading-[26px] text-[#06263E]">
-              Total Income
-            </label>
-            <div className="final-form-input-wrap">
-              <input className="px-[20px]" type="number" />
-              <p className="medium">£</p>
+
+        {items?.length > 0 && (
+          <div>
+            <div className="final-form-input-main-wrap">
+              <label className="archivo text-[24px] leading-[26px] text-[#06263E]">
+                Total Income
+              </label>
+              <div className="final-form-input-wrap">
+                <input className="px-[20px]" type="number" />
+                <p className="medium">£</p>
+              </div>
             </div>
-          </div>
-          <p className="archivo text-[24px] leading-[26px] text-[#06263E]">
-            Expenses
-          </p>
-          <div className="expense-input-wrap">
-            {items
-              ?.filter((item) => item?.selected)
-              ?.map((expense, ind) => {
-                return (
+
+            <p className="archivo text-[24px] leading-[26px] text-[#06263E]">Expenses</p>
+            <div className="expense-input-wrap">
+              {selectedBusiness.expenses
+                .filter(item => item?.selected)
+                .map((expense, ind) => (
                   <div className="expense-item" key={ind}>
-                    <label
-                      className="light-label archivo"
-                      style={{ color: "#06263E" }}
-                    >
+                    <label className="light-label archivo" style={{ color: "#06263E" }}>
                       {expense?.name}
                     </label>
                     <div className="final-form-input-wrap">
-                      <input className="px-[20px]" type="number" />
+                      <input
+                        className="px-[20px]"
+                        type="number"
+                        value={expense.value}
+                        onChange={(e) => handleExpenseChange(e, selectedBusiness?.id, expense?.id)}
+                      />
                       <p className="medium">£</p>
                     </div>
                   </div>
-                );
-              })}
-            <div
-              className="add-expense-wrap pointer"
-              onClick={() => setShowExpenseDialog(true)}
-            >
-              <div
-                className="h-[18px] w-[18px] bg-[#003049] flex justify-center items-center"
-                style={{ borderRadius: "50%" }}
-              >
-                <img src={cross} />
+                ))}
+
+              <div className="add-expense-wrap pointer" onClick={() => setShowExpenseDialog(true)}>
+                <div className="h-[18px] w-[18px] bg-[#003049] flex justify-center items-center rounded-full">
+                  <img src={cross} />
+                </div>
+                <p style={{ color: "#06263E" }}>add/ remove expense category</p>
               </div>
-              <p style={{ color: "#06263E" }}>add/ remove expense category</p>
             </div>
           </div>
+        )}
+
+        <div className="flex items-end w-[100%] justify-end mt-40">
+          {
+            !isNextEnabled &&
+            <p className="flex items-end archivo text-[16px] text-[#D3984E]">Please enter at least total income before continuing.</p>
+          }
+
         </div>
-        <div className="card-button-wrap mt-40">
-          <button
-            className="back form-back-button"
-            onClick={() => navigate("/employ-people")}
-          >
+        <div className="card-button-wrap mt-[7px]">
+          <button className="back form-back-button" onClick={handleClickBack}>
             Back
           </button>
-          <button
-            className="next-btn active-color form-next-button"
-            onClick={handleNext}
-          >
+          <button className={`next-btn  ${isNextEnabled && "form-next-button active-color text-[24px]"
+            }`} onClick={handleClickNext} style={{ cursor: isNextEnabled ? "pointer" : "not-allowed" }}>
             <p>Next</p>
             <img src={buttonArrow} />
-          </button>{" "}
+          </button>
         </div>
       </div>
     </div>

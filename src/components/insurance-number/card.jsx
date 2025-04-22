@@ -11,12 +11,11 @@ import { useDispatch } from "react-redux";
 const Card = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [nino, setNino] = React.useState("");
+    const [nino, setNino] = React.useState(sessionStorage.getItem("nino") || "");
     const [errorMessage, setErrorMessage] = React.useState(false);
     const [enableNextButton, setEnableNextButton] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-    const [apiSuccess, setApiSuccess] = React.useState(false);
-    const [enterPressed, setEnterPressed] = React.useState(false);
+
 
     const handleApiCall = async (ninoValue) => {
         const token = sessionStorage.getItem("token") || "";
@@ -41,12 +40,10 @@ const Card = () => {
             setErrorMessage(false);
             dispatch(handleSetHMRC(secondResponse?.data));
             sessionStorage.setItem("hmrc", JSON.stringify(secondResponse?.data));
-            setApiSuccess(true);
-            if (enterPressed) setEnableNextButton(true);
+            setEnableNextButton(true);
             setLoading(false);
         } catch {
             setErrorMessage(true);
-            setApiSuccess(false);
             setEnableNextButton(false);
             setLoading(false);
         }
@@ -63,10 +60,13 @@ const Card = () => {
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
             e.preventDefault();
-            setEnterPressed(true);
-            if (apiSuccess) setEnableNextButton(true);
+            setEnableNextButton(true);
         }
     };
+
+    React.useEffect(() => {
+        sessionStorage.setItem("nino", nino)
+    }, [nino])
 
     return (
         <div className="card-positioning-wrap">
