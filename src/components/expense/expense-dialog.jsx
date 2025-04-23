@@ -22,14 +22,17 @@ const ExpenseDialog = ({ setItems, setShowExpenseDialog, selectedExpenses, busin
           expenses: exists
             ? businessType.expenses.filter((item) => item?.name !== name)
             : [
-                ...businessType.expenses,
-                {
-                  name,
-                  selected: true,
-                  id: uuidv4(),
-                  value: "",
-                },
-              ],
+              ...businessType.expenses,
+              {
+                name,
+                selected: true,
+                id: uuidv4(),
+                value: "",
+                expanded: false,
+                infoValue: "",
+                locked: false,
+              },
+            ],
         };
       })
     );
@@ -81,11 +84,10 @@ const ExpenseDialog = ({ setItems, setShowExpenseDialog, selectedExpenses, busin
             )}
 
             <p
-              className={`archivo text-[24px] ${
-                selectedExpenses.includes(item)
-                  ? "text-[#06263E]"
-                  : "text-[#5E7D8C]"
-              }`}
+              className={`archivo text-[24px] ${selectedExpenses.includes(item)
+                ? "text-[#5E7D8C]"
+                : "text-[#06263E]"
+                }`}
             >
               {item}
             </p>

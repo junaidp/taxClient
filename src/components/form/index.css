@@ -405,7 +405,7 @@
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
-  color: #c4c4c4;
+  color: #616161;
   font-size: 20px;
 }
 
@@ -479,7 +479,7 @@
 }
 .boxes-wrap .net-earning-wrap .img-wrap h1 {
   position: absolute;
-  left: 35%;
+  left: 38%;
 }
 
 .boxes-wrap .net-earning-wrap .img-wrap img {
@@ -533,11 +533,13 @@
 
 .review-grid-wrap {
   margin-top: 25px;
+  max-height: 160px;
+  overflow-y: auto;
 }
 
 .grid-header {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
 }
 
@@ -564,7 +566,7 @@
 
 .single-grid-body {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   background-color: rgba(248, 250, 251, 1);
   margin-bottom: 10px;

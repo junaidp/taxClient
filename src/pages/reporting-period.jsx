@@ -29,7 +29,6 @@ const ReportingPeriod = () => {
     }
     start()
   }, [])
-  console.log(obligation)
   return (
     <div>
       <Header />

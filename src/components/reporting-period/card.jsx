@@ -4,6 +4,7 @@ import info from "../../assets/info.svg";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import Tooltip from "../common/tooltip";
+import moment from "moment";
 
 const groupByYear = (details) => {
   const grouped = {};
@@ -78,11 +79,20 @@ const Card = ({ obligation, loading }) => {
                         <span className="font-bolder">Quarter {index + 1}</span>
                       </p>
                       <p className="archivo text-[24px] text-[#5E7D8C]">
-                        {singleItem.periodStartDate} - {singleItem.periodEndDate}
+                        {moment(singleItem.periodStartDate).format('MMMM D, YYYY')} - {moment(singleItem.periodEndDate).format('MMMM D, YYYY')}
                       </p>
                     </div>
                     {singleItem.dueDate && (
-                      <p className="archivo text-[#65B344] text-[24px]">{singleItem.dueDate}</p>
+                      <p
+                        className={`archivo text-[24px] ${moment(singleItem.dueDate).isBefore(moment(), 'day')
+                          ? 'text-[#D3984E]'
+                          : 'text-[#65B344]'
+                          }`}
+                      >
+                        {moment(singleItem.dueDate).isBefore(moment(), 'day')
+                          ? 'Past due !'
+                          : `due ${moment(singleItem.dueDate).format('DD-MM-YYYY')}`}
+                      </p>
                     )}
                   </div>
                 ))}

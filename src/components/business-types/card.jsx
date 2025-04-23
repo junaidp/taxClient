@@ -96,7 +96,7 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
         <div className="mt-40">
           {!selectedBusinessTypes?.length ? (
             <p className="archivo text-[16px] text-end mb-[14px]" style={{ color: "rgba(211, 152, 78, 1)" }}>
-              Please enter at least total income before continuing.
+              Please select at least one service before continuing.
             </p>
           ) : null}
           <div className="card-button-wrap">

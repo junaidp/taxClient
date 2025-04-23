@@ -4,15 +4,18 @@ import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import info from '../../assets/info.svg'
 import Tooltip from "../../components/common/tooltip"
+import moment from 'moment';
 
 const Card = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(sessionStorage.getItem("employPeople") || "");
-  let selectedBusinessTypes = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
+  const selectedBusinessTypes = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
+  const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
 
   React.useEffect(() => {
     sessionStorage.setItem("employPeople", selected)
   }, [selected])
+
 
   return (
     <div className="card-positioning-wrap">
@@ -22,7 +25,7 @@ const Card = () => {
           <h1 className="form-title">Did you employ people during this period?</h1>
           <div className="flex">
             <p className="form-sub-title">
-              Select ‘yes’ if you had employee’s working for your <span className="font-bold"> Delivery Driver </span>service during the period of April 5, 2025 - June 1, 2025.
+              Select ‘yes’ if you had employee’s working for your <span className="font-bold"> Delivery Driver </span>service during the period of {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}.
               <span className="inline-flex items-center">
                 <Tooltip text="Indicate whether you paid any employees during the specified period. Your response will help us customize your expense worksheet on the next screen.">
                   <img src={info} alt="info" className="ml-1 w-4 h-4 inline" />

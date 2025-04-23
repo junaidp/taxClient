@@ -1,5 +1,5 @@
 const BASE_URL =
-  "https://1281-2a0a-a547-b5f9-0-e808-9525-7442-24fa.ngrok-free.app";
+  "https://04ff-2a0a-a547-5308-0-8d8f-6d43-896-3583.ngrok-free.app";
 const REDIRECT_URL =
   "https://test-api.service.hmrc.gov.uk/oauth/authorize?response_type=code&client_id=U9Qde8rNrra4kB5QuogGBsnyeuj1&scope=read:self-assessment write:self-assessment&redirect_uri=https://tax-app-tan.vercel.app/access-detail";
 
@@ -458,4 +458,159 @@ const faqsArray = [
   },
 ];
 
-export { BASE_URL, REDIRECT_URL, services, faqsArray };
+const infoArray = [
+  {
+    name: "Accountancy",
+    info: "You can put down the cost of this App!!",
+  },
+  {
+    name: "Advertising",
+    info: "Have you made any leaflets or advertised on google/facebook/tiktok etc to tell people about your business",
+  },
+  {
+    name: "Cleaning of vehicle",
+    info: "If you use a vehicle for business purposes only then you can claim the cost of cleaning it",
+  },
+  {
+    name: "Computer/ laptop/ other IT accessories",
+    info: "These are items you need to run your business",
+  },
+  {
+    name: "Domestic items",
+    info: "Did you replace any domestic items (i.e. washing machine, dishwasher)",
+  },
+  {
+    name: "Equipment",
+    info: "Did you have to buy any tools or a desk or a desk lamp etc to do your work",
+  },
+  {
+    name: "Fuel",
+    info: "use your fuel receipts if you have a company vehicle (this only for business use)",
+  },
+  {
+    name: "Gas/Electric/Water",
+    info: "If you run your business from dedictated business premises",
+  },
+  {
+    name: "Hotel/Accomodation",
+    info: "If you have to travel and stay in a hotel or other accomodation",
+  },
+  {
+    name: "Standard expense allowance",
+    info: "If no expenses at all then can claim a standard £1,000 expense allowance without any receipts",
+  },
+  {
+    name: "Insurance",
+    info: "Business insurance only for your vehicle and/or business",
+  },
+  {
+    name: "Mileage",
+    info: "If you use a personal vehicle for your business, just enter the number of miles or KM you used for business (or if you an electric vehicle for business and do not have fuel receipts)",
+  },
+  {
+    name: "Mortgage interest (commercial property)",
+    info: "This is the interest element only and may not be the total mortgage payment.  If unsure please ask your mortgage provider for an interest certificate",
+  },
+  {
+    name: "MOT",
+    info: "For business vehicles only",
+  },
+  {
+    name: "Repairs/Maintenance",
+    info: "Did you have to repair anything in your business, i.e. broken plug socket or boiler",
+  },
+  {
+    name: "Servicing of Vehicle",
+    info: "For business vehicles",
+  },
+  {
+    name: "Software",
+    info: "for example microsoft, google etc",
+  },
+  {
+    name: "Telephone",
+    info: "business use only - if you use a personal telephone fo business and personal then only claim the business use percentage",
+  },
+  {
+    name: "Travel",
+    info: "Travel in relation to carrying out your business duties only, i.e train ticket, taxi fare",
+  },
+  {
+    name: "Vehicle Repairs",
+    info: "business vehicles only",
+  },
+  {
+    name: "Other allowable business expenses",
+    info: "Miscellaneous expenses that are wholly and exclusively for business purposes but don't fit into standard categories.",
+  },
+  {
+    name: "Annual Investment Allowance",
+    info: "Capital expenditure eligible for immediate tax relief.",
+  },
+  {
+    name: "Business Premises Renovation Allowance",
+    info: "Costs for renovating business premises in designated areas.",
+  },
+  {
+    name: "Capital Allowance Main Pool",
+    info: "Depreciation on general business assets.",
+  },
+  {
+    name: "Capital Allowance Special Rate Pool",
+    info: "Depreciation on assets with special rate allowances.",
+  },
+  {
+    name: "Zero Emission Goods Vehicle Allowance",
+    info: "Allowance for zero-emission goods vehicles.",
+  },
+  {
+    name: "Enhanced Capital Allowance",
+    info: "Allowance for energy-saving equipment.",
+  },
+  {
+    name: "Allowance on Sales",
+    info: "Adjustments related to the sale of assets.",
+  },
+  {
+    name: "Balancing Charge",
+    info: "Charge when the disposal value of an asset exceeds its tax written down value.",
+  },
+  {
+    name: "Balancing Allowance",
+    info: "Allowance when the disposal value of an asset is less than its tax written down value.",
+  },
+  {
+    name: "Business Entertainment Costs",
+    info: "Costs related to entertaining clients or customers.",
+  },
+  {
+    name: "Disallowable Expenses",
+    info: "Expenses not allowable for tax purposes.",
+  },
+  {
+    name: "Other Capital Allowances",
+    info: "Other capital allowances not specified above.",
+  },
+  {
+    name: "Trading Income Allowance",
+    info: "Allowance for trading income under a certain threshold.",
+  },
+  {
+    name: "Training courses",
+    info: "Costs for training courses related to your business, such as refresher courses or courses that maintain or update existing skills",
+  },
+  {
+    name: "Clothing expenses",
+    info: "Expenditure on uniforms or protective clothing necessary for your work. Note that everyday clothing, even if worn for work, is not allowable.",
+  },
+  {
+    name: "Use of Home as Office",
+    info: "A proportion of home expenses (e.g., heating, electricity, Council Tax, mortgage interest or rent, internet and telephone use) can be claimed if you work from home.",
+  },
+  {
+    name: "Capital Allowances",
+    info: "Costs for assets like equipment, machinery, or business vehicles that you keep to use in your business",
+  },
+];
+
+export { BASE_URL, REDIRECT_URL, services, faqsArray, infoArray };

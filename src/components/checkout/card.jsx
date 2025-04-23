@@ -12,6 +12,7 @@ import buttonArrow from "../../assets/arrow-right-button.png";
 import Progress from "../common/progress";
 import discount from "../../assets/discount.svg";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const stripePromise = loadStripe(
   "pk_test_51L3igsAX34JgbNaA4c0rd2PAl8EayvBReK9w2M1yp3Ep8Mlz29MkPvMzHgVfS17dGsQ3nVQs9da8kwBtDxm8lx4S00VxEkycWL"
@@ -26,6 +27,7 @@ const CheckoutForm = ({
 }) => {
   const navigate = useNavigate();
   const stripe = useStripe();
+  const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
   const elements = useElements();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -101,7 +103,7 @@ const CheckoutForm = ({
               className="jaldi text-[20px]"
               style={{ color: "rgba(0, 48, 73, 0.61)" }}
             >
-              Period : April 1, 2024 to June 31, 2025
+              Period :  {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}
             </p>
             <p className="jaldi text-[20px]  text-[#003049]">£12.00</p>
           </div>
@@ -265,7 +267,7 @@ const SubmitCard = () => {
 
       <div className="main-card-wrap">
         <div>
-          <h1 className="form-title">Pay & Submit</h1>
+          <h1 className="form-title">Checkout</h1>
           <p className="form-sub-title">
             Once you have paid for TaxReady.co.uk services you will be able to
             download and submit your return to the HMRC.
@@ -284,7 +286,7 @@ const SubmitCard = () => {
         <div className="mt-[40px] flex items-center gap-[12px] justify-center">
           <input
             type="checkbox"
-            className="h-[12px] w-[12px] border border-[2px] border-[#FFFFFF]"
+            className={`h-[21px] w-[21px]  ${showError && !check ? "border border-[1px] border-[#D3984E]" : "border border-[2px] border-[#FFFFFF]"}`}
             value={check}
             onChange={(e) => setCheck(e.target.checked)}
           />
@@ -312,9 +314,8 @@ const SubmitCard = () => {
             Back
           </button>
           <button
-            className={`next-btn active-color form-next-button ${
-              (!success || loading) && "opacity-[.5]"
-            } ${!success || loading ? "cursor-not-allowed" : "pointer"}`}
+            className={`next-btn active-color form-next-button ${(!success || loading) && "opacity-[.5]"
+              } ${!success || loading ? "cursor-not-allowed" : "pointer"}`}
             onClick={() => {
               if (!success) {
                 setShowError(true);
@@ -326,13 +327,12 @@ const SubmitCard = () => {
             }}
           >
             <p
-              className={` ${
-                !success || loading ? "cursor-not-allowed" : "pointer"
-              }`}
+              className={` ${!success || loading ? "cursor-not-allowed" : "pointer"
+                }`}
             >
               {loading ? "Loading..." : "Pay Now"}
             </p>
-            {!loading && <img src={buttonArrow} />}
+            {!loading && <img src={buttonArrow} style={{ marginTop: "6px" }} />}
           </button>
         </div>
       </div>
