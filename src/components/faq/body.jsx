@@ -1,6 +1,6 @@
 import React from 'react'
 import plus from "../../assets/plus-icon.svg"
-import minus from "../../assets/minus-icon.svg"
+import minus from "../../assets/minus-bold.svg"
 import search from "../../assets/search.svg";
 import { useNavigate } from 'react-router-dom'
 import { faqsArray } from "../../config/constants"

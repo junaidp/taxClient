@@ -1,9 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-
-import buttonArrow from "../../assets/button-arrow.png";
-import cross from "../../assets/cross.svg";
+import buttonArrow from "../../assets/arrow-right-button.png";
+import cross from "../../assets/add.svg";
 
 import Progress from "../common/progress";
 import ExpenseDialog from "./expense-dialog";

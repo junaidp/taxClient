@@ -1,7 +1,7 @@
 import React from "react";
-import buttonArrow from "../../assets/button-arrow.png";
+import buttonArrow from "../../assets/arrow-right-button.png";
 import progress from "../../assets/progress.png";
-import taxArrow from "../../assets/tax-arrow.png";
+import taxArrow from "../../assets/arrow-right-tax.png";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

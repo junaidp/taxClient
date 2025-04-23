@@ -1,6 +1,6 @@
 import React from "react";
 import lightTick from "../../assets/light-tick.svg";
-import dimTick from "../../assets/dim-tick.svg";
+import dimTick from "../../assets/bold-tick.svg";
 import { useNavigate } from "react-router-dom";
 import errorImg from "../../assets/error.svg"
 

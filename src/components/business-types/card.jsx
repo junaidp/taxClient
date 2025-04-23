@@ -1,7 +1,7 @@
 import React from "react";
-import buttonArrow from "../../assets/button-arrow.png";
-import cross from "../../assets/cross-icon.svg";
-import select from "../../assets/business-select.svg";
+import buttonArrow from "../../assets/arrow-right-button.png";
+import cross from "../../assets/business-type-close.svg";
+import select from "../../assets/search.svg";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 

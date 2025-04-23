@@ -1,5 +1,5 @@
 import React from 'react'
-import arrow from "../../assets/about-arrow.svg"
+import arrow from "../../assets/arrow-right-static.svg"
 import computer from "../../assets/computer.svg";
 import phone from "../../assets/phone.svg";
 import { useNavigate } from 'react-router-dom'

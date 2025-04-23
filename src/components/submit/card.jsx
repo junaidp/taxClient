@@ -1,5 +1,5 @@
 import React from "react";
-import buttonArrow from "../../assets/button-arrow.png";
+import buttonArrow from "../../assets/arrow-right-button.png";
 import Progress from "../common/progress";
 import line from "../../assets/line.svg";
 import down from "../../assets/down.svg";

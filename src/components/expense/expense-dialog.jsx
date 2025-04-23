@@ -1,6 +1,6 @@
 import React from "react";
 import plus from "../../assets/plus.svg";
-import minus from "../../assets/minus.svg";
+import minus from "../../assets/minus-light.svg";
 import lock from "../../assets/lock.svg";
 import { services } from "../../config/constants";
 import { v4 as uuidv4 } from "uuid";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import buttonArrow from "../../assets/button-arrow.png";
+import buttonArrow from "../../assets/arrow-right-button.png";
 import info from "../../assets/info.svg";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";

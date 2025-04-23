@@ -1,11 +1,11 @@
 import React from "react";
-import buttonArrow from "../../assets/button-arrow.png";
+import buttonArrow from "../../assets/arrow-right-button.png";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import { REDIRECT_URL } from "../../config/constants";
 import Tooltip from "../../components/common/tooltip"
 import { useSelector } from "react-redux";
-import tick from "../../assets/tick.svg";
+import tick from "../../assets/green-tick.svg";
 
 const Card = ({ loading }) => {
   const { token } = useSelector((state) => state?.auth);

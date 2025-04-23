@@ -1,7 +1,7 @@
 import React from 'react'
-import arrow from "../../assets/about-arrow.svg"
+import arrow from "../../assets/arrow-right-static.svg"
 import { useNavigate } from 'react-router-dom'
-import check from "../../assets/check.svg"
+import check from "../../assets/bold-tick.svg"
 import pricing from "../../assets/pricing.svg"
 
 const Body = () => {

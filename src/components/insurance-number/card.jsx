@@ -3,7 +3,7 @@ import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import error from "../../assets/nino-error.svg";
 import { BASE_URL } from "../../config/constants";
-import buttonArrow from "../../assets/button-arrow.png";
+import buttonArrow from "../../assets/arrow-right-button.png";
 import { handleSetHMRC } from "../../global-redux/reducers/auth/slice";
 import axios from "axios";
 import { useDispatch } from "react-redux";

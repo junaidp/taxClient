@@ -16,7 +16,7 @@ const ReportingPeriod = () => {
     const start = async () => {
       try {
         setLoading(true)
-        const { data: { obligations } } = await axios.get(`${BASE_URL}/api/external/getObligationDetail?nino=HG838408B&token=2cb4104333fbae07fde246596dd51a21`, {
+        const { data: { obligations } } = await axios.get(`${BASE_URL}/api/external/getObligationDetail?nino=${nino}&token=${token}`, {
           headers: {
             "ngrok-skip-browser-warning": "true",
           },
