@@ -479,7 +479,7 @@
 }
 .boxes-wrap .net-earning-wrap .img-wrap h1 {
   position: absolute;
-  left: 38%;
+  left: 40%;
 }
 
 .boxes-wrap .net-earning-wrap .img-wrap img {
@@ -533,8 +533,6 @@
 
 .review-grid-wrap {
   margin-top: 25px;
-  max-height: 160px;
-  overflow-y: auto;
 }
 
 .grid-header {

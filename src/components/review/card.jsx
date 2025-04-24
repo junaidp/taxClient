@@ -14,20 +14,20 @@ const Card = () => {
   const { hmrc } = useSelector((state) => state?.auth);
   function handleCalculateExpense(expenses) {
     let total = 0
-    expenses.forEach(element => {
+    expenses?.forEach(element => {
       total = total + Number(element.value)
     });
     return total
   }
 
   let totalIncome = 0;
-  items.forEach((element) => {
+  items?.forEach((element) => {
     totalIncome += Number(element.totalIncome);
   });
 
   let totalExpenses = 0;
-  items.forEach((element) => {
-    element.expenses.forEach((expense) => {
+  items?.forEach((element) => {
+    element?.expenses?.forEach((expense) => {
       totalExpenses += Number(expense.value);
     });
   });
@@ -45,58 +45,56 @@ const Card = () => {
           </p>
         </div>
 
-        <div className="total-card-wrap">
-          <h1 className="main-title">Total</h1>
-          <div className="boxes-wrap">
-            <div className="net-earning-wrap">
-              <div>
-                <h1>Your net earnings</h1>
+        <div className="max-h-[350px] overflow-y-auto">
+          <div className="total-card-wrap">
+            <h1 className="main-title">Total</h1>
+            <div className="boxes-wrap">
+              <div className="net-earning-wrap">
+                <div>
+                  <h1>Your net earnings</h1>
+                </div>
+                <div className="img-wrap">
+                  <PieChart items={items} totalIncome={totalIncome} totalExpenses={totalExpenses} />
+                 
+                </div>
               </div>
-              <div className="img-wrap">
-                <PieChart items={items} totalIncome={totalIncome} totalExpenses={totalExpenses} />
+              <div className="tax-due-wrap">
+                <h1> Total tax due</h1>
                 <h1>
                   £{" "}
-                  {Number(totalIncome) - Number(totalExpenses)}
+                  {
+                    hmrc?.calculation?.taxCalculation?.incomeTax
+                      ?.payPensionsProfit?.incomeTaxAmount
+                  }
                 </h1>
-              </div>
-            </div>
-            <div className="tax-due-wrap">
-              <h1> Total tax due</h1>
-              <h1>
-                £{" "}
-                {
-                  hmrc?.calculation?.taxCalculation?.incomeTax
-                    ?.payPensionsProfit?.incomeTaxAmount
-                }
-              </h1>
-              <div className="para-wrap">
-                <p>Learn how to reduce this tax liability</p>
-                <img src={taxArrow} className="pointer" onClick={() => window.open("https://www.gov.uk/understand-self-assessment-bill", "_blank")} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="review-grid-wrap">
-          <div className="grid-header">
-            <h1>By service</h1>
-            <p>total income</p>
-            <p>total expenses</p>
-          </div>
-          <div className="grid-body-wrap">
-            {
-              items?.map((service, ind) => {
-                return <div className="single-grid-body" key={ind}>
-                  <p>{service.name}</p>
-                  <p>{Number(service.totalIncome)}</p>
-                  <p>{handleCalculateExpense(service.expenses)}</p>
+                <div className="para-wrap">
+                  <p>Learn how to reduce this tax liability</p>
+                  <img src={taxArrow} className="pointer" onClick={() => window.open("https://www.gov.uk/understand-self-assessment-bill", "_blank")} />
                 </div>
-              })
-            }
+              </div>
+            </div>
+          </div>
 
+          <div className="review-grid-wrap">
+            <div className="grid-header">
+              <h1>By service</h1>
+              <p>total income</p>
+              <p>total expenses</p>
+            </div>
+            <div className="grid-body-wrap">
+              {
+                items?.map((service, ind) => {
+                  return <div className="single-grid-body" key={ind}>
+                    <p>{service.name}</p>
+                    <p>{Number(service.totalIncome)}</p>
+                    <p>{handleCalculateExpense(service.expenses)}</p>
+                  </div>
+                })
+              }
+
+            </div>
           </div>
         </div>
-
         <div className="card-button-wrap mt-40">
           <button
             className="back form-back-button not-allowed"

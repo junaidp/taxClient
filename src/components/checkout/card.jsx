@@ -24,14 +24,15 @@ const CheckoutForm = ({
   triggerPayment,
   success,
   check,
+  showError
 }) => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
   const elements = useElements();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isCardComplete, setIsCardComplete] = useState(false);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [isCardComplete, setIsCardComplete] = React.useState(false);
 
   const handleCardChange = (event) => {
     if (event.complete) {
@@ -41,6 +42,11 @@ const CheckoutForm = ({
 
   const handlePayment = async () => {
     if (!stripe || !elements) return;
+
+    if (!name || !email || !isCardComplete) {
+      showError("Please complete all required fields.");
+      return;
+    }
 
     setLoading(true);
     const res = await fetch(
@@ -89,7 +95,7 @@ const CheckoutForm = ({
   }, [name, email, isCardComplete, check]);
 
   return (
-    <div>
+    <div className="max-h-[300px] overflow-y-auto">
       <form className="payment-details-wrap">
         <div className="payment-left-overlay">
           <h1 className="text-[#003049] jaldi text-[30px] font-bold">
@@ -99,13 +105,10 @@ const CheckoutForm = ({
             <h1 className="jaldi text-[20px] text-[#003049] font-medium">
               Tax filing one-time payment
             </h1>
-            <p
-              className="jaldi text-[20px]"
-              style={{ color: "rgba(0, 48, 73, 0.61)" }}
-            >
-              Period :  {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}
+            <p className="jaldi text-[20px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
+              Period : {moment(reportingPeriod?.periodStartDate).format("MMMM D, YYYY")} - {moment(reportingPeriod?.periodEndDate).format("MMMM D, YYYY")}
             </p>
-            <p className="jaldi text-[20px]  text-[#003049]">£12.00</p>
+            <p className="jaldi text-[20px] text-[#003049]">£12.00</p>
           </div>
           <div className="mt-[40px] relative">
             <img src={discount} className="absolute top-[10px] left-[10px]" />
@@ -119,130 +122,85 @@ const CheckoutForm = ({
           </div>
           <div className="mt-[48px] flex flex-col gap-[20px]">
             <div className="flex items-center justify-between">
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 Subtotal
               </p>
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
-                {" "}
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 £ 16.00
               </p>
             </div>
             <div className="flex items-center justify-between">
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 VAT
               </p>
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
-                {" "}
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 £ 4.00
               </p>
             </div>
             <div className="flex items-center justify-between">
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 Discount
               </p>
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
-                {" "}
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 0
               </p>
             </div>
             <div className="flex items-center justify-between">
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
                 Total
               </p>
-              <p
-                className="jaldi text-[22px]"
-                style={{ color: "rgba(6, 38, 62, 0.42)" }}
-              >
-                {" "}
-                £ 20.00{" "}
+              <p className="jaldi text-[22px]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
+                £ 20.00
               </p>
             </div>
           </div>
         </div>
         <div className="payment-right-overlay">
-          <h1 className="text-[#003049] jaldi text-[30px] font-bold">Pay</h1>{" "}
+          <h1 className="text-[#003049] jaldi text-[30px] font-bold">Pay</h1>
           <div>
-            <p
-              className="jaldi text-[20px]"
-              style={{ color: "rgba(0, 48, 73, 0.61)" }}
-            >
+            <p className="jaldi text-[20px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
               Email
             </p>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]"
+              className={`rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]  ${showError && !email ? "border border-[2px] border-[#D3984E]" : "border border-[1px] border-[#C4C4C4]"}`}
             />
           </div>
           <div className="mt-[20px]">
-            <p
-              className="jaldi text-[20px]"
-              style={{ color: "rgba(0, 48, 73, 0.61)" }}
-            >
+            <p className="jaldi text-[20px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
               Card Information
             </p>
-            <div className="payment-card-overlay">
+            <div className={`payment-card-overlay ${showError && !isCardComplete && "border border-[2px] rounded-[4px] border-[#D3984E]"}`}>
               <div className="card-element h-[50px]">
                 <CardElement
-                  options={{ style: { base: { fontSize: "16px" } } }}
+                  options={{ style: { base: { fontSize: "16px", border: "1px solid red" } } }}
                   onChange={handleCardChange}
+                  error={true}
                 />
               </div>
             </div>
           </div>
           <div className="mt-[30px]">
-            <p
-              className="jaldi text-[20px]"
-              style={{ color: "rgba(0, 48, 73, 0.61)" }}
-            >
+            <p className="jaldi text-[20px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
               Cardholder name
             </p>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Full name on card"
-              className=" rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px] border border-[1px] border-[#C4C4C4]"
+              className={`rounded-[4px] w-[100%] h-[45px] py-[12px] pr-[12px] pl-[12px] archivo text-[16px]  ${showError && !name ? "border border-[2px] border-[#D3984E]" : "border border-[1px] border-[#C4C4C4]"}`}
             />
           </div>
           <div className="flex items-center gap-[30px] mt-[35px]">
-            <p
-              className="archivo text-[12px] leading-[16px]"
-              style={{ color: "rgba(26, 26, 26, 0.5)" }}
-            >
-              Powered by Stripe{" "}
+            <p className="archivo text-[12px] leading-[16px]" style={{ color: "rgba(26, 26, 26, 0.5)" }}>
+              Powered by Stripe
             </p>
             <div className="flex items-center gap-[12px]">
-              <p
-                className="archivo text-[12px] leading-[16px]"
-                style={{ color: "rgba(26, 26, 26, 0.5)" }}
-              >
+              <p className="archivo text-[12px] leading-[16px]" style={{ color: "rgba(26, 26, 26, 0.5)" }}>
                 Terms
               </p>
-              <p
-                className="archivo text-[12px] leading-[16px]"
-                style={{ color: "rgba(26, 26, 26, 0.5)" }}
-              >
+              <p className="archivo text-[12px] leading-[16px]" style={{ color: "rgba(26, 26, 26, 0.5)" }}>
                 Privacy
               </p>
             </div>
@@ -253,18 +211,18 @@ const CheckoutForm = ({
   );
 };
 
+
 const SubmitCard = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = React.useState(false);
-  const [showError, setShowError] = React.useState(false);
-  const [check, setCheck] = React.useState(false);
-  const [triggerPayment, setTriggerPayment] = React.useState(false);
+  const [success, setSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [check, setCheck] = useState(false);
+  const [triggerPayment, setTriggerPayment] = useState(false);
 
   return (
     <div className="card-positioning-wrap">
       <Progress title="73% complete" width="73%" />
-
       <div className="main-card-wrap">
         <div>
           <h1 className="form-title">Checkout</h1>
@@ -280,30 +238,44 @@ const SubmitCard = () => {
             triggerPayment={triggerPayment}
             success={success}
             check={check}
+            showError={showError}
           />
         </Elements>
-
         <div className="mt-[40px] flex items-center gap-[12px] justify-center">
-          <input
-            type="checkbox"
-            className={`h-[21px] w-[21px]  ${showError && !check ? "border border-[1px] border-[#D3984E]" : "border border-[2px] border-[#FFFFFF]"}`}
-            value={check}
-            onChange={(e) => setCheck(e.target.checked)}
-          />
-          <p
-            className="text-center archivo text-[16px] text-[#003049]"
-            style={{ color: "rgba(6, 38, 62, 0.42)" }}
-          >
-            I agree to the <span className="underline">Terms & Conditions</span>{" "}
-            Find out how we use and protect your data in our{" "}
-            <span className="underline">Privacy Policy</span>.
+          <div className="relative">
+            <input
+              type="checkbox"
+              id="customCheck"
+              checked={check}
+              onChange={(e) => setCheck(e.target.checked)}
+              className={`
+         peer
+      appearance-none 
+      h-[21px] w-[21px] 
+      border rounded-sm
+      ${showError && !check ? "border-[2px] border-[#D3984E]" : "border border-[#C4C4C4]"}
+      checked:bg-[#4A90E2]
+      checked:border-[#4A90E2]
+      cursor-pointer
+    `}
+            />
+            <span
+              className={`
+      pointer-events-none absolute left-[4px] top-[1px] text-white text-[14px]
+      hidden peer-checked:block
+    `}
+            >
+              ✓
+            </span>
+          </div>
+          <p className="text-center archivo text-[16px] text-[#003049]" style={{ color: "rgba(6, 38, 62, 0.42)" }}>
+            I agree to the <span className="underline">Terms & Conditions</span> Find out how we use and protect your data in our <span className="underline">Privacy Policy</span>.
           </p>
         </div>
         <div className="mt-[40px] mb-[10px]"></div>
         {showError && (!check || !success) && (
           <p className="archivo text-[16px] text-[#D3984E] text-end">
-            Please enter credit card information and accept the Agreement &
-            Terms
+            Please enter credit card information and accept the Agreement & Terms
           </p>
         )}
         <div className="card-button-wrap">
@@ -314,10 +286,9 @@ const SubmitCard = () => {
             Back
           </button>
           <button
-            className={`next-btn active-color form-next-button ${(!success || loading) && "opacity-[.5]"
-              } ${!success || loading ? "cursor-not-allowed" : "pointer"}`}
+            className={`next-btn active-color form-next-button ${(!success || loading) && "opacity-[.5]"} ${!success || loading ? "cursor-not-allowed" : "pointer"}`}
             onClick={() => {
-              if (!success) {
+              if (!success || !check) {
                 setShowError(true);
               } else {
                 if (!loading) {
@@ -326,10 +297,7 @@ const SubmitCard = () => {
               }
             }}
           >
-            <p
-              className={` ${!success || loading ? "cursor-not-allowed" : "pointer"
-                }`}
-            >
+            <p className={`${!success || loading ? "cursor-not-allowed" : "pointer"}`}>
               {loading ? "Loading..." : "Pay Now"}
             </p>
             {!loading && <img src={buttonArrow} style={{ marginTop: "6px" }} />}

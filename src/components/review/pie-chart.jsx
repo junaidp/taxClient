@@ -2,15 +2,15 @@ import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const COLORS = ['#003049', '#0030499C'];
 
-export default function FullDonutChart({ items,totalIncome,totalExpenses }) {
- 
+export default function FullDonutChart({ items, totalIncome, totalExpenses }) {
+
   const chartData = [
     { name: 'Income', value: totalIncome },
     { name: 'Expenses', value: totalExpenses },
   ];
 
   return (
-    <div className="relative w-[300px] h-[300px] flex justify-center items-center mx-auto">
+    <div className="relative w-[230px] h-[180px] flex justify-center items-center mx-auto">
       <PieChart width={300} height={300}>
         <Pie
           data={chartData}
@@ -33,11 +33,17 @@ export default function FullDonutChart({ items,totalIncome,totalExpenses }) {
           ))}
         </Pie>
         <Tooltip
-          contentStyle={{ backgroundColor: '#f9fafb', border: 'none',fontSize:"14px",fontFamily:"'Archivo', serif" }}
+          contentStyle={{ backgroundColor: '#f9fafb', border: 'none', fontSize: "14px", fontFamily: "'Archivo', serif" }}
           className="archivo text-[14px]"
           formatter={(value, name) => [`£${value}`, name]}
         />
       </PieChart>
+      <div className="absolute text-center">
+        <p className='font-bold jaldi text-[40px] '> £
+          {Number(totalIncome) - Number(totalExpenses)}
+        </p>
+
+      </div>
     </div>
   );
 }

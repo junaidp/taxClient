@@ -53,81 +53,84 @@ const Card = ({ obligation, loading }) => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-[37px] mt-[68px]">
-          {
-            loading && <p className="form-sub-title">Loading...</p>
-          }
-          {Object.entries(groupedByYear).map(([year, items]) => (
-            <div key={year}>
-              <h1 className="jaldi text-[30px] text-[#003049] font-bold">{year}</h1>
-              <div className="flex flex-col gap-[16px]">
-                {items.map((singleItem, index) => (
-                  <div
-                    key={singleItem.periodStartDate + singleItem.periodEndDate}
-                    className="border border-[1px] border-[#B7C0C5] rounded-[4px] h-[58px] flex items-center justify-between p-[14px]"
-                  >
-                    <div className="flex items-center gap-[20px]">
-                      <input
-                        className="h-[20px] w-[20px]"
-                        type="radio"
-                        name="reportingPeriod"
-                        checked={selectedOption?.periodStartDate === singleItem.periodStartDate &&
-                          selectedOption?.periodEndDate === singleItem.periodEndDate}
-                        onChange={() => handleOptionChange(singleItem)}
-                      />
-                      <p className="archivo text-[24px] text-[#5E7D8C] font-semibold">
-                        <span className="font-bolder">Quarter {index + 1}</span>
-                      </p>
-                      <p className="archivo text-[24px] text-[#5E7D8C]">
-                        {moment(singleItem.periodStartDate).format('MMMM D, YYYY')} - {moment(singleItem.periodEndDate).format('MMMM D, YYYY')}
-                      </p>
+        <div className="max-h-[300px] overflow-y-auto">
+          <div className="flex flex-col gap-[37px] mt-[68px]">
+            {
+              loading && <p className="form-sub-title">Loading...</p>
+            }
+            {Object.entries(groupedByYear).map(([year, items]) => (
+              <div key={year}>
+                <h1 className="jaldi text-[30px] text-[#003049] font-bold">{year}</h1>
+                <div className="flex flex-col gap-[16px]">
+                  {items.map((singleItem, index) => (
+                    <div
+                      key={singleItem.periodStartDate + singleItem.periodEndDate}
+                      className="border border-[1px] border-[#B7C0C5] rounded-[4px] h-[58px] flex items-center justify-between p-[14px]"
+                    >
+                      <div className="flex items-center gap-[20px]">
+                        <input
+                          className="h-[20px] w-[20px]"
+                          type="radio"
+                          name="reportingPeriod"
+                          checked={selectedOption?.periodStartDate === singleItem.periodStartDate &&
+                            selectedOption?.periodEndDate === singleItem.periodEndDate}
+                          onChange={() => handleOptionChange(singleItem)}
+                        />
+                        <p className="archivo text-[24px] text-[#5E7D8C] font-semibold">
+                          <span className="font-bolder">Quarter {index + 1}</span>
+                        </p>
+                        <p className="archivo text-[24px] text-[#5E7D8C]">
+                          {moment(singleItem.periodStartDate).format('MMMM D, YYYY')} - {moment(singleItem.periodEndDate).format('MMMM D, YYYY')}
+                        </p>
+                      </div>
+                      {singleItem.dueDate && (
+                        <p
+                          className={`archivo text-[24px] ${moment(singleItem.dueDate).isBefore(moment(), 'day')
+                            ? 'text-[#D3984E]'
+                            : 'text-[#65B344]'
+                            }`}
+                        >
+                          {moment(singleItem.dueDate).isBefore(moment(), 'day')
+                            ? 'Past due !'
+                            : `due ${moment(singleItem.dueDate).format('DD-MM-YYYY')}`}
+                        </p>
+                      )}
                     </div>
-                    {singleItem.dueDate && (
-                      <p
-                        className={`archivo text-[24px] ${moment(singleItem.dueDate).isBefore(moment(), 'day')
-                          ? 'text-[#D3984E]'
-                          : 'text-[#65B344]'
-                          }`}
-                      >
-                        {moment(singleItem.dueDate).isBefore(moment(), 'day')
-                          ? 'Past due !'
-                          : `due ${moment(singleItem.dueDate).format('DD-MM-YYYY')}`}
-                      </p>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="mt-[80px]">
-          <p className="jaldi text-[30px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
-            If you need to revise a previously completed submission{" "}
-            <span className="underline pointer">click here.</span>
-          </p>
+          <div className="mt-[80px]">
+            <p className="jaldi text-[30px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
+              If you need to revise a previously completed submission{" "}
+              <span className="underline pointer">click here.</span>
+            </p>
 
-          <div className="card-button-wrap mt-40">
-            <button
-              className="back form-back-button"
-              onClick={() => navigate("/confirm-detail")}
-            >
-              Back
-            </button>
-
-            <button
-              className={`next-btn form-next-button ${isButtonActive ? "active-color" : "not-allowed"}`}
-              disabled={!isButtonActive}
-              onClick={() => {
-                if (isButtonActive) navigate("/business-types");
-              }}
-              style={{ cursor: isButtonActive ? "pointer" : "not-allowed" }}
-            >
-              <p>Next</p>
-              <img src={buttonArrow} alt="next" style={{ marginTop: "6px" }} />
-            </button>
           </div>
         </div>
+        <div className="card-button-wrap mt-40">
+          <button
+            className="back form-back-button"
+            onClick={() => navigate("/confirm-detail")}
+          >
+            Back
+          </button>
+
+          <button
+            className={`next-btn form-next-button ${isButtonActive ? "active-color" : "not-allowed"}`}
+            disabled={!isButtonActive}
+            onClick={() => {
+              if (isButtonActive) navigate("/business-types");
+            }}
+            style={{ cursor: isButtonActive ? "pointer" : "not-allowed" }}
+          >
+            <p>Next</p>
+            <img src={buttonArrow} alt="next" style={{ marginTop: "6px" }} />
+          </button>
+        </div>
+
       </div>
     </div>
   );

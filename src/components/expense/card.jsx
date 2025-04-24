@@ -183,9 +183,9 @@ const Card = () => {
               <label className="archivo text-[24px] leading-[26px] text-[#06263E]">
                 Total Income
               </label>
-              <div className={`final-form-input-wrap mr-[20px] ${!isNextEnabled && "border border-[2px] border-[#D3984E] rounded-[4px]"}`}>
+              <div className={`final-form-input-wrap mr-[20px]`}>
                 <p className="medium">£</p>
-                <input className="px-[20px]" type="number" value={selectedBusiness.totalIncome} onChange={(e) => handleChangeTotalIncome(e, selectedBusiness.id)} />
+                <input className={`px-[20px]`} style={{ borderColor: !isNextEnabled ? "#D3984E" : "#c4c4c4", border: !isNextEnabled ? "2px solid #D3984E " : "1px solid #c4c4c4" }} type="number" value={selectedBusiness.totalIncome} onChange={(e) => handleChangeTotalIncome(e, selectedBusiness.id)} />
               </div>
             </div>
 
@@ -239,7 +239,7 @@ const Card = () => {
           <button className={`next-btn  ${isNextEnabled && "form-next-button active-color text-[24px]"
             }`} onClick={handleClickNext} style={{ cursor: isNextEnabled ? "pointer" : "not-allowed" }}>
             <p>Next</p>
-            <img src={buttonArrow} style={{marginTop:"6px"}} />
+            <img src={buttonArrow} style={{ marginTop: "6px" }} />
           </button>
         </div>
       </div>

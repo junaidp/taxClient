@@ -57,13 +57,6 @@ const Card = () => {
         }
     };
 
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            setEnableNextButton(true);
-        }
-    };
-
     React.useEffect(() => {
         sessionStorage.setItem("nino", nino)
     }, [nino])
@@ -78,20 +71,19 @@ const Card = () => {
                         For identity verification purposes, please enter the national insurance number associated with the HMRC account you just logged into.
                     </p>
                 </div>
-                <form className="mt-[45px]">
+                <div className="mt-[45px]">
                     <p className="archivo text-[24px] text-[#06263E]">National Insurance Number (NINO)</p>
                     <div className="relative">
                         <input
                             className="mt-[10px] border archivo border-[1px] px-[20px] border-[#C4C4C4] rounded-[8px] h-[51px] w-[100%]"
                             value={nino}
                             onChange={handleChange}
-                            onKeyDown={handleKeyDown}
                         />
                         {errorMessage && (
                             <img src={error} className="absolute top-[17px] right-[20px]" />
                         )}
                     </div>
-                </form>
+                </div>
                 {errorMessage && (
                     <p className="archivo text-[24px] text-[#D3984E] mt-[23px]">
                         This National Insurance Number does not match the HMRC account you are currently logged into. Please enter the correct number or go back to log into the appropriate HMRC account.
