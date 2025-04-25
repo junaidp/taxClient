@@ -3,7 +3,7 @@ import arrow from "../../assets/arrow-right-static.svg";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 
-const Hero = () => {
+const Hero = ({ handleClickStartButton }) => {
   const navigate = useNavigate();
 
   return (
@@ -12,14 +12,14 @@ const Hero = () => {
         <h1>Tax Made Simple.</h1>
       </div>
       <div className="home-hero-btn-wrap">
-        <div className="learn-more-btn pointer" onClick={()=>navigate("/about")}>
+        <div className="learn-more-btn pointer" onClick={() => navigate("/about")}>
           <p className="pointer">Learn more</p>
         </div>
         <div
           className={`free-btn`}
           onClick={() => {
             navigate("/start");
-
+            handleClickStartButton()
           }}
         >
           <p

@@ -212,7 +212,7 @@ const CheckoutForm = ({
 };
 
 
-const SubmitCard = () => {
+const SubmitCard = ({ setShowLoginDialog, user }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -288,6 +288,10 @@ const SubmitCard = () => {
           <button
             className={`next-btn active-color form-next-button ${(!success || loading) && "opacity-[.5]"} ${!success || loading ? "cursor-not-allowed" : "pointer"}`}
             onClick={() => {
+              if (!Object.keys(user).length) {
+                setShowLoginDialog(true)
+                return
+              }
               if (!success || !check) {
                 setShowError(true);
               } else {

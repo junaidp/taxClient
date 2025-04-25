@@ -6,6 +6,8 @@ import google from "../../assets/google.svg";
 import facebook from "../../assets/facebook.svg";
 import close from "../../assets/close.svg";
 import flag from "../../assets/flag.svg";
+import showPassword from "../../assets/eye-password-show.svg"
+import hidePassword from "../../assets/eye-password-hide.svg"
 import { useDispatch, useSelector } from "react-redux";
 import {
   setupLogin,
@@ -24,6 +26,8 @@ const LoginDialog = ({
   const { loading, authAddSuccess, inCorrectCredentials } = useSelector(
     (state) => state?.auth
   );
+
+  const [show, setShow] = React.useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -103,15 +107,16 @@ const LoginDialog = ({
             <p className="error">{formik.errors.nino}</p>
           )}
         </div> */}
-        <div className="login-single-text-field-wrap">
+        <div className="login-single-text-field-wrap relative">
           <label>Password</label>
           <input
-            type="password"
+            type={show ? "text" : "password"}
             name="password"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
+          <img src={show ? showPassword : hidePassword} onClick={() => setShow((pre) => !pre)} className="h-[32px] w-[32px] absolute top-[45px] right-[10px] pointer" />
           {formik.touched.password && formik.errors.password && (
             <p className="error">{formik.errors.password}</p>
           )}
