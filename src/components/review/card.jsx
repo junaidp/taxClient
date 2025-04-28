@@ -10,7 +10,7 @@ import moment from "moment";
 const Card = () => {
   const navigate = useNavigate();
   const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
-  const items = JSON.parse(sessionStorage.getItem("items"))
+  const items = JSON.parse(sessionStorage.getItem("filteredItems"))
   const { hmrc } = useSelector((state) => state?.auth);
   function handleCalculateExpense(expenses) {
     let total = 0
@@ -55,7 +55,7 @@ const Card = () => {
                 </div>
                 <div className="img-wrap">
                   <PieChart items={items} totalIncome={totalIncome} totalExpenses={totalExpenses} />
-                 
+
                 </div>
               </div>
               <div className="tax-due-wrap">

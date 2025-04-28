@@ -1,13 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
 import buttonArrow from "../../assets/arrow-right-button.png";
 import cross from "../../assets/add.svg";
 
 import Progress from "../common/progress";
 import ExpenseDialog from "./expense-dialog";
 
-import { services, infoArray } from '../../config/constants';
+import { services } from '../../config/constants';
 import moment from "moment";
 
 const Card = () => {
@@ -59,16 +58,15 @@ const Card = () => {
     );
   }
 
-  function handleClickExpense(mainId, subId, expense) {
-    const infoItem = infoArray.find((item) => item.name === expense)
-    if (!infoItem) return
+  function handleClickExpense(mainId, subId) {
+
     setItems(prevItems =>
       prevItems.map(businessType =>
         businessType.id === mainId
           ? {
             ...businessType,
             expenses: businessType.expenses.map(expense =>
-              expense.id === subId ? { ...expense, expanded: true, infoValue: infoItem.info } : { ...expense, expanded: false, infoValue: "" }
+              expense.id === subId ? { ...expense, expanded: true } : { ...expense, expanded: false }
             ),
           }
           : businessType
@@ -95,49 +93,68 @@ const Card = () => {
   }
 
   React.useEffect(() => {
-    const storageItems = JSON.parse(sessionStorage.getItem("items"));
+    const storageItems = JSON.parse(sessionStorage.getItem("filteredItems"));
     setItems(storageItems);
 
     if (storageItems && storageItems.length) return;
 
     let selected = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
-    const filteredItems = services?.filter(service => selected?.includes(service?.name));
-
-    const newItems = filteredItems?.map(item => {
-      const mappedExpenses = item.expenses.slice(0, 9).map(expense => ({
-        name: expense,
-        selected: true,
-        locked: false,
-        id: uuidv4(),
-        value: "",
-        expanded: false,
-        infoValue: ""
-      }));
-
+    let filteredItems = services?.filter(service => selected?.includes(service?.name));
+    filteredItems = filteredItems.map((item) => {
       return {
         ...item,
         totalIncome: "",
-        expenses: [
-          {
-            name: "Bank fees",
-            selected: true,
-            locked: true,
-            id: uuidv4(),
+        expenses: item.expenses.map((expense) => {
+          return {
+            ...expense,
+            selected: false,
             value: "",
-            expanded: false,
-            infoValue: ""
-          },
-          ...mappedExpenses,
-        ],
+            expanded: false
+          }
+        })
+      }
+    })
+
+    const employPeople = sessionStorage.getItem("employPeople");
+
+    const updatedFilteredItems = filteredItems.map((item) => {
+      const noEmployeeExpenses = item.expenses.filter(expense => expense.employee.toLowerCase() === "no");
+      const yesEmployeeExpenses = item.expenses.filter(expense => expense.employee.toLowerCase() === "yes");
+
+      const combinedExpenses = [...noEmployeeExpenses, ...yesEmployeeExpenses];
+
+      const updatedExpenses = combinedExpenses.map((expense, index) => {
+        let selected = false;
+
+        if (employPeople.toLowerCase() === "no") {
+          if (index < 10) {
+            selected = true;
+          }
+        } else if (employPeople.toLowerCase() === "yes") {
+          if (index < 10 || expense.employee.toLowerCase() === "yes") {
+            selected = true;
+          }
+        }
+
+        return {
+          ...expense,
+          selected,
+          value: "",
+          expanded: false,
+        };
+      });
+
+      return {
+        ...item,
+        expenses: updatedExpenses,
       };
     });
-
-    setItems(newItems);
-    sessionStorage.setItem("items", JSON.stringify(newItems));
+    setItems(updatedFilteredItems)
+    sessionStorage.setItem("filteredItems", JSON.stringify(updatedFilteredItems));
   }, []);
 
   React.useEffect(() => {
-    sessionStorage.setItem("items", JSON.stringify(items));
+    sessionStorage.setItem("filteredItems", JSON.stringify(items));
   }, [items]);
 
   React.useEffect(() => {
@@ -160,8 +177,8 @@ const Card = () => {
               <ExpenseDialog
                 setShowExpenseDialog={setShowExpenseDialog}
                 setItems={setItems}
-                selectedExpenses={selectedBusiness.expenses.map(exp => exp.name)}
                 businessTypeId={selectedBusiness?.id}
+                selectedBusiness={selectedBusiness}
               />
             </div>
           </div>
@@ -171,9 +188,9 @@ const Card = () => {
           <p className="jaldi text-[30px] leading-[50px] text-[#0030499C]">
             For your{" "}
             <span className="text-[rgb(196, 196, 196)] font-bold">
-              {selectedBusiness?.name === "Landlord" ? "Landlord (UK Property)" : selectedBusiness?.name}
+              {selectedBusiness?.name}
             </span>{" "}
-            services, enter the income and expense totals {selectedBusiness?.name === "Landlord" ? "for all relevant properties" : "only"} for period:  {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}
+            service, enter the income and expense totals {selectedBusiness?.name === "Landlord (UK Property)" || selectedBusiness?.name === "Landlord (Furnished Holiday Lettings) UK and EEA" || selectedBusiness?.name === "Landlord (Foreign Property)" ? "for all relevant properties" : "only"} for period:  {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}
           </p>
         </div>
 
@@ -191,9 +208,9 @@ const Card = () => {
 
             <p className="archivo text-[24px] leading-[26px] text-[#06263E]">Expenses</p>
             <div className="expense-input-wrap">
-              {selectedBusiness.expenses
+              {selectedBusiness.expenses.filter((item) => item.selected)
                 .map((expense, ind) => (
-                  <div key={ind} className={`px-[18px]  ${expense.expanded && "bg-[#F8FAFB] rounded-[8px] my-[14px]  py-[14px] "}`} onClick={() => handleClickExpense(selectedBusiness?.id, expense?.id, expense.name)}>
+                  <div key={ind} className={`px-[18px]  ${expense.expanded && "bg-[#F8FAFB] rounded-[8px] my-[14px]  py-[14px] "}`} onClick={() => handleClickExpense(selectedBusiness?.id, expense?.id)}>
                     <div className="expense-item">
                       <label className="text-[20px] archivo font-bold text-[#616161]" style={{ color: "[#06263E]" }}>
                         {expense?.name}
@@ -209,8 +226,8 @@ const Card = () => {
                       </div>
                     </div>
                     {
-                      expense.expanded &&
-                      <p className="archivo text-[16px] text-[#616161]">{expense.infoValue}</p>
+                      expense.expanded && expense?.info &&
+                      <p className="archivo text-[16px] text-[#616161]">{expense?.info}</p>
                     }
                   </div>
                 ))}

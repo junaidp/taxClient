@@ -2,63 +2,23 @@ import React from "react";
 import plus from "../../assets/plus.svg";
 import minus from "../../assets/minus-light.svg";
 import lock from "../../assets/lock.svg";
-import { services } from "../../config/constants";
-import { v4 as uuidv4 } from "uuid";
 import Tooltip from "../../components/common/tooltip";
 import "../form/index.css";
 
-const ExpenseDialog = ({ setItems, setShowExpenseDialog, selectedExpenses, businessTypeId }) => {
-  const [businessTypeExpenses, setBusinessTypeExpenses] = React.useState([]);
+const ExpenseDialog = ({ setItems, setShowExpenseDialog, selectedBusiness, businessTypeId }) => {
 
-  function handleClick(name) {
-    setItems((prevItems) =>
-      prevItems.map((businessType) => {
-        if (businessType.id !== businessTypeId) return businessType;
-
-        const exists = businessType.expenses?.some((expense) => expense.name === name);
-
-        return {
-          ...businessType,
-          expenses: exists
-            ? businessType.expenses.filter((item) => item?.name !== name)
-            : [
-              ...businessType.expenses,
-              {
-                name,
-                selected: true,
-                id: uuidv4(),
-                value: "",
-                expanded: false,
-                infoValue: "",
-                locked: false,
-              },
-            ],
-        };
-      })
-    );
+  function handleClick(id) {
+    setItems((pre) => pre.map((service) => service.id === businessTypeId ? { ...service, expenses: service.expenses.map((expense) => expense.id === id ? { ...expense, selected: !expense.selected } : expense) } : service))
   }
-
-  React.useEffect(() => {
-    const allExpenses = [];
-
-    services?.forEach((service) => {
-      service?.expenses?.forEach((expense) => {
-        allExpenses.push(expense);
-      });
-    });
-
-    const uniqueExpenses = [...new Set(allExpenses)];
-    setBusinessTypeExpenses(uniqueExpenses);
-  }, []);
 
   return (
     <div className="px-[18px] py-[45px]">
       <h1 className="archivo text-[24px] text-[#06263E]">Add expense type</h1>
 
       <div className="mt-[24px] ml-[20px]">
-        {["Bank fees", ...businessTypeExpenses]?.map((item, index) => (
+        {selectedBusiness?.expenses?.map((item, index) => (
           <div key={index} className="flex items-center">
-            {item === "Bank fees" && (
+            {item.locked === "Yes" && (
               <Tooltip
                 left={true}
                 text="This expenses category cannot be removed as it is locked by default by the taxready.co.uk software as it is a common expense for the service type you have selected."
@@ -67,29 +27,29 @@ const ExpenseDialog = ({ setItems, setShowExpenseDialog, selectedExpenses, busin
               </Tooltip>
             )}
 
-            {item !== "Bank fees" && !selectedExpenses.includes(item) && (
+            {item.locked === "No" && !item.selected && (
               <img
                 src={plus}
                 className="pointer"
-                onClick={() => handleClick(item)}
+                onClick={() => handleClick(item.id)}
               />
             )}
 
-            {item !== "Bank fees" && selectedExpenses.includes(item) && (
+            {item.locked === "No" && item.selected && (
               <img
                 src={minus}
                 className="pointer"
-                onClick={() => handleClick(item)}
+                onClick={() => handleClick(item.id)}
               />
             )}
 
             <p
-              className={`archivo text-[24px] ${selectedExpenses.includes(item)
+              className={`archivo text-[24px] ${item.selected
                 ? "text-[#5E7D8C]"
                 : "text-[#06263E]"
                 }`}
             >
-              {item}
+              {item?.name}
             </p>
           </div>
         ))}

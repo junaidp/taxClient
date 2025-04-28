@@ -56,6 +56,7 @@ const RegisterDialog = ({ setShowLoginDialog, setRegisterDialog }) => {
     if (authAddSuccess) {
       dispatch(resetAuthAddSuccess());
       setRegisterDialog(false);
+      setShowLoginDialog(true)
     }
   }, [authAddSuccess]);
 

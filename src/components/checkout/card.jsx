@@ -4,7 +4,9 @@ import {
   Elements,
   useStripe,
   useElements,
-  CardElement,
+  CardNumberElement,
+  CardCvcElement,
+  CardExpiryElement
 } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,11 +34,20 @@ const CheckoutForm = ({
   const elements = useElements();
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [cardNumberComplete, setCardNumberComplete] = useState(false);
+  const [expiryComplete, setExpiryComplete] = useState(false);
+  const [cvcComplete, setCvcComplete] = useState(false);
   const [isCardComplete, setIsCardComplete] = React.useState(false);
 
-  const handleCardChange = (event) => {
-    if (event.complete) {
-      setIsCardComplete(true);
+  const handleCardChange = (event, field) => {
+    if (field === "cardNumber") {
+      setCardNumberComplete(event.complete);
+    }
+    if (field === "expiry") {
+      setExpiryComplete(event.complete);
+    }
+    if (field === "cvc") {
+      setCvcComplete(event.complete);
     }
   };
 
@@ -67,7 +78,7 @@ const CheckoutForm = ({
 
     const result = await stripe.confirmCardPayment(data.clientSecret, {
       payment_method: {
-        card: elements.getElement(CardElement),
+        card: elements.getElement(CardNumberElement),
         billing_details: { name, email },
       },
     });
@@ -93,6 +104,14 @@ const CheckoutForm = ({
       setSuccess(false);
     }
   }, [name, email, isCardComplete, check]);
+
+  React.useEffect(() => {
+    if (cardNumberComplete && expiryComplete && cvcComplete) {
+      setIsCardComplete(true);
+    } else {
+      setIsCardComplete(false);
+    }
+  }, [cardNumberComplete, expiryComplete, cvcComplete]);
 
   return (
     <div className="max-h-[300px] overflow-y-auto">
@@ -171,17 +190,39 @@ const CheckoutForm = ({
             <p className="jaldi text-[20px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
               Card Information
             </p>
-            <div className={`payment-card-overlay ${showError && !isCardComplete && "border border-[2px] rounded-[4px] border-[#D3984E]"}`}>
-              <div className="card-element h-[50px]">
-                <CardElement
-                  options={{ style: { base: { fontSize: "16px", border: "1px solid red" } } }}
-                  onChange={handleCardChange}
-                  error={true}
-                />
+            <div >
+              <CardNumberElement
+                options={{
+                  style: { base: { fontSize: "16px" } },
+                }}
+                className={`border p-2  w-full h-[45px] border border-[1px] border-[#C4C4C4] jaldi rounded-tl-[4px] rounded-tr-[4px] ${showError && !cardNumberComplete ? "border border-[2px] border-[#D3984E]" : "border border-[1px] border-[#C4C4C4]"}`}
+                onChange={(event) => handleCardChange(event, "cardNumber")}
+              />
+
+              <div className="flex">
+                <div className="flex-1">
+                  <CardExpiryElement
+                    options={{
+                      style: { base: { fontSize: "16px" } },
+                    }}
+                    className={`border-l border-r border-b border-t-0 p-2  w-full h-[40px]  border border-[1px] border-[#C4C4C4] jaldi ${showError && !expiryComplete ? "border-l-[2px] border-r-[2px] border-b-[2px]  border-[#D3984E]" : "border border-[1px] border-[#C4C4C4]"} ${showError && !expiryComplete && cardNumberComplete ? "border-t-[1px]" : "border-t-0"}`}
+                    onChange={(event) => handleCardChange(event, "expiry")}
+                  />
+                </div>
+
+                <div className="flex-1">
+                  <CardCvcElement
+                    options={{
+                      style: { base: { fontSize: "16px" } },
+                    }}
+                    className={`border-l border-r border-b border-t-0 p-2 w-full h-[40px]  border border-[1px] border-[#C4C4C4] jaldi ${showError && !cvcComplete ? "border-r-[2px] border-b-[2px]   border-[#D3984E]" : "border border-[1px] border-[#C4C4C4]"} ${showError && !cvcComplete && cardNumberComplete ? "border-t-[1px]" : "border-t-0"}`}
+                    onChange={(event) => handleCardChange(event, "cvc")}
+                  />
+                </div>
               </div>
             </div>
           </div>
-          <div className="mt-[30px]">
+          <div className="mt-[20px]">
             <p className="jaldi text-[20px]" style={{ color: "rgba(0, 48, 73, 0.61)" }}>
               Cardholder name
             </p>
