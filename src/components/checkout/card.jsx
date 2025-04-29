@@ -26,7 +26,9 @@ const CheckoutForm = ({
   triggerPayment,
   success,
   check,
-  showError
+  showError,
+  showLoginDialog,
+  user
 }) => {
   const navigate = useNavigate();
   const stripe = useStripe();
@@ -95,7 +97,10 @@ const CheckoutForm = ({
     if (triggerPayment && success) {
       handlePayment();
     }
-  }, [triggerPayment]);
+    if (!showLoginDialog && success && Object.keys(user).length) {
+      handlePayment();
+    }
+  }, [triggerPayment, showLoginDialog]);
 
   React.useEffect(() => {
     if (name && email && isCardComplete && check) {
@@ -253,7 +258,7 @@ const CheckoutForm = ({
 };
 
 
-const SubmitCard = ({ setShowLoginDialog, user }) => {
+const SubmitCard = ({ setShowLoginDialog, user, showLoginDialog }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -275,11 +280,13 @@ const SubmitCard = ({ setShowLoginDialog, user }) => {
         <Elements stripe={stripePromise}>
           <CheckoutForm
             setLoading={setLoading}
+            user={user}
             setSuccess={setSuccess}
             triggerPayment={triggerPayment}
             success={success}
             check={check}
             showError={showError}
+            showLoginDialog={showLoginDialog}
           />
         </Elements>
         <div className="mt-[40px] flex items-center gap-[12px] justify-center">

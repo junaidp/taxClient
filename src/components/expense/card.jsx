@@ -16,6 +16,8 @@ const Card = () => {
   const [showExpenseDialog, setShowExpenseDialog] = React.useState(false);
   const [items, setItems] = React.useState(JSON.parse(sessionStorage.getItem("items")) || []);
   const [count, setCount] = React.useState(JSON.parse(sessionStorage.getItem("count")) || 0);
+  const [totalIncomeValueArray, setTotalIncomeValueArray] = React.useState(JSON.parse(sessionStorage.getItem("totalIncomeValueArray")) || []);
+  const [expensesValueArray, setExpensesValueArray] = React.useState(JSON.parse(sessionStorage.getItem("expensesValueArray")) || []);
 
   const isNextEnabled = React.useMemo(() => {
     const isExpenseValEntered = items[count]?.expenses?.some(exp => exp.value?.toString().trim() !== "");
@@ -40,6 +42,17 @@ const Card = () => {
           : businessType
       )
     );
+
+    const ifExists = totalIncomeValueArray.find((item) => item.id === mainId)
+    let newArray = totalIncomeValueArray
+    if (ifExists) {
+      newArray = newArray.map((item) => item.id === mainId ? { ...item, value: value } : item)
+    }
+    else {
+      newArray = [...newArray, { id: mainId, value: value }]
+    }
+    setTotalIncomeValueArray(newArray)
+    sessionStorage.setItem("totalIncomeValueArray", JSON.stringify(newArray))
   }
 
   function handleExpenseChange(event, mainId, subId) {
@@ -56,6 +69,17 @@ const Card = () => {
           : businessType
       )
     );
+
+    const ifExists = expensesValueArray.find((item) => item.serviceId === mainId && item.expenseId === subId)
+    let newArray = expensesValueArray
+    if (ifExists) {
+      newArray = newArray.map((item) => item.serviceId === mainId && item.expenseId === subId ? { ...item, value: value } : item)
+    }
+    else {
+      newArray = [...newArray, { serviceId: mainId, expenseId: subId, value: value }]
+    }
+    setExpensesValueArray(newArray)
+    sessionStorage.setItem("expensesValueArray", JSON.stringify(newArray))
   }
 
   function handleClickExpense(mainId, subId) {
@@ -93,22 +117,19 @@ const Card = () => {
   }
 
   React.useEffect(() => {
-    const storageItems = JSON.parse(sessionStorage.getItem("filteredItems"));
-    setItems(storageItems);
-
-    if (storageItems && storageItems.length) return;
-
     let selected = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
     let filteredItems = services?.filter(service => selected?.includes(service?.name));
     filteredItems = filteredItems.map((item) => {
+      const service = totalIncomeValueArray.find((service) => service.id === item.id)
       return {
         ...item,
-        totalIncome: "",
+        totalIncome: service ? service.value : "",
         expenses: item.expenses.map((expense) => {
+          const storedExpense = expensesValueArray.find((stored) => stored.serviceId === item.id && stored.expenseId === expense.id)
           return {
             ...expense,
             selected: false,
-            value: "",
+            value: storedExpense ? storedExpense.value : "",
             expanded: false
           }
         })
@@ -139,7 +160,7 @@ const Card = () => {
         return {
           ...expense,
           selected,
-          value: "",
+          value: selected ? expense.value : "",
           expanded: false,
         };
       });

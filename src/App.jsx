@@ -157,7 +157,7 @@ const App = () => {
           <Route path="/information-window" element={<InformationWindow />} />
           <Route path="/expenses" element={<Expense />} />
           <Route path="/review" element={<Review />} />
-          <Route path="/checkout" element={<CheckOut setShowLoginDialog={setShowLoginDialog} />} />
+          <Route path="/checkout" element={<CheckOut setShowLoginDialog={setShowLoginDialog} showLoginDialog={showLoginDialog} />} />
           <Route path="/register-account" element={<RegisterAccount />} />
           <Route path="/verify-account" element={<VerifyAccount />} />
           <Route path="/submit" element={<Submit />} />
