@@ -8,7 +8,7 @@ import "../form/index.css";
 const ExpenseDialog = ({ setItems, setShowExpenseDialog, selectedBusiness, businessTypeId }) => {
 
   function handleClick(id) {
-    setItems((pre) => pre.map((service) => service.id === businessTypeId ? { ...service, expenses: service.expenses.map((expense) => expense.id === id ? { ...expense, selected: !expense.selected } : expense) } : service))
+    setItems((pre) => pre.map((service) => service.id === businessTypeId ? { ...service, expenses: service.expenses.map((expense) => expense.id === id ? { ...expense, selected: !expense.selected, value: !expense.selected === false ? 0 : expense.value } : expense) } : service))
   }
 
   return (

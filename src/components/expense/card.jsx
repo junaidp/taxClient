@@ -210,7 +210,7 @@ const Card = () => {
             <div className="expense-input-wrap">
               {selectedBusiness.expenses.filter((item) => item.selected)
                 .map((expense, ind) => (
-                  <div key={ind} className={`px-[18px]  ${expense.expanded && "bg-[#F8FAFB] rounded-[8px] my-[14px]  py-[14px] "}`} onClick={() => handleClickExpense(selectedBusiness?.id, expense?.id)}>
+                  <div key={ind} className={`px-[18px]  ${expense.expanded && expense?.info && "bg-[#F8FAFB] rounded-[8px] my-[14px]  py-[14px] "}`} onClick={() => handleClickExpense(selectedBusiness?.id, expense?.id)}>
                     <div className="expense-item">
                       <label className="text-[20px] archivo font-bold text-[#616161]" style={{ color: "[#06263E]" }}>
                         {expense?.name}
