@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import tick from "../../assets/green-tick.svg";
 
 const Card = ({ loading }) => {
-  const { token } = useSelector((state) => state?.auth);
+  const { token } = useSelector((state) => state?.tax);
   const navigate = useNavigate();
 
   const handleLogin = async () => {

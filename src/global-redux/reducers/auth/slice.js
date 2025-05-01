@@ -6,7 +6,6 @@ const initialState = {
   loading: false,
   authAddSuccess: false,
   user: JSON.parse(sessionStorage.getItem("user")) || {},
-  token: sessionStorage.getItem("token") || "",
   hmrc: JSON.parse(sessionStorage.getItem("hmrc")) || {},
   inCorrectCredentials: false,
 };
@@ -36,12 +35,6 @@ export const slice = createSlice({
       state.user = {};
       state.hmrc = {};
     },
-    handleSetToken: (state, action) => {
-      state.token = action.payload;
-    },
-    handleSetHMRC: (state, action) => {
-      state.hmrc = action.payload;
-    },
     handleChangeInCorrectCredentials: (state, action) => {
       state.inCorrectCredentials = action.payload;
     },
@@ -55,7 +48,6 @@ export const slice = createSlice({
       .addCase(setupLogin.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.authAddSuccess = true;
-        sessionStorage.setItem("nino", payload?.user?.nino);
         sessionStorage.setItem("user", JSON.stringify(payload?.user));
         state.user = payload?.user;
         state.inCorrectCredentials = false;
@@ -83,8 +75,6 @@ export const slice = createSlice({
 export const {
   resetAuthAddSuccess,
   handleResetUser,
-  handleSetToken,
-  handleSetHMRC,
   handleChangeInCorrectCredentials,
 } = slice.actions;
 

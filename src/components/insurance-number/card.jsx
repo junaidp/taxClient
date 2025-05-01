@@ -2,51 +2,19 @@ import React from "react";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
 import error from "../../assets/nino-error.svg";
-import { BASE_URL } from "../../config/constants";
 import buttonArrow from "../../assets/arrow-right-button.png";
-import { handleSetHMRC } from "../../global-redux/reducers/auth/slice";
-import axios from "axios";
-import { useDispatch } from "react-redux";
+import { setupGetCalculationId } from "../../global-redux/reducers/tax/slice"
+import { useDispatch, useSelector } from "react-redux";
 
 const Card = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { loading, isNinoInCorrect, token, hmrc } = useSelector((state) => state?.tax)
     const [nino, setNino] = React.useState(sessionStorage.getItem("nino") || "");
-    const [errorMessage, setErrorMessage] = React.useState(false);
-    const [enableNextButton, setEnableNextButton] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
 
 
-    const handleApiCall = async (ninoValue) => {
-        const token = sessionStorage.getItem("token") || "";
-        try {
-            setLoading(true);
-            const response = await axios.get(
-                `${BASE_URL}/api/external/individualCalculationsGetId?nino=${ninoValue}&token=${token}&taxYear=2024-25&calculationType=in-year`,
-                {
-                    headers: {
-                        "ngrok-skip-browser-warning": "true",
-                    },
-                }
-            );
-            const secondResponse = await axios.get(
-                `${BASE_URL}/api/external/individualCalculations?nino=${ninoValue}&token=${token}&taxYear=2024-25&calculationId=${response?.data?.calculationId}`,
-                {
-                    headers: {
-                        "ngrok-skip-browser-warning": "true",
-                    },
-                }
-            );
-            setErrorMessage(false);
-            dispatch(handleSetHMRC(secondResponse?.data));
-            sessionStorage.setItem("hmrc", JSON.stringify(secondResponse?.data));
-            setEnableNextButton(true);
-            setLoading(false);
-        } catch {
-            setErrorMessage(true);
-            setEnableNextButton(false);
-            setLoading(false);
-        }
+    const handleApiCall = async (value) => {
+        dispatch(setupGetCalculationId({ token, nino: value }))
     };
 
     const handleChange = (e) => {
@@ -79,12 +47,12 @@ const Card = () => {
                             value={nino}
                             onChange={handleChange}
                         />
-                        {errorMessage && (
+                        {isNinoInCorrect && (
                             <img src={error} className="absolute top-[17px] right-[20px]" />
                         )}
                     </div>
                 </div>
-                {errorMessage && (
+                {isNinoInCorrect && (
                     <p className="archivo text-[24px] text-[#D3984E] mt-[23px]">
                         This National Insurance Number does not match the HMRC account you are currently logged into. Please enter the correct number or go back to log into the appropriate HMRC account.
                     </p>
@@ -97,9 +65,9 @@ const Card = () => {
                         Back
                     </button>
                     <button
-                        className={`next-btn ${enableNextButton && "form-next-button active-color text-[24px]"}`}
-                        style={{ cursor: enableNextButton ? "pointer" : "not-allowed" }}
-                        onClick={() => enableNextButton && navigate("/confirm-detail")}
+                        className={`next-btn ${Object.keys(hmrc).length && "form-next-button active-color text-[24px]"}`}
+                        style={{ cursor: Object.keys(hmrc).length ? "pointer" : "not-allowed" }}
+                        onClick={() => Object.keys(hmrc).length && navigate("/confirm-detail")}
                     >
                         <p>{!loading ? "Next" : "Loading..."}</p>
                         {!loading && <img src={buttonArrow} className="w-[24px] h-[24px]" style={{ marginTop: "6px" }} />}

@@ -2,33 +2,18 @@ import React from "react";
 import Header from "../components/common/header";
 import bars from "../assets/bars.svg";
 import Card from "../components/reporting-period/card";
-import { BASE_URL } from "../config/constants"
-import "./index.css";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setupGetObligationDetail } from "../global-redux/reducers/tax/slice"
 
 const ReportingPeriod = () => {
+  const dispatch = useDispatch()
+  const { obligation, loading, token } = useSelector((state) => state?.tax)
   const nino = sessionStorage.getItem("nino")
-  const token = sessionStorage.getItem("token")
-  const [obligation, setObligation] = React.useState([])
-  const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
-    const start = async () => {
-      try {
-        setLoading(true)
-        const { data: { obligations } } = await axios.get(`${BASE_URL}/api/external/getObligationDetail?nino=${nino}&token=${token}`, {
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
-        })
-        setObligation(obligations.filter((item) => item.typeOfBusiness === "self-employment"))
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
-      }
-    }
-    start()
+    dispatch(setupGetObligationDetail({ token, nino }))
   }, [])
+
   return (
     <div>
       <Header />
