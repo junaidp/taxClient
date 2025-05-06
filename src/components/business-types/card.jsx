@@ -4,6 +4,7 @@ import cross from "../../assets/business-type-close.svg";
 import select from "../../assets/search.svg";
 import Progress from "../common/progress";
 import { useNavigate } from "react-router-dom";
+import { getServices } from "../../config/helpers"
 
 const SelectedItem = ({ name, onRemove }) => {
   return (
@@ -18,7 +19,7 @@ const SelectedItem = ({ name, onRemove }) => {
   );
 };
 
-const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => {
+const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes }) => {
   const [search, setSearch] = React.useState("");
   const navigate = useNavigate();
 
@@ -74,7 +75,7 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes, services }) => 
         </div>
 
         <div className="business-check-items-wrap max-h-[200px] overflow-y-auto">
-          {services
+          {getServices()
             ?.filter((item) =>
               item.name.toLowerCase().includes(search.toLowerCase())
             )

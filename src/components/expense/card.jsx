@@ -6,7 +6,7 @@ import cross from "../../assets/add.svg";
 import Progress from "../common/progress";
 import ExpenseDialog from "./expense-dialog";
 
-import { services } from '../../config/constants';
+import { getServices } from '../../config/helpers';
 import moment from "moment";
 
 const Card = () => {
@@ -118,7 +118,7 @@ const Card = () => {
 
   React.useEffect(() => {
     let selected = JSON.parse(sessionStorage.getItem("selectedBusinessTypes"));
-    let filteredItems = services?.filter(service => selected?.includes(service?.name));
+    let filteredItems = getServices()?.filter(service => selected?.includes(service?.name));
     filteredItems = filteredItems.map((item) => {
       const service = totalIncomeValueArray.find((service) => service.id === item.id)
       return {

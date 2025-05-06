@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import "./index.css";
 
 const ConfirmDetails = () => {
-  const { hmrc } = useSelector((state) => state?.auth);
+  const { hmrc } = useSelector((state) => state?.tax);
   return (
     <div>
       <Header />
