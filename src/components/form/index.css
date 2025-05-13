@@ -96,7 +96,7 @@
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   color: rgba(158, 176, 185, 1);
-  margin: 38px 0px;
+  margin-top: 38px;
 }
 
 .form-back-button {
@@ -162,7 +162,8 @@
 }
 
 .form-login-hmrc-btn {
-  height: 54px;
+  height: 54px !important;
+    flex-shrink: 0; /* ✅ Prevents being squished by flex parent */
   display: flex;
   justify-content: center;
   align-items: center;

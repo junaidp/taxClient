@@ -216,7 +216,7 @@ const Card = () => {
         </div>
 
         {items?.length > 0 && (
-          <div className="px-[50px] max-h-[350px] overflow-y-auto">
+          <div className="px-[50px] max-h-[350px] shrink-0 overflow-y-auto">
             <div className="final-form-input-main-wrap">
               <label className="archivo text-[24px] leading-[26px] text-[#06263E]">
                 Total Income
@@ -263,14 +263,14 @@ const Card = () => {
           </div>
         )}
 
-        <div className="flex items-end w-[100%] justify-end mt-40">
-          {
-            !isNextEnabled &&
-            <p className="flex items-end archivo text-[16px] text-[#D3984E]">Please enter at least total income before continuing.</p>
-          }
 
-        </div>
-        <div className="card-button-wrap mt-[7px]">
+        {!isNextEnabled &&
+          <div className="flex items-end w-[100%] justify-end mt-40">
+            <p className="flex items-end archivo text-[16px] text-[#D3984E]">Please enter at least total income before continuing.</p>
+
+          </div>
+        }
+        <div className="card-button-wrap">
           <button className="back form-back-button" onClick={handleClickBack}>
             Back
           </button>

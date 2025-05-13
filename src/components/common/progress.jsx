@@ -1,8 +1,8 @@
 import React from "react";
 
-const Progress = ({ title, width }) => {
+const Progress = ({ title, width,hidden }) => {
   return (
-    <div className="mb-[12px]">
+    <div className={`mb-[12px] ${hidden && "visibility-none"}`}>
       <h1 className="jaldi text-[20px] leading-[34px] text-[#FFFFFF]">
         {title}
       </h1>

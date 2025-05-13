@@ -20,8 +20,9 @@ export const getToken = async (data, thunkAPI) => {
 
 export const getCalculationId = async (data, thunkAPI) => {
   try {
-    let props = await axios.get(
+    let props = await axios.post(
       `${BASE_URL}/api/external/individualCalculationsGetId?nino=${data?.nino}&token=${data?.token}&taxYear=2024-25&calculationType=in-year`,
+      data.headerDto,
       {
         headers: {
           "ngrok-skip-browser-warning": "true",

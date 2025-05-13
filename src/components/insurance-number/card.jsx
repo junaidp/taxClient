@@ -5,16 +5,17 @@ import error from "../../assets/nino-error.svg";
 import buttonArrow from "../../assets/arrow-right-button.png";
 import { setupGetCalculationId } from "../../global-redux/reducers/tax/slice"
 import { useDispatch, useSelector } from "react-redux";
+import { collectGovClientHeaders } from "../../config/helpers"
 
 const Card = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, isNinoInCorrect, token, hmrc } = useSelector((state) => state?.tax)
     const [nino, setNino] = React.useState(sessionStorage.getItem("nino") || "");
-
+    const [headers, setHeaders] = React.useState({})
 
     const handleApiCall = async (value) => {
-        dispatch(setupGetCalculationId({ token, nino: value }))
+        dispatch(setupGetCalculationId({ token, nino: value, headerDto: headers }))
     };
 
     const handleChange = (e) => {
@@ -29,27 +30,35 @@ const Card = () => {
         sessionStorage.setItem("nino", nino)
     }, [nino])
 
+    React.useEffect(() => {
+        const getHeaders = async () => {
+            const headers = await collectGovClientHeaders("");
+            setHeaders(headers)
+        }
+        getHeaders()
+    }, [])
+
     return (
         <div className="card-positioning-wrap">
             <Progress title="18% complete" width="18%" />
             <div className="main-card-wrap">
-                <div>
+                <div style={{ flex: 1 }}>
                     <h1 className="form-title">Enter National Insurance Number (Nino)</h1>
                     <p className="form-sub-title">
                         For identity verification purposes, please enter the national insurance number associated with the HMRC account you just logged into.
                     </p>
-                </div>
-                <div className="mt-[45px]">
-                    <p className="archivo text-[24px] text-[#06263E]">National Insurance Number (NINO)</p>
-                    <div className="relative">
-                        <input
-                            className="mt-[10px] border archivo border-[1px] px-[20px] border-[#C4C4C4] rounded-[8px] h-[51px] w-[100%]"
-                            value={nino}
-                            onChange={handleChange}
-                        />
-                        {isNinoInCorrect && (
-                            <img src={error} className="absolute top-[17px] right-[20px]" />
-                        )}
+                    <div className="mt-[45px]">
+                        <p className="archivo text-[24px] text-[#06263E]">National Insurance Number (NINO)</p>
+                        <div className="relative">
+                            <input
+                                className="mt-[10px] border archivo border-[1px] px-[20px] border-[#C4C4C4] rounded-[8px] h-[51px] w-[100%]"
+                                value={nino}
+                                onChange={handleChange}
+                            />
+                            {isNinoInCorrect && (
+                                <img src={error} className="absolute top-[17px] right-[20px]" />
+                            )}
+                        </div>
                     </div>
                 </div>
                 {isNinoInCorrect && (

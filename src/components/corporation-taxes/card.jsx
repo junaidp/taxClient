@@ -3,6 +3,7 @@ import lightTick from "../../assets/light-tick.svg";
 import dimTick from "../../assets/bold-tick.svg";
 import { useNavigate } from "react-router-dom";
 import errorImg from "../../assets/error.svg"
+import Progress from "../common/progress";
 
 const Card = ({ setShowSubmitDialog }) => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Card = ({ setShowSubmitDialog }) => {
 
   return (
     <div className="card-positioning-wrap">
+      <Progress title="18% complete" width="18%" hidden={true} />
       <div className="main-card-wrap">
         <div>
           <h1 className="form-title">Corporation Taxes</h1>

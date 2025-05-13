@@ -45,7 +45,7 @@ const Card = () => {
           </p>
         </div>
 
-        <div className="max-h-[350px] overflow-y-auto">
+        <div className="max-h-[350px] overflow-y-auto shrink-0">
           <div className="total-card-wrap">
             <h1 className="main-title">Total</h1>
             <div className="boxes-wrap">

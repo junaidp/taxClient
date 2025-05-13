@@ -53,7 +53,7 @@ const Card = ({ obligation, loading }) => {
           </div>
         </div>
 
-        <div className="max-h-[300px] overflow-y-auto">
+        <div className="max-h-[300px] shrink-0 overflow-y-auto">
           <div className="flex flex-col gap-[37px] mt-[68px]">
             {
               loading && <p className="form-sub-title">Loading...</p>

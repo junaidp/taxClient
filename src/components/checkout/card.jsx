@@ -119,7 +119,7 @@ const CheckoutForm = ({
   }, [cardNumberComplete, expiryComplete, cvcComplete]);
 
   return (
-    <div className="max-h-[300px] overflow-y-auto">
+    <div className="max-h-[300px] shrink-0 overflow-y-auto">
       <form className="payment-details-wrap">
         <div className="payment-left-overlay">
           <h1 className="text-[#003049] jaldi text-[30px] font-bold">
@@ -320,7 +320,6 @@ const SubmitCard = ({ setShowLoginDialog, user, showLoginDialog }) => {
             I agree to the <span className="underline">Terms & Conditions</span> Find out how we use and protect your data in our <span className="underline">Privacy Policy</span>.
           </p>
         </div>
-        <div className="mt-[40px] mb-[10px]"></div>
         {showError && (!check || !success) && (
           <p className="archivo text-[16px] text-[#D3984E] text-end">
             Please enter credit card information and accept the Agreement & Terms

@@ -58,15 +58,17 @@ export async function collectGovClientHeaders(userId = "") {
   const deviceId = getDeviceId();
 
   return {
-    "Gov-Client-Public-IP": ip,
-    "Gov-Client-Device-ID": deviceId,
-    "Gov-Client-User-IDs": getUserIds(userId),
-    "Gov-Client-Timezone": getTimezone(),
-    "Gov-Client-Screens": getScreenInfo(),
-    "Gov-Client-Window-Size": getWindowSize(),
-    "Gov-Client-Browser-Plugins": getPlugins(),
-    "Gov-Client-Browser-JS-User-Agent": getUserAgent(),
-    "Gov-Vendor-Version": "sardarali-frontend_1.0.0",
+    govClientPublicIP: ip,
+    govClientDeviceID: deviceId,
+    govClientUserIDs: getUserIds(userId),
+    govClientTimezone: getTimezone(),
+    govClientScreens: getScreenInfo(),
+    govClientWindowSize: getWindowSize(),
+    govClientBrowserJSUserAgent: getUserAgent(),
+    govClientMultiFactor: "",
+    govClientPublicIPTimestamp: "",
+    govClientPublicPort: "",
+    govClientConnectionMethod: "",
   };
 }
 

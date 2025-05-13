@@ -74,7 +74,7 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes }) => {
           </div>
         </div>
 
-        <div className="business-check-items-wrap max-h-[200px] overflow-y-auto">
+        <div className="business-check-items-wrap max-h-[300px] shrink-0 overflow-y-auto">
           {getServices()
             ?.filter((item) =>
               item.name.toLowerCase().includes(search.toLowerCase())
@@ -94,12 +94,11 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes }) => {
             })}
         </div>
 
-        <div className="mt-40">
-          {!selectedBusinessTypes?.length ? (
-            <p className="archivo text-[16px] text-end mb-[14px]" style={{ color: "rgba(211, 152, 78, 1)" }}>
-              Please select at least one service before continuing.
-            </p>
-          ) : null}
+        {!selectedBusinessTypes?.length ? (
+          <p className="archivo text-[16px] text-end mb-[14px]" style={{ color: "rgba(211, 152, 78, 1)" }}>
+            Please select at least one service before continuing.
+          </p>
+        ) : null}
           <div className="card-button-wrap">
             <button
               className="back form-back-button"
@@ -128,7 +127,6 @@ const Card = ({ selectedBusinessTypes, setSelectedBusinessTypes }) => {
               <img src={buttonArrow} style={{ marginTop: "6px" }} />
             </button>
           </div>
-        </div>
       </div>
     </div>
   );

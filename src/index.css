@@ -1,16 +1,19 @@
 /* Company Name Card */
 
 .main-card-wrap {
-  top: 150px;
-  left: 446px;
-  gap: 0px;
-  border: 1px 0px 0px 0px;
-  opacity: 0px;
-  border: Mixed solid #b7c0c5;
+  flex: 1;
+  /* take all height from parent */
   background: #ffffff;
   box-shadow: 0px 4px 4px 0px #00000040;
   padding: 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
+
 
 .router {
   display: flex;
@@ -25,7 +28,19 @@
   transform: translateX(-50%);
   position: relative;
   top: -250px;
+
+  /* 👇 Core logic here */
+  height: calc(100vh + 250px - 354px - 20px);
+  max-height: calc(100vh + 250px - 354px - 20px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+
+  display: flex;
+  flex-direction: column;
 }
+
 
 .main-card-wrap .heading {
   font-family: "Jaldi", serif;
@@ -89,7 +104,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 40px;
+  /* Optional spacing from content */
 }
+
 
 .card-button-wrap .back {
   font-family: "Jaldi", serif;
@@ -163,6 +181,7 @@
   text-decoration-skip-ink: none;
   color: #f8fafb87;
 }
+
 .router .active {
   font-family: "Jaldi", serif;
   font-size: 24px;
@@ -281,6 +300,7 @@
   top: 8px;
   right: 17px;
 }
+
 .single-grid-input-wrap input {
   height: 50px;
   top: 36.5px;
@@ -438,17 +458,21 @@
   .single-grid-input-wrap input {
     width: 94%;
   }
+
   .otp-input-wrap {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
   .user-info-body-wrap img {
     display: none;
   }
 }
+
 @media screen and (max-width: 600px) {
   .card-positioning-wrap {
     width: 90%;
   }
+
   .three-col-grid,
   .grid-container {
     grid-template-columns: repeat(1, 1fr);
@@ -465,6 +489,7 @@
   .form-title {
     font-size: 30px;
   }
+
   .form-sub-title,
   .form-second-sub-title,
   .form-light-sub-title {
@@ -472,6 +497,7 @@
     font-weight: 400;
     line-height: 30.7px;
   }
+
   .initial-card-checkbox-wrap .content p,
   .form-login-hmrc-btn p,
   .single-collected-data p,
@@ -479,87 +505,108 @@
   .expense-item label {
     font-size: 17px;
   }
+
   .initial-card-checkbox-wrap .content h1,
   .form-input-wrap label,
   .single-collected-data h1,
   .single-collected-data h1 {
     font-size: 18px;
   }
+
   .initial-card-checkbox-wrap input {
     width: 30px;
     height: 30px;
   }
+
   .form-back-button,
   .card-button-wrap .next-btn {
     font-size: 18px;
   }
+
   .card-button-wrap .back,
   .card-button-wrap .next-btn {
     width: 100px;
     height: 40px;
   }
+
   .form-next-button img {
     width: 18px;
     height: 18px;
   }
+
   .single-check-item input {
     width: 25px !important;
     height: 25px !important;
   }
+
   .expense-input-wrap {
     margin-left: 0px;
   }
+
   .final-form-header p {
     font-size: 20px;
     font-weight: 400;
     text-align: left;
     line-height: 20px;
   }
+
   .final-form-input-wrap input {
     height: 36px;
   }
+
   .expense-item {
     gap: 10px;
   }
+
   .final-form-input-wrap p {
     top: 3px;
   }
+
   .single-collected-data p {
     margin-left: 0px;
   }
+
   .finished-last-wrap img {
     display: none;
   }
+
   .boxes-wrap .net-earning-wrap h1,
   .boxes-wrap .tax-due-wrap h1 {
     font-size: 25px;
     font-weight: 600;
     line-height: 35.6px;
   }
+
   .boxes-wrap {
     flex-direction: column;
   }
+
   .visibility-none {
     display: none;
   }
+
   .register-form-wrap,
   .otp-form-wrap {
     width: 100%;
     margin-left: 0%;
     transform: translateX(0px);
   }
+
   .register-single-text-field label {
     font-size: 20px;
   }
+
   .register-single-text-field input {
     height: 40px;
   }
+
   .already-user-text p,
   .already-user-text span {
     font-size: 25px;
     font-weight: 400;
     line-height: 25px;
   }
+
   .create-account-btn,
   .verify-btn p {
     font-size: 20px;
