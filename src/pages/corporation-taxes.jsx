@@ -8,7 +8,7 @@ import "./index.css";
 const CorporationTaxes = () => {
   const [showSubmitDialog, setShowSubmitDialog] = React.useState(false);
   return (
-    <div>
+    <div className="cards-wrapper">
       {showSubmitDialog && (
         <div className="model-parent">
           <div className="absolute top-[0px] left-[0px] bottom-[0px] right-[0px] bg-[#40B7B0] min-h-[100vh] w-[100%] opacity-[0.14]"></div>

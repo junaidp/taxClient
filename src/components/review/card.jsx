@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
 
-const Card = () => {
+const Card = ({ setOpen }) => {
   const navigate = useNavigate();
   const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
   const items = JSON.parse(sessionStorage.getItem("filteredItems"))
@@ -39,6 +39,14 @@ const Card = () => {
         <div>
           <div className="flex items-center justify-between">
             <h1 className="form-title">Review</h1>
+            <div className="card-button-wrap" style={{marginTop:"0px"}}>
+              <button
+                className="next-btn active-color form-next-button"
+                onClick={() => setOpen(true)}
+              >
+                <p className="">Response</p>
+              </button>{" "}
+            </div>
           </div>
           <p className="form-sub-title">
             Based on your entries, here are the income and expenses that you are going to report to the HMRC for the period of:  {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}

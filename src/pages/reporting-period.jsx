@@ -15,7 +15,7 @@ const ReportingPeriod = () => {
   }, [])
 
   return (
-    <div>
+    <div className="cards-wrapper">
       <Header />
       <div className="user-info-body-wrap">
         <img src={bars} />

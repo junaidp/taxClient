@@ -8,7 +8,7 @@ import "./index.css";
 const CheckOut = ({setShowLoginDialog,showLoginDialog}) => {
   const { user } = useSelector((state) => state?.auth)
   return (
-    <div>
+    <div className="cards-wrapper">
       <Header />
       <div className="user-info-body-wrap">
         <img src={bars} />

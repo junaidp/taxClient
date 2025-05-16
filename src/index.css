@@ -445,6 +445,11 @@
   text-align: center;
 }
 
+.cards-wrapper {
+  height: 100vh;
+  overflow: hidden !important;
+}
+
 @media screen and (max-width: 900px) {
   .card-positioning-wrap {
     width: 80%;
