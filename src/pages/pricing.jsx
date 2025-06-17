@@ -1,4 +1,3 @@
-import React from 'react'
 import Header from '../components/home/header'
 import Body from '../components/pricing/body'
 

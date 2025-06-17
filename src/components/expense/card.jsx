@@ -183,6 +183,7 @@ const Card = () => {
   }, [count]);
 
   const selectedBusiness = items[count];
+  console.log(selectedBusiness?.name)
 
   return (
     <div className="card-positioning-wrap">
@@ -252,13 +253,15 @@ const Card = () => {
                     }
                   </div>
                 ))}
-
-              <div className="add-expense-wrap pointer" onClick={() => setShowExpenseDialog(true)}>
-                <div className="h-[18px] w-[18px] bg-[#003049] flex justify-center items-center rounded-full">
-                  <img src={cross} />
+              {
+                selectedBusiness?.name !== "Landlord (UK Property)" && selectedBusiness?.name !== "Landlord (Foreign Property)" && selectedBusiness?.name !== "Landlord (Furnished Holiday Lettings) UK and EEA" &&
+                <div className="add-expense-wrap pointer" onClick={() => setShowExpenseDialog(true)}>
+                  <div className="h-[18px] w-[18px] bg-[#003049] flex justify-center items-center rounded-full">
+                    <img src={cross} />
+                  </div>
+                  <p style={{ color: "#06263E" }}>add/ remove expense category</p>
                 </div>
-                <p style={{ color: "#06263E" }}>add/ remove expense category</p>
-              </div>
+              }
             </div>
           </div>
         )}

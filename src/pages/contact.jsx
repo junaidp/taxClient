@@ -4,7 +4,7 @@ import Body from '../components/contact/body'
 
 const Contact = ({ setShowLoginDialog, setShowMyProfileDialog }) => {
     return (
-        <div className='cards-wrapper'>
+        <div>
             <Header
                 setShowLoginDialog={setShowLoginDialog}
                 setShowMyProfileDialog={setShowMyProfileDialog}

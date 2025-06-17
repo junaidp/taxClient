@@ -5,9 +5,27 @@ import line from "../../assets/line.svg";
 import down from "../../assets/down.svg";
 import action from "../../assets/action.png";
 import { useNavigate } from "react-router-dom";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PDF from "../../components/common/pdf"
+import { useSelector } from "react-redux";
 
 const Card = () => {
   const navigate = useNavigate();
+  const { hmrc } = useSelector((state) => state.tax);
+  const filteredItems = JSON.parse(sessionStorage.getItem("filteredItems"))
+  let totalIncome = 0;
+  filteredItems?.forEach((element) => {
+    totalIncome += Number(element.totalIncome);
+  });
+
+  let totalExpenses = 0;
+  filteredItems?.forEach((element) => {
+    element?.expenses?.forEach((expense) => {
+      totalExpenses += Number(expense.value);
+    });
+  });
+
+  const netEarning = totalIncome - totalExpenses
   return (
     <div className="card-positioning-wrap">
       <Progress title="91% complete" width="91%" />
@@ -34,9 +52,14 @@ const Card = () => {
             <img src={line} className="absolute top-[20px] left-[48px]" />
             <img src={down} className="absolute bottom-[30px] left-[25px]" />
           </div>
-          <p className="jaldi text-[30px] leading-[50px] text-[#003049]">
-            Click here to download
-          </p>
+          <PDFDownloadLink
+            document={
+              <PDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} />
+            }
+          >
+            <p className="jaldi text-[30px] leading-[50px] text-[#003049]">Click here to download</p>
+          </PDFDownloadLink>
+
         </div>
 
         <div className="bg-[#F8FAFB] rounded-[8px] py-[39px] px-[22px] flex items-center gap-[21px]">
