@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+
 export async function collectGovClientHeaders(userId = "") {
   // 1. Get Public IP
   const getPublicIp = async () => {
@@ -83,7 +85,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing artist services — such as paints, canvases, sketchbooks, paper, brushes, markers, props, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -95,8 +99,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "This is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -109,7 +115,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -122,7 +130,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -135,7 +145,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -148,7 +160,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -160,8 +174,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses that improve your existing art or illustration skills, like advanced painting workshops or Photoshop courses, are claimable. However, training for starting a completely new, unrelated career isn't covered.",
   },
   {
@@ -174,7 +190,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -186,8 +204,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate studio or office, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities.  If you work from home, you must claim through the Home Office category instead.",
   },
   {
@@ -200,7 +220,9 @@ const rawData = [
     __EMPTY_5: "Postage and courier fees",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the costs of postage, courier services, and shipping fees associated with running your business.",
   },
   {
@@ -212,8 +234,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -225,9 +249,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business . If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.01.01.13",
@@ -239,7 +265,9 @@ const rawData = [
     __EMPTY_5: "Other office equipment",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "You can claim costs for desks, chairs, lighting, and storage used for your business. Electronics need to go under the Computer, equipment and tools category). If equipment serves both personal and business use, make sure to only claim the business share.",
   },
   {
@@ -252,7 +280,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -265,9 +295,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.01.02.16",
@@ -279,7 +311,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -292,9 +326,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.01.02.18",
@@ -306,7 +342,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -319,7 +357,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -331,8 +371,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -345,7 +387,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing beauty services — such as hair dye, skincare products, makeup, lotions, nail polish, etc. Equipment should be claimed under the Computer, Equipment and Tools category. ",
   },
   {
@@ -357,9 +401,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., hairdryers, straighteners, scissors, makeup brushes, nail tools, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.02.01.03",
@@ -371,7 +417,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like aprons or gloves) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -383,8 +431,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate salon space or treatment room, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.",
   },
   {
@@ -396,8 +446,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as beauty therapy, makeup artistry, nail care, or hairdressing, can be claimed.  However, training for starting a completely new, unrelated career isn't covered.",
   },
   {
@@ -410,7 +462,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -423,7 +477,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -436,7 +492,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -448,8 +506,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -462,7 +522,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -475,7 +537,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -488,9 +552,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.02.02.13",
@@ -502,7 +568,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -515,9 +583,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.02.02.15",
@@ -529,7 +599,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -542,7 +614,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -554,8 +628,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -568,7 +644,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing catering services — such as ingredients, packaging, and disposable items, etc. Equipment should be claimed under the Computer, Equipment and Tools category. ",
   },
   {
@@ -580,9 +658,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., stoves, ovens, grills, utensils, and other tools used for preparing food, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.03.01.03",
@@ -594,7 +674,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -606,8 +688,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Vehicle hire or lease",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "If you rent or lease vehicle(s) to operate your catering business, these costs are claimable. This includes fuel and any related vehicle maintenance if used solely for business.",
   },
   {
@@ -619,8 +703,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Pitch fees/ event stall rent",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunning Costs",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Claim the cost of renting a space at food markets, festivals, or other events where you sell your food.",
   },
   {
@@ -633,7 +719,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like aprons or gloves) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -645,8 +733,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -659,7 +749,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -672,7 +764,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -685,7 +779,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -698,7 +794,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -711,9 +809,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.03.02.13",
@@ -725,7 +825,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -738,9 +840,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.03.02.15",
@@ -752,7 +856,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -765,7 +871,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -777,8 +885,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -791,7 +901,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing childcare services— such as toys, learning materials, nappies, cleaning products, craft supplies, hygiene products, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -803,8 +915,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate space or office, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.",
   },
   {
@@ -816,8 +930,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Utilities",
     __EMPTY_6: "No",
-    __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate space or office, you can claim the full cost of your utilities. If you work from home, you must claim through the Home Office field instead.",
   },
   {
@@ -829,8 +945,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as first aid, safeguarding, EYFS training can be claimed.  However, training for starting a completely new, unrelated career isn't covered.  ",
   },
   {
@@ -842,8 +960,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -856,7 +976,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -869,7 +991,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -882,7 +1006,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -894,9 +1020,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business . If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.04.01.10",
@@ -908,7 +1036,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -921,7 +1051,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -934,9 +1066,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.04.02.13",
@@ -948,7 +1082,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -961,9 +1097,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.04.02.15",
@@ -975,7 +1113,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -988,7 +1128,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -1000,8 +1142,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -1014,7 +1158,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing cleaning services— such as detergents, cleaning cloths, gloves, brushes, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -1027,7 +1173,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -1040,7 +1188,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like aprons or gloves) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -1052,8 +1202,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -1066,7 +1218,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -1079,7 +1233,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -1092,7 +1248,9 @@ const rawData = [
     __EMPTY_5: "Vehicle cleaning costs",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "Any costs related to cleaning and maintaining your vehicle used for transporting cleaning supplies and equipment are allowable. This includes car wash expenses and other cleaning-related maintenance.",
   },
   {
@@ -1104,8 +1262,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as health and safety training, eco-friendly cleaning methods, or certifications training can be claimed.  However, training for starting a completely new, unrelated career isn't covered.  ",
   },
   {
@@ -1118,7 +1278,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -1131,7 +1293,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -1144,9 +1308,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.05.02.13",
@@ -1158,7 +1324,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -1171,9 +1339,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.05.02.15",
@@ -1185,7 +1355,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -1198,7 +1370,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -1210,8 +1384,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -1224,7 +1400,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing construction services— such as cement, wood, nails, paint, and other building materials, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -1236,9 +1414,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., hammers, drills, drill press, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.06.01.03",
@@ -1250,7 +1430,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -1260,10 +1442,12 @@ const rawData = [
     __EMPTY_2: "Self-employment income",
     __EMPTY_3: "Construction Industry Scheme (CIS)",
     __EMPTY_4: "No",
-    __EMPTY_5: "Subcontractor payments",
+    __EMPTY_5: "Subcontractor payments (CIS only)",
     __EMPTY_6: "No",
     __EMPTY_7: "subcontractorCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 18,
+    __EMPTY_10:
       "Payments made to subcontractors for their work on your construction projects are claimable. However, be sure to ensure the subcontractors are registered under the CIS",
   },
   {
@@ -1275,8 +1459,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -1289,7 +1475,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -1302,7 +1490,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -1315,7 +1505,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like hard hats, safety boots, high-visibility vests, gloves, and goggles) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -1328,7 +1520,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -1340,8 +1534,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as health and safety courses, site management qualifications, or trade-specific training can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -1354,7 +1550,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -1367,9 +1565,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.06.02.13",
@@ -1381,7 +1581,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -1394,9 +1596,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.06.02.15",
@@ -1408,7 +1612,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -1421,7 +1627,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -1433,8 +1641,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -1447,7 +1657,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing creative services— such as art supplies, paper, canvases, ink, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -1459,8 +1671,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -1473,7 +1687,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -1486,7 +1702,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -1499,7 +1717,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -1512,7 +1732,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -1524,8 +1746,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -1538,7 +1762,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -1550,8 +1776,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate studio or office, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.",
   },
   {
@@ -1564,7 +1792,9 @@ const rawData = [
     __EMPTY_5: "Postage and courier fees",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the costs of postage, courier services, and shipping fees associated with running your business.",
   },
   {
@@ -1576,8 +1806,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -1589,9 +1821,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.07.01.13",
@@ -1603,88 +1837,10 @@ const rawData = [
     __EMPTY_5: "Other office equipment",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "You can claim costs for desks, chairs, lighting, and storage used for your business. Electronics need to go under the Computer, equipment and tools category). If equipment serves both personal and business use, make sure to only claim the business share.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
     "Expenses by Service Type": "1.1.07.02.14",
@@ -1696,21 +1852,10 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.07.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Delivery Driver/ Courier",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
     "Expenses by Service Type": "1.1.07.02.15",
@@ -1722,9 +1867,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.07.02.16",
@@ -1736,7 +1883,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -1749,9 +1898,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.07.02.18",
@@ -1763,7 +1914,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -1776,7 +1929,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -1788,22 +1943,118 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
-    "Expenses by Service Type": "1.1.08.01.01",
+    "Expenses by Service Type": "1.1.07.02.08",
     __EMPTY: "Sole Trader",
     __EMPTY_1: "Quarterly",
     __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.07.02.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.07.02.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing developer services— such as domain name registrations, web hosting fees, stock images, fonts and other digital assets, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.07.02.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.07.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.07.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.07.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Delivery Driver/ Courier",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
     "Expenses by Service Type": "1.1.08.01.01",
@@ -1815,34 +2066,10 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
   },
   {
     "Expenses by Service Type": "1.1.08.01.03",
@@ -1853,8 +2080,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Vehicle hire or lease",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "If you rent or lease the vehicle(s) you use for deliveries, these costs are claimable. This includes fuel and any related vehicle maintenance if used solely for business.",
   },
   {
@@ -1867,34 +2096,10 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Home Office deduction",
-    __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
-      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
     "Expenses by Service Type": "1.1.08.01.05",
@@ -1905,22 +2110,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Training, courses, or certification ",
-    __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
-      "Courses or certifications directly related to your skills, such as attending workshops, certification courses (Edemy, Coursea), or conferences that improve your skills or qualifications in your creative field, can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
     "Expenses by Service Type": "1.1.08.01.06",
@@ -1932,7 +2126,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform, costume, or protective clothing for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -1945,8 +2141,100 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing developer services— such as domain name registrations, web hosting fees, stock images, fonts and other digital assets, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Home Office deduction",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Training, courses, or certification ",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Courses or certifications directly related to your skills, such as attending workshops, certification courses (Edemy, Coursea), or conferences that improve your skills or qualifications in your creative field, can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
     "Expenses by Service Type": "1.1.08.01.07",
@@ -1958,7 +2246,9 @@ const rawData = [
     __EMPTY_5: "Transaction and bank fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 26,
+    __EMPTY_10:
       "You can claim bank and transaction fees directly related to your web development business, such as business account fees, payment processing charges, and any transaction fees from payment gateways like PayPal or Stripe.",
   },
   {
@@ -1971,7 +2261,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -1984,7 +2276,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -1997,8 +2291,117 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.08.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Developer/ Web Designer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
     "Expenses by Service Type": "1.1.08.02.09",
@@ -2010,7 +2413,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -2023,9 +2428,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.08.02.11",
@@ -2037,35 +2444,10 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.08.02.12",
@@ -2077,9 +2459,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.08.02.13",
@@ -2091,21 +2475,10 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
     "Expenses by Service Type": "1.1.08.02.14",
@@ -2117,35 +2490,10 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
     "Expenses by Service Type": "1.1.08.02.15",
@@ -2156,34 +2504,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.08.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Developer/ Web Designer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -2196,21 +2520,10 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing e-commerce services— such as such as products for resale, packaging materials, shipping supplies, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing entertainer services— such as props, makeup, scripts, sheet music, set materials, or rehearsal items., etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.02",
@@ -2222,34 +2535,10 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., microphones, sound equipment, lighting, instruments, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business ",
   },
   {
     "Expenses by Service Type": "1.1.09.01.03",
@@ -2260,8 +2549,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -2274,34 +2565,10 @@ const rawData = [
     __EMPTY_5: "Postage and courier fees",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the costs of postage, courier services, and shipping fees associated with running your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Uniforms and PPE",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
-      "If you wear a specific uniform, costume, or protective clothing for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Home Office deduction",
-    __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
-      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.05",
@@ -2313,21 +2580,10 @@ const rawData = [
     __EMPTY_5: "Transaction and bank fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 26,
+    __EMPTY_10:
       "You can claim bank and transaction fees directly related to your web development business, such as business account fees, payment processing charges, and any transaction fees from payment gateways like PayPal or Stripe.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.06",
@@ -2339,21 +2595,10 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.09.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Entertainer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.07",
@@ -2365,7 +2610,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -2378,8 +2625,115 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing entertainer services— such as props, makeup, scripts, sheet music, set materials, or rehearsal items., etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Uniforms and PPE",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "If you wear a specific uniform, costume, or protective clothing for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Home Office deduction",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.09.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Entertainer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.08",
@@ -2391,7 +2745,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -2403,8 +2759,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as acting workshops, voice training, stage combat, or music masterclasses can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -2417,7 +2775,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific costumes or uniform used specifically for performances, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -2429,8 +2789,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -2443,7 +2805,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -2456,7 +2820,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -2469,9 +2835,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.15",
@@ -2483,7 +2851,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -2496,9 +2866,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.09.01.17",
@@ -2510,7 +2882,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -2523,7 +2897,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -2535,8 +2911,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -2549,7 +2927,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing personal trainer services— such as such as towels, cleaning supplies, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -2561,9 +2941,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., weights, resistance bands, mats) you use for your business . If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.10.01.03",
@@ -2574,8 +2956,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -2587,8 +2971,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate training space, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.",
   },
   {
@@ -2601,7 +2987,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -2613,8 +3001,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -2627,7 +3017,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -2639,8 +3031,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as first aid or advanced fitness certifications can be claimed.  However, training for starting a completely new, unrelated career isn't covered.  ",
   },
   {
@@ -2653,7 +3047,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -2666,7 +3062,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -2679,7 +3077,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like aprons or gloves) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -2692,7 +3092,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -2705,9 +3107,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.10.02.14",
@@ -2719,7 +3123,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -2732,9 +3138,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.10.02.16",
@@ -2746,7 +3154,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -2759,7 +3169,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -2771,8 +3183,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -2785,7 +3199,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing freelance services. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -2798,7 +3214,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -2810,9 +3228,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business . If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.11.01.04",
@@ -2824,7 +3244,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -2836,8 +3258,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -2849,8 +3273,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -2863,7 +3289,9 @@ const rawData = [
     __EMPTY_5: "Transaction and bank fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 26,
+    __EMPTY_10:
       "You can claim bank and transaction fees directly related to your web development business, such as business account fees, payment processing charges, and any transaction fees from payment gateways like PayPal or Stripe.",
   },
   {
@@ -2876,7 +3304,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -2889,7 +3319,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -2902,7 +3334,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -2915,7 +3349,9 @@ const rawData = [
     __EMPTY_5: "Professional memberships and subscriptions",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your consultancy work. This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services.",
   },
   {
@@ -2928,7 +3364,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -2941,9 +3379,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.11.02.14",
@@ -2955,7 +3395,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -2968,9 +3410,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.11.02.16",
@@ -2982,7 +3426,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -2995,7 +3441,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -3007,8 +3455,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -3021,7 +3471,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -3033,9 +3485,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., lawnmowers, trimmers, hedgers, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.12.01.03",
@@ -3047,7 +3501,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing gardening services— such as plants, seeds, soil, fertilizers, mulch, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -3060,7 +3516,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -3072,8 +3530,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -3085,8 +3545,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -3099,7 +3561,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -3112,7 +3576,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -3125,7 +3591,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like gloves, helmets, boots, and goggles) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -3138,7 +3606,9 @@ const rawData = [
     __EMPTY_5: "Operational expenses",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "Fees associated with disposing of waste materials from landscaping jobs (e.g., tree clippings, soil).",
   },
   {
@@ -3151,7 +3621,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -3164,7 +3636,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -3177,9 +3651,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.12.02.14",
@@ -3191,7 +3667,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -3204,9 +3682,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.12.02.16",
@@ -3218,7 +3698,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -3231,7 +3713,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -3243,8 +3727,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -3257,7 +3743,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing wellness services. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -3269,9 +3757,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.13.01.03",
@@ -3282,8 +3772,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -3295,8 +3787,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate space or treatment room, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.  ",
   },
   {
@@ -3309,7 +3803,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -3321,8 +3817,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -3335,7 +3833,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -3347,8 +3847,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -3361,7 +3863,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -3374,7 +3878,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -3387,7 +3893,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like gloves, helmets, boots, and goggles) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -3400,7 +3908,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -3413,9 +3923,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.13.02.14",
@@ -3427,7 +3939,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -3440,9 +3954,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.13.02.16",
@@ -3454,7 +3970,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -3467,7 +3985,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -3479,8 +3999,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -3493,7 +4015,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing hospitality services. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -3505,9 +4029,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.14.01.03",
@@ -3518,8 +4044,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -3531,8 +4059,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate space or office, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.  ",
   },
   {
@@ -3545,7 +4075,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -3557,8 +4089,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -3571,7 +4105,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -3583,8 +4119,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -3597,7 +4135,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -3610,7 +4150,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -3623,7 +4165,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform or protective clothing (like aprons or gloves) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -3636,7 +4180,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -3649,9 +4195,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.14.02.14",
@@ -3663,7 +4211,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -3676,9 +4226,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.14.02.16",
@@ -3690,7 +4242,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -3703,7 +4257,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -3715,241 +4271,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Mortgage interest",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "residentialFinancialCosts",
-    __EMPTY_8:
-      "You can claim the interest portion of your mortgage payments on a rental property. Only the interest – not the capital repayment – is allowable as a finance cost. This includes interest on loans taken out to purchase, improve, or repair the property",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Property repairs and maintenance",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "propertyRepairsAndMaintenance",
-    __EMPTY_8:
-      "This includes the cost of repairing or maintaining your rental property to keep it in good condition, such as fixing plumbing, painting, replacing fixtures, or servicing appliances.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Letting agent and management fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "propertyManagementFees\t",
-    __EMPTY_8: "Fees for letting, managing, or finding tenants.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Utilities and council tax",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherAllowablePropertyExpenses",
-    __EMPTY_8:
-      "Only if you the landlord has paid (e.g., during voids or inclusive rent).",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Landlord insurance",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "propertyInsurance",
-    __EMPTY_8: "Building, contents, public liability cover.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Legal, accounting and professional fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "legalManagementAndOtherProfessionalFees",
-    __EMPTY_8: "Legal fees for evictions, accountant fees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Ground rent and service charges",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherAllowablePropertyExpenses",
-    __EMPTY_8:
-      "You can claim ground rent and service charges paid on leasehold properties as allowable expenses, provided they relate to the rental period and are necessary for letting the property. This includes charges for building maintenance, communal areas, security, and other shared services.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Replacement of domestic items (RDF Relief)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfReplacingDomesticItems",
-    __EMPTY_8:
-      "Allows landlords to claim the cost of replacing furnishings and equipment provided for tenants in a residential rental property—such as beds, sofas, white goods, or carpets. This relief covers the like-for-like replacement of items, but not the initial purchase or any upgrades beyond a similar standard. The initial cost of furnishing or major upgrades is considered a capital expense, these costs are typically accounted for when calculating Capital Gains Tax (CGT) upon the property's sale, provided they enhance the property's value or extend its useful life.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Advertising for tenants",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingCosts",
-    __EMPTY_8:
-      "Costs for promoting your rental property to potential tenants, such as flyers, newspaper ads, or social media promotions, can be claimed as a business expense.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel for property management",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to inspect and manage your rental property. This includes mileage, taxi fares, flights, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.01.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.15.02.18",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (UK Property)",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -3962,7 +4287,9 @@ const rawData = [
     __EMPTY_5: "Property repairs and maintenance",
     __EMPTY_6: "Yes",
     __EMPTY_7: "foreignPropertyRepairsAndMaintenance",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 25,
+    __EMPTY_10:
       "This includes the cost of repairing or maintaining your rental property to keep it in good condition, such as fixing plumbing, painting, replacing fixtures, or servicing appliances. These expenses must be for maintenance rather than improvements (such as adding an extension, upgrading to a higher-spec kitchen, or converting a loft)—these are classified as capital expenditures rather than routine maintenance. As such, they are not immediately deductible from rental income. Instead, these costs are typically accounted for when calculating Capital Gains Tax (CGT) upon the property's sale, provided they enhance the property's value or extend its useful life.",
   },
   {
@@ -3975,7 +4302,9 @@ const rawData = [
     __EMPTY_5: "Letting agent and management fees",
     __EMPTY_6: "No",
     __EMPTY_7: "foreignPropertyManagementFees",
-    __EMPTY_8: "Local agent fees, marketing, tenant finding.",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 27,
+    __EMPTY_10: "Local agent fees, marketing, tenant finding.",
   },
   {
     "Expenses by Service Type": "1.1.16.01.03",
@@ -3987,7 +4316,9 @@ const rawData = [
     __EMPTY_5: "Insurance (property & liability)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "foreignPropertyInsurance",
-    __EMPTY_8: "Building, contents, and public liability cover abroad.",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 24,
+    __EMPTY_10: "Building, contents, and public liability cover abroad.",
   },
   {
     "Expenses by Service Type": "1.1.16.01.04",
@@ -3999,20 +4330,9 @@ const rawData = [
     __EMPTY_5: "Legal, accounting and professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "foreignLegalManagementAndOtherProfessionalFees",
-    __EMPTY_8: "Foreign legal advice, tax filings, accountants.",
-  },
-  {
-    "Expenses by Service Type": "1.1.16.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (Foreign Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Mortgage interest",
-    __EMPTY_6: "No",
-    __EMPTY_7: "foreignResidentialFinancialCosts",
-    __EMPTY_8:
-      "You can claim the interest portion of your mortgage payments on a rental property. Only the interest – not the capital repayment – is allowable as a finance cost. This includes interest on loans taken out to purchase, improve, or repair the property",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 27,
+    __EMPTY_10: "Foreign legal advice, tax filings, accountants.",
   },
   {
     "Expenses by Service Type": "1.1.16.01.06",
@@ -4024,7 +4344,9 @@ const rawData = [
     __EMPTY_5: "Utilities and local taxes",
     __EMPTY_6: "No",
     __EMPTY_7: "foreignOtherAllowablePropertyExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "Only if you the landlord has paid (e.g., during voids or inclusive rent).",
   },
   {
@@ -4037,7 +4359,9 @@ const rawData = [
     __EMPTY_5: "Travel for property management",
     __EMPTY_6: "No",
     __EMPTY_7: "foreignTravelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
       "You can claim for travel costs to inspect and manage your rental property. This includes mileage, taxi fares, flights, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. ",
   },
   {
@@ -4050,21 +4374,10 @@ const rawData = [
     __EMPTY_5: "Advertising and tenant-finding costs",
     __EMPTY_6: "No",
     __EMPTY_7: "foreignAdvertisingCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
       "Expenses paid to letting agents or services to find tenants — including marketing, referencing, and administrative fees — are allowable. This includes costs for arranging viewings or setting up tenancy agreements.",
-  },
-  {
-    "Expenses by Service Type": "1.1.16.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (Foreign Property)",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Replacement of domestic items (RDF Relief)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "foreignCostOfReplacingDomesticItems",
-    __EMPTY_8:
-      "Allows landlords to claim the cost of replacing furnishings and equipment provided for tenants in a residential rental property—such as beds, sofas, white goods, or carpets. This relief covers the like-for-like replacement of items, but not the initial purchase or any upgrades beyond a similar standard. The initial cost of furnishing or major upgrades is considered a capital expense, these costs are typically accounted for when calculating Capital Gains Tax (CGT) upon the property's sale, provided they enhance the property's value or extend its useful life.",
   },
   {
     "Expenses by Service Type": "1.1.16.01.10",
@@ -4076,7 +4389,9 @@ const rawData = [
     __EMPTY_5: "Office/ admin costs",
     __EMPTY_6: "No",
     __EMPTY_7: "foreignAdminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
       "Costs for running the admin side of your foreign lettings. This includes expenses for office supplies, such as stationery and printer paper, as well as software or subscription services used for property management and communication with tenants or agents.",
   },
   {
@@ -4089,7 +4404,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -4102,9 +4419,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.16.02.13",
@@ -4116,7 +4435,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -4129,9 +4450,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.16.02.15",
@@ -4143,7 +4466,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -4156,7 +4481,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -4168,22 +4495,11 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.17.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (Furnished Holiday Lettings) UK and EEA",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Mortgage interest",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "residentialFinancialCosts",
-    __EMPTY_8:
-      "You can claim the interest portion of your mortgage payments on a rental property. Only the interest – not the capital repayment – is allowable as a finance cost. This includes interest on loans taken out to purchase, improve, or repair the property",
   },
   {
     "Expenses by Service Type": "1.1.17.01.02",
@@ -4195,7 +4511,9 @@ const rawData = [
     __EMPTY_5: "Property repairs and maintenance",
     __EMPTY_6: "Yes",
     __EMPTY_7: "propertyRepairsAndMaintenance",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 6,
+    __EMPTY_10:
       "This includes the cost of repairing or maintaining your rental property to keep it in good condition, such as fixing plumbing, painting, replacing fixtures, or servicing appliances. These expenses must be for maintenance rather than improvements (such as adding an extension, upgrading to a higher-spec kitchen, or converting a loft)—these are classified as capital expenditures rather than routine maintenance. As such, they are not immediately deductible from rental income. Instead, these costs are typically accounted for when calculating Capital Gains Tax (CGT) upon the property's sale, provided they enhance the property's value or extend its useful life.",
   },
   {
@@ -4208,7 +4526,9 @@ const rawData = [
     __EMPTY_5: "Cleaning and laundry services",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 9,
+    __EMPTY_10:
       "You can claim the cost of professional cleaning between tenancies or during stays (for short-term lets), as well as laundry services for linens, towels, and other reusable items provided as part of the rental.",
   },
   {
@@ -4221,7 +4541,9 @@ const rawData = [
     __EMPTY_5: "Utilities and council tax",
     __EMPTY_6: "No",
     __EMPTY_7: "otherAllowablePropertyExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 9,
+    __EMPTY_10:
       "Only if you the landlord has paid (e.g., during voids or inclusive rent).",
   },
   {
@@ -4234,7 +4556,9 @@ const rawData = [
     __EMPTY_5: "Advertising and online booking fees",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 9,
+    __EMPTY_10:
       "You can claim the cost of listing your rental property on platforms like Rightmove, Zoopla, Airbnb, or Booking.com, as well as any fees these platforms charge for managing bookings or processing payments.",
   },
   {
@@ -4247,7 +4571,9 @@ const rawData = [
     __EMPTY_5: "Letting agent and management fees",
     __EMPTY_6: "No",
     __EMPTY_7: "propertyManagementFees\t",
-    __EMPTY_8: "For bookings, guest communications, or key handling.",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 8,
+    __EMPTY_10: "For bookings, guest communications, or key handling.",
   },
   {
     "Expenses by Service Type": "1.1.17.01.07",
@@ -4258,22 +4584,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance (building, contents, liability)",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 6,
+    __EMPTY_10:
       "You can claim the cost of landlord insurance policies that cover your furnished rental property, including buildings insurance, contents insurance for provided furniture and appliances, public liability insurance, and rent guarantee cover. The insurance must relate directly to the rental business and not include any private or personal coverage.",
-  },
-  {
-    "Expenses by Service Type": "1.1.17.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Property business income",
-    __EMPTY_3: "Landlord (Furnished Holiday Lettings) UK and EEA",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Furniture and equipment",
-    __EMPTY_6: "No",
-    __EMPTY_7: "capitalAllowances",
-    __EMPTY_8:
-      "You can claim the cost of buying or replacing essential items provided with a furnished rental, such as beds, sofas, tables, chairs, white goods, and kitchen appliances. ",
   },
   {
     "Expenses by Service Type": "1.1.17.01.09",
@@ -4284,8 +4599,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Consumables and welcome packs",
     __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 9,
+    __EMPTY_10:
       "You can claim the cost of consumable items provided for tenant use in a furnished property, such as toilet paper, cleaning supplies, light bulbs, and basic kitchen essentials. You can also include the cost of welcome packs (e.g. tea, coffee, snacks, toiletries) if they are a routine part of your service and not considered luxury gifts.",
   },
   {
@@ -4297,8 +4614,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Travel for property management",
     __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 9,
+    __EMPTY_10:
       "You can claim for travel costs to inspect and manage your rental property. This includes mileage, taxi fares, flights, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. ",
   },
   {
@@ -4310,8 +4629,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 9,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -4324,7 +4645,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -4337,9 +4660,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.17.02.14",
@@ -4351,7 +4676,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -4364,9 +4691,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.17.02.16",
@@ -4378,7 +4707,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -4391,7 +4722,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -4403,8 +4736,249 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Property repairs and maintenance",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "propertyRepairsAndMaintenance",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 25,
+    __EMPTY_10:
+      "This includes the cost of repairing or maintaining your rental property to keep it in good condition, such as fixing plumbing, painting, replacing fixtures, or servicing appliances.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Letting agent and management fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "propertyManagementFees\t",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 27,
+    __EMPTY_10: "Fees for letting, managing, or finding tenants.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Utilities and council tax",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
+      "Only if you the landlord has paid (e.g., during voids or inclusive rent).",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Landlord insurance",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "propertyInsurance",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 24,
+    __EMPTY_10: "Building, contents, public liability cover.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Legal, accounting and professional fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "legalManagementAndOtherProfessionalFees",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 27,
+    __EMPTY_10: "Legal fees for evictions, accountant fees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Ground rent and service charges",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim ground rent and service charges paid on leasehold properties as allowable expenses, provided they relate to the rental period and are necessary for letting the property. This includes charges for building maintenance, communal areas, security, and other shared services.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Advertising for tenants",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
+      "Costs for promoting your rental property to potential tenants, such as flyers, newspaper ads, or social media promotions, can be claimed as a business expense.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel for property management",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
+      "You can claim for travel costs to inspect and manage your rental property. This includes mileage, taxi fares, flights, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.01.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherAllowablePropertyExpenses",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 29,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.15.02.18",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -4417,7 +4991,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing performing services— such as props, makeup, scripts, sheet music, set materials, or rehearsal items., etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -4430,7 +5006,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -4442,9 +5020,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., guitars, amps, DJ decks, mics, etc.) you use for your business . If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.18.01.04",
@@ -4455,8 +5035,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -4469,7 +5051,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -4482,7 +5066,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -4495,7 +5081,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -4507,8 +5095,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -4520,8 +5110,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -4534,7 +5126,9 @@ const rawData = [
     __EMPTY_5: "Professional memberships and subscriptions",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g, Musicians’ Union, SoundCloud Pro, Spotify for Artists). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services.",
   },
   {
@@ -4547,7 +5141,9 @@ const rawData = [
     __EMPTY_5: "Uniforms and PPE",
     __EMPTY_6: "No",
     __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "If you wear a specific uniform, costume, or protective clothing for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
   },
   {
@@ -4560,7 +5156,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -4573,9 +5171,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.18.02.14",
@@ -4587,7 +5187,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -4600,9 +5202,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.18.02.16",
@@ -4614,7 +5218,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -4627,7 +5233,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -4639,1398 +5247,10 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing photography services— such as film, processing chemicals, photo paper, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., cameras, lenses, tripods, memory cards, lighting kits, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Rent or mortgage",
-    __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
-      "Rental of a studio space for shoots or office space for administration.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Website and hosting fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "Website hosting fees, domain registrations, and website design costs related to your photography business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Training, courses, or certification ",
-    __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
-      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Insurance",
-    __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
-      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional memberships and subscriptions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g, The Royal Photographic Society). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Model and property release fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherBusinessExpenses",
-    __EMPTY_8:
-      "Fees paid to models or property owners for permission to use their likeness or property in your photos.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.01.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Printing and framing",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherBusinessExpenses",
-    __EMPTY_8:
-      "Costs for printing photos, framing, and delivering final products to clients.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.18",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.19",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.19.02.20",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Photographer",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Vehicle running costs/ tax/ tolls/ congestion charges",
-    __EMPTY_6: "No",
-    __EMPTY_7: "vehicleCosts",
-    __EMPTY_8:
-      "include expenses directly related to keeping your vehicle roadworthy and compliant—such as fuel, servicing, MOTs, road tax, car washes, toll roads, and London congestion charges. Only costs related to business use are allowable, so if the vehicle is also used personally, you’ll need to apportion the expenses accordingly.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Vehicle hire or lease",
-    __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
-      "If you rent or lease the vehicle(s) you use for taxi services, these costs are claimable. This includes fuel and any related vehicle maintenance if used solely for business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Licensing and permit fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "Taxi license fees, operating permit fees, and any other local authority fees necessary to operate your taxi service",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Phone and Internet",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Insurance",
-    __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
-      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Uniforms and PPE",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
-      "If you wear a specific uniform or protective clothing (like branded clothing) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.20.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Taxi Driver",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing teaching services— such as textbooks, paper, pens, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Home Office deduction",
-    __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
-      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Training, courses, or certification ",
-    __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
-      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Phone and Internet",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional memberships and subscriptions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., National Union of Teachers, The Tutors’ Association). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Insurance",
-    __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
-      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.01.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, projectors, cameras, and any other equipment or tools that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.21.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Teacher/ private tutor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing counselling services. Equipment should be claimed under the Computer, Equipment and Tools category.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Home Office deduction",
-    __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
-      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Training, courses, or certification ",
-    __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
-      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Insurance",
-    __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
-      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Phone and Internet",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.01.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional memberships and subscriptions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., British Association for Counselling and Psychotherapy, UK Council for Psychotherapy). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.22.02.18",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Therapist/ Counsellor",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing trade services— such as cement, wood, nails, paint, and other building materials, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools (e.g., hammers, drills, drill press, etc.) that you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Home Office deduction",
-    __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
-      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Training, courses, or certification ",
-    __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
-      "Courses or certifications directly related to your skills, such as health and safety training, plumbing courses, or electrical certification training can be claimed.  However, training for starting a completely new, unrelated career isn't covered.  ",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Insurance",
-    __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
-      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Phone and Internet",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Uniforms and PPE",
-    __EMPTY_6: "No",
-    __EMPTY_7: "otherExpenses",
-    __EMPTY_8:
-      "If you wear a specific uniform or protective clothing (like hard hats, safety boots, high-visibility vests, gloves, and goggles) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.01.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional memberships and subscriptions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., Federation of Master Builders, Gas Safe Register). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services. .",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.23.02.18",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Tradespeople/ skilled worker",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.01",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Materials and supplies",
-    __EMPTY_6: "No",
-    __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
-      "You can claim for everyday items used in providing journallist services— such as paper, pens, ink, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.02",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Office supplies and software",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.03",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Computer, equipment and tools",
-    __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.04",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
-    __EMPTY_6: "No",
-    __EMPTY_7: "travelCosts",
-    __EMPTY_8:
-      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.05",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Marketing and advertising",
-    __EMPTY_6: "No",
-    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
-      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.06",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Home Office deduction",
-    __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
-      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.07",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Phone and Internet",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.08",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
-      "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.09",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Training, courses, or certification ",
-    __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
-      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.01.10",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "No",
-    __EMPTY_5: "Professional memberships and subscriptions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., The Society of Authors, The National Union of Journalists, or The Writers’ Guild of Great Britain.). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services (e.g., The Guardian, The New Yorker, The Writer magazine).",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.11",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee wages and salaries",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.12",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employer National Insurance (NI)",
-    __EMPTY_6: "Yes",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.13",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee Pension Contributions",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.14",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Staff bonuses and tips",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.15",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Employee benefits",
-    __EMPTY_6: "No",
-    __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
-      "If you provide staff benefits like healthcare plans these can be claimed.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.16",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Payroll processing fees",
-    __EMPTY_6: "No",
-    __EMPTY_7: "professionalFees",
-    __EMPTY_8:
-      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
-  },
-  {
-    "Expenses by Service Type": "1.1.24.02.17",
-    __EMPTY: "Sole Trader",
-    __EMPTY_1: "Quarterly",
-    __EMPTY_2: "Self-employment income",
-    __EMPTY_3: "Writer/ Journalist",
-    __EMPTY_4: "Yes",
-    __EMPTY_5: "Recruitment costs",
-    __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
   },
   {
@@ -6043,7 +5263,9 @@ const rawData = [
     __EMPTY_5: "Materials and supplies",
     __EMPTY_6: "No",
     __EMPTY_7: "costOfGoodsBought",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
       "You can claim for everyday items used in providing services. Equipment should be claimed under the Computer, Equipment and Tools category.",
   },
   {
@@ -6055,8 +5277,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Home Office deduction",
     __EMPTY_6: "No",
-    __EMPTY_7: "officeCosts",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
   },
   {
@@ -6069,7 +5293,9 @@ const rawData = [
     __EMPTY_5: "Office supplies and software",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
   },
   {
@@ -6082,7 +5308,9 @@ const rawData = [
     __EMPTY_5: "Marketing and advertising",
     __EMPTY_6: "No",
     __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
       "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
   },
   {
@@ -6095,7 +5323,9 @@ const rawData = [
     __EMPTY_5: "Professional fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
   },
   {
@@ -6108,7 +5338,9 @@ const rawData = [
     __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
     __EMPTY_6: "No",
     __EMPTY_7: "travelCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
       "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
   },
   {
@@ -6120,8 +5352,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Training, courses, or certification ",
     __EMPTY_6: "No",
-    __EMPTY_7: "trainingCosts",
-    __EMPTY_8:
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
   },
   {
@@ -6134,7 +5368,9 @@ const rawData = [
     __EMPTY_5: "Phone and Internet",
     __EMPTY_6: "No",
     __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
   },
   {
@@ -6146,8 +5382,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Rent or mortgage",
     __EMPTY_6: "No",
-    __EMPTY_7: "rent",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "If you rent a separate space or office, you can claim the cost of your rent or mortgage. You can only claim the business-use portion of the costs—not any part used for personal or private activities. If you work from home, you must claim through the Home Office category instead.  ",
   },
   {
@@ -6160,7 +5398,9 @@ const rawData = [
     __EMPTY_5: "Postage and courier fees",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
       "You can claim the costs of postage, courier services, and shipping fees associated with running your business.",
   },
   {
@@ -6172,8 +5412,10 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Insurance",
     __EMPTY_6: "No",
-    __EMPTY_7: "insurance",
-    __EMPTY_8:
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
       "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
   },
   {
@@ -6185,9 +5427,11 @@ const rawData = [
     __EMPTY_4: "No",
     __EMPTY_5: "Computer, equipment and tools",
     __EMPTY_6: "No",
-    __EMPTY_7: "captialAllowances (over £500) officeExpenses (under £500)",
-    __EMPTY_8:
-      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools you use for your business. If these items are used for both personal and business purposes, claim only the business portion.",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
   },
   {
     "Expenses by Service Type": "1.1.25.01.13",
@@ -6199,7 +5443,9 @@ const rawData = [
     __EMPTY_5: "Other office equipment",
     __EMPTY_6: "No",
     __EMPTY_7: "officeExpenses",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
       "You can claim costs for desks, chairs, lighting, and storage used for your business. Electronics need to go under the Computer, equipment and tools category). If equipment serves both personal and business use, make sure to only claim the business share.",
   },
   {
@@ -6212,7 +5458,9 @@ const rawData = [
     __EMPTY_5: "Employee wages and salaries",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
   },
   {
@@ -6225,9 +5473,11 @@ const rawData = [
     __EMPTY_5: "Employer National Insurance (NI)",
     __EMPTY_6: "Yes",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
-    __EMPTY_11: "Employer contributions for employees' NI.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
   },
   {
     "Expenses by Service Type": "1.1.25.02.16",
@@ -6239,7 +5489,9 @@ const rawData = [
     __EMPTY_5: "Employee Pension Contributions",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
   },
   {
@@ -6252,9 +5504,11 @@ const rawData = [
     __EMPTY_5: "Staff bonuses and tips",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
-    __EMPTY_11: "Any bonus schemes, tips collected for employees.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
   },
   {
     "Expenses by Service Type": "1.1.25.02.18",
@@ -6266,7 +5520,9 @@ const rawData = [
     __EMPTY_5: "Employee benefits",
     __EMPTY_6: "No",
     __EMPTY_7: "wagesAndStaffCosts",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "If you provide staff benefits like healthcare plans these can be claimed.",
   },
   {
@@ -6279,7 +5535,9 @@ const rawData = [
     __EMPTY_5: "Payroll processing fees",
     __EMPTY_6: "No",
     __EMPTY_7: "professionalFees",
-    __EMPTY_8:
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
       "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
   },
   {
@@ -6291,9 +5549,1699 @@ const rawData = [
     __EMPTY_4: "Yes",
     __EMPTY_5: "Recruitment costs",
     __EMPTY_6: "No",
-    __EMPTY_7: "adminCosts",
-    __EMPTY_8:
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
       "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing photography services— such as film, processing chemicals, photo paper, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Rent or mortgage",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "Rental of a studio space for shoots or office space for administration.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.08",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Website and hosting fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "Website hosting fees, domain registrations, and website design costs related to your photography business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Training, courses, or certification ",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Insurance",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional memberships and subscriptions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g, The Royal Photographic Society). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Model and property release fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherBusinessExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Fees paid to models or property owners for permission to use their likeness or property in your photos.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.01.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Printing and framing",
+    __EMPTY_6: "No",
+    __EMPTY_7: "officeExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Costs for printing photos, framing, and delivering final products to clients.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.18",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.19",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.19.02.20",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Photographer",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Vehicle running costs/ tax/ tolls/ congestion charges",
+    __EMPTY_6: "No",
+    __EMPTY_7: "vehicleCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "include expenses directly related to keeping your vehicle roadworthy and compliant—such as fuel, servicing, MOTs, road tax, car washes, toll roads, and London congestion charges. Only costs related to business use are allowable, so if the vehicle is also used personally, you’ll need to apportion the expenses accordingly.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Vehicle hire or lease",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "If you rent or lease the vehicle(s) you use for taxi services, these costs are claimable. This includes fuel and any related vehicle maintenance if used solely for business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Licensing and permit fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "Taxi license fees, operating permit fees, and any other local authority fees necessary to operate your taxi service",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Phone and Internet",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Insurance",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Uniforms and PPE",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "If you wear a specific uniform or protective clothing (like branded clothing) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.08",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.20.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Taxi Driver",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing teaching services— such as textbooks, paper, pens, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Home Office deduction",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Training, courses, or certification ",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Phone and Internet",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.08",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional memberships and subscriptions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., National Union of Teachers, The Tutors’ Association). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Insurance",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.01.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.21.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Teacher/ private tutor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing counselling services. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Home Office deduction",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Training, courses, or certification ",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Insurance",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.08",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Phone and Internet",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.01.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional memberships and subscriptions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., British Association for Counselling and Psychotherapy, UK Council for Psychotherapy). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.22.02.18",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Therapist/ Counsellor",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing trade services— such as cement, wood, nails, paint, and other building materials, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Home Office deduction",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Training, courses, or certification ",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Courses or certifications directly related to your skills, such as health and safety training, plumbing courses, or electrical certification training can be claimed.  However, training for starting a completely new, unrelated career isn't covered.  ",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Insurance",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "Business-related insurance costs, such as public liability insurance, employers' liability insurance, professional indemnity insurance, and any insurance related to your tools and equipment, are all allowable. Personal insurance, such as health or home insurance, is not allowable",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.08",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Phone and Internet",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Uniforms and PPE",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "If you wear a specific uniform or protective clothing (like hard hats, safety boots, high-visibility vests, gloves, and goggles) for your work, the cost is claimable. This includes any PPE required by health and safety regulations. Personal clothing and non-business-related items are not claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.01.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional memberships and subscriptions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., Federation of Master Builders, Gas Safe Register). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services. .",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.23.02.18",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Tradespeople/ skilled worker",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.01",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Materials and supplies",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfGoodsBought",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 17,
+    __EMPTY_10:
+      "You can claim for everyday items used in providing journallist services— such as paper, pens, ink, etc. Equipment should be claimed under the Computer, Equipment and Tools category.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.02",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Office supplies and software",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "Any costs related to office supplies (e.g., stationery, paper, ink) and software used (e.g., scheduling, accounting, client management tools), are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.03",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Computer, equipment and tools",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim for the cost of computers, laptops, tablets, cameras, and any other equipment or tools that you use for your business (for individual items under £500). If these items are used for both personal and business purposes, claim only the business portion. For individual item purchases over £500, you cannot claim those on your quarterly returns, save the receipt for your final year-end return.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.04",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Travel and transportation (incl. meals, accommodation)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "travelCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 20,
+    __EMPTY_10:
+      "You can claim for travel costs to and from work sites, attend training, or to buy supplies, etc. This includes mileage, taxi fares, and public transportation costs. Meals and accommodation are also claimable, provided the travel is for business purposes. If you have an office you work from regularly you cannot claim the commute.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.05",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Marketing and advertising",
+    __EMPTY_6: "No",
+    __EMPTY_7: "advertisingAndBusinessEntertainmentCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the costs of promoting your services, such as social media ads, local advertising, business cards, flyers, and website building & hosting.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.06",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Home Office deduction",
+    __EMPTY_6: "No",
+    __EMPTY_7: "premisesRunningCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 21,
+    __EMPTY_10:
+      "There is the standard allowance HMRC allows (£6 per week) without any supporting invoices. If it is more than £6 per week then it has to be calculated on the basis of actual bills and what percentage of your home you use as a business. For easy filing, this software only currently supports the standard deduction and it has been automatically added for you, to delete the amount entered, highlight and click delete.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.07",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Phone and Internet",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "You can claim the business-use percentage of your mobile phone and broadband costs. If you use them for both personal and business purposes, but only enter the portion related to your business.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.08",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "adminCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 23,
+    __EMPTY_10:
+      "If you pay an accountant to help with your taxes, a solicitor for contracts, or a consultant for business advice, you can claim these costs.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.09",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Training, courses, or certification ",
+    __EMPTY_6: "No",
+    __EMPTY_7: "otherExpenses",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 30,
+    __EMPTY_10:
+      "Courses or certifications directly related to your skills, such as attending workshops, certification courses, or conferences that improve your skills or qualifications in your creative field can be claimed.  However, training for starting a completely new, unrelated career isn't covered. ",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.01.10",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Professional memberships and subscriptions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "You can claim expenses for memberships to industry bodies, trade organisations, or professional networks that support your work (e.g., The Society of Authors, The National Union of Journalists, or The Writers’ Guild of Great Britain.). This also includes subscriptions to specialist publications, research platforms, and tools that keep you informed and enhance your professional services (e.g., The Guardian, The New Yorker, The Writer magazine).",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.11",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee wages and salaries",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you employ assistants, interns, admin help, etc. you can claim the full wages you pay them. Make sure all payments are properly documented through payroll.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.12",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employer National Insurance (NI)",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "You can claim the employer’s NI contributions you pay for your staff — separate from your own personal NI payments.",
+    __EMPTY_13: "Employer contributions for employees' NI.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.13",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee Pension Contributions",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Contributions you make into your employees’ pensions under auto-enrolment rules are fully claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.14",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Staff bonuses and tips",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Performance-related bonuses for your employees (e.g., hitting sales targets) are claimable, but make sure they’re recorded through your payroll system.",
+    __EMPTY_13: "Any bonus schemes, tips collected for employees.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.15",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Employee benefits",
+    __EMPTY_6: "No",
+    __EMPTY_7: "wagesAndStaffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "If you provide staff benefits like healthcare plans these can be claimed.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.16",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Payroll processing fees",
+    __EMPTY_6: "No",
+    __EMPTY_7: "professionalFees",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 28,
+    __EMPTY_10:
+      "If you use a payroll service or payroll software to manage your staff pay and submit to HMRC, those fees are claimable.",
+  },
+  {
+    "Expenses by Service Type": "1.1.24.02.17",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Quarterly",
+    __EMPTY_2: "Self-employment income",
+    __EMPTY_3: "Writer/ Journalist",
+    __EMPTY_4: "Yes",
+    __EMPTY_5: "Recruitment costs",
+    __EMPTY_6: "No",
+    __EMPTY_7: "staffCosts",
+    __EMPTY_8: "SA103F",
+    __EMPTY_9: 19,
+    __EMPTY_10:
+      "Fees you pay to recruit employees, whether through agencies, online adverts, or freelance platforms, can be claimed — as long as it's for finding people to support your business.",
+  },
+
+  {
+    "Expenses by Service Type": "1.2.18",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Final Declaration",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (Foreign Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Mortgage interest",
+    __EMPTY_6: "No",
+    __EMPTY_7: "foreignResidentialFinancialCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_9: 24,
+    __EMPTY_10:
+      "You can claim the interest portion of your mortgage payments on a rental property. Only the interest – not the capital repayment – is allowable as a finance cost. This includes interest on loans taken out to purchase, improve, or repair the property",
+  },
+  {
+    "Expenses by Service Type": "1.2.19",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Final Declaration",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (Foreign Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Replacement of domestic items (RDF Relief)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "foreignCostOfReplacingDomesticItems",
+    __EMPTY_8: "SA105",
+    __EMPTY_10:
+      "Allows landlords to claim the cost of replacing furnishings and equipment provided for tenants in a residential rental property—such as beds, sofas, white goods, or carpets. This relief covers the like-for-like replacement of items, but not the initial purchase or any upgrades beyond a similar standard. The initial cost of furnishing or major upgrades is considered a capital expense, these costs are typically accounted for when calculating Capital Gains Tax (CGT) upon the property's sale, provided they enhance the property's value or extend its useful life.",
+  },
+  {
+    "Expenses by Service Type": "1.2.20",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Final declaration",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (Furnished Holiday Lettings) UK and EEA",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Mortgage interest",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "residentialFinancialCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_10:
+      "You can claim the interest portion of your mortgage payments on a rental property. Only the interest – not the capital repayment – is allowable as a finance cost. This includes interest on loans taken out to purchase, improve, or repair the property",
+  },
+  {
+    "Expenses by Service Type": "1.2.21",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Final declaration",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (Furnished Holiday Lettings) UK and EEA",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Furniture and equipment",
+    __EMPTY_6: "No",
+    __EMPTY_7: "capitalAllowances",
+    __EMPTY_8: "SA105",
+    __EMPTY_10:
+      "You can claim the cost of buying or replacing essential items provided with a furnished rental, such as beds, sofas, tables, chairs, white goods, and kitchen appliances. ",
+  },
+  {
+    "Expenses by Service Type": "1.2.22",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Final declaration",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Mortgage interest",
+    __EMPTY_6: "Yes",
+    __EMPTY_7: "residentialFinancialCosts",
+    __EMPTY_8: "SA105",
+    __EMPTY_10:
+      "You can claim the interest portion of your mortgage payments on a rental property. Only the interest – not the capital repayment – is allowable as a finance cost. This includes interest on loans taken out to purchase, improve, or repair the property",
+  },
+  {
+    "Expenses by Service Type": "1.2.23",
+    __EMPTY: "Sole Trader",
+    __EMPTY_1: "Final declaration",
+    __EMPTY_2: "Property business income",
+    __EMPTY_3: "Landlord (UK Property)",
+    __EMPTY_4: "No",
+    __EMPTY_5: "Replacement of domestic items (RDF Relief)",
+    __EMPTY_6: "No",
+    __EMPTY_7: "costOfReplacingDomesticItems",
+    __EMPTY_8: "SA105",
+    __EMPTY_10:
+      "Allows landlords to claim the cost of replacing furnishings and equipment provided for tenants in a residential rental property—such as beds, sofas, white goods, or carpets. This relief covers the like-for-like replacement of items, but not the initial purchase or any upgrades beyond a similar standard. The initial cost of furnishing or major upgrades is considered a capital expense, these costs are typically accounted for when calculating Capital Gains Tax (CGT) upon the property's sale, provided they enhance the property's value or extend its useful life.",
   },
 ];
 
@@ -6314,10 +7262,13 @@ function getServices() {
 
     grouped[groupName].expenses.push({
       id: grouped[groupName].expenses.length + 1,
-      name: item["__EMPTY_5"],
       employee: item["__EMPTY_4"],
+      name: item["__EMPTY_5"],
       locked: item["__EMPTY_6"],
-      info: item["__EMPTY_8"],
+      fieldIdentifier: item["__EMPTY_7"],
+      form: item["__EMPTY_8"],
+      formBox: item["__EMPTY_9"],
+      info: item["__EMPTY_10"],
     });
   });
 

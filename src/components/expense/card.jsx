@@ -183,8 +183,6 @@ const Card = () => {
   }, [count]);
 
   const selectedBusiness = items[count];
-  console.log(selectedBusiness?.name)
-
   return (
     <div className="card-positioning-wrap">
       <Progress title="55% complete" width="55%" />

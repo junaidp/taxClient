@@ -4,9 +4,30 @@ import line from "../../assets/line.svg";
 import down from "../../assets/down.svg";
 import action from "../../assets/action.png";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import MyPDF from "../common/pdf";
+import { useSelector } from "react-redux";
 
 const Card = () => {
   const navigate = useNavigate();
+  const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
+  const { hmrc } = useSelector((state) => state.tax);
+  const filteredItems = JSON.parse(sessionStorage.getItem("filteredItems"))
+  let totalIncome = 0;
+  filteredItems?.forEach((element) => {
+    totalIncome += Number(element.totalIncome);
+  });
+
+  let totalExpenses = 0;
+  filteredItems?.forEach((element) => {
+    element?.expenses?.forEach((expense) => {
+      totalExpenses += Number(expense.value);
+    });
+  });
+
+  const netEarning = totalIncome - totalExpenses
+
   return (
     <div className="card-positioning-wrap">
       <Progress title="100% complete" width="100%" />
@@ -20,7 +41,7 @@ const Card = () => {
           </p>
           <div>
             <p className="jaldi text-[30px] leading-[50px] text-[#0030499C]">
-              April 1, 2024 to June 30, 2024
+              {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} - {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')}.
             </p>
             <p className="jaldi text-[30px] leading-[50px] text-[#0030499C]">
               has successfully been submitted to the the HMRC
@@ -50,9 +71,13 @@ const Card = () => {
               className="absolute bottom-[15px] left-[15px] h-[15px] w-[32px]"
             />
           </div>
-          <p className="jaldi text-[30px] leading-[50px] text-[#003049]">
-            Click here to download
-          </p>
+          <PDFDownloadLink
+            document={
+              <MyPDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} reportingPeriod={reportingPeriod} />
+            }
+          >
+            <p className="jaldi text-[30px] leading-[50px] text-[#003049]">Click here to download</p>
+          </PDFDownloadLink>
         </div>
 
         <div className="bg-[#F8FAFB] rounded-[8px] py-[39px] px-[22px] flex items-center gap-[21px]">

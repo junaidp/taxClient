@@ -35,7 +35,7 @@ const Tooltip = ({ text, children, left }) => {
             className="tooltip-box"
             style={{
               position: "absolute",
-              top: coords.top - 40, // adjust as needed
+              top: coords.top + 30,
               left: left ? coords.left - 80 : coords.left + coords.width / 2,
               transform: left ? "none" : "translateX(-50%)",
               zIndex: 1000,
@@ -43,7 +43,9 @@ const Tooltip = ({ text, children, left }) => {
               color: "#fff",
               padding: "6px 12px",
               borderRadius: "4px",
-              whiteSpace: "nowrap"
+              whiteSpace: "normal",
+              wordBreak: "break-word",
+              maxWidth: "200px",
             }}
           >
             {text}

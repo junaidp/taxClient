@@ -83,7 +83,6 @@ export const slice = createSlice({
       .addCase(setupGetCalculationId.rejected, (state) => {
         state.loading = false;
         state.isNinoInCorrect = true;
-        toast.error("An error has occurred. Please try again later.");
       });
     // Get Insurance Number
     builder

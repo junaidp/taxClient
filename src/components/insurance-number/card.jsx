@@ -12,19 +12,32 @@ const Card = () => {
     const navigate = useNavigate();
     const { loading, isNinoInCorrect, token, hmrc } = useSelector((state) => state?.tax)
     const [nino, setNino] = React.useState(sessionStorage.getItem("nino") || "");
+    const [debouncedNino, setDebouncedNino] = React.useState('');
     const [headers, setHeaders] = React.useState({})
 
     const handleApiCall = async (value) => {
-        dispatch(setupGetCalculationId({ token, nino: value, headerDto: headers }))
+        dispatch(setupGetCalculationId({ token, nino: value, headerDto: headers }));
     };
 
     const handleChange = (e) => {
-        const value = e.target.value;
-        setNino(value);
-        if (value.length >= 9) {
-            handleApiCall(value);
-        }
+        setNino(e.target.value);
     };
+
+    React.useEffect(() => {
+        const handler = setTimeout(() => {
+            if (nino.length >= 9) {
+                setDebouncedNino(nino);
+            }
+        }, 500);
+
+        return () => clearTimeout(handler);
+    }, [nino]);
+
+    React.useEffect(() => {
+        if (debouncedNino) {
+            handleApiCall(debouncedNino);
+        }
+    }, [debouncedNino]);
 
     React.useEffect(() => {
         sessionStorage.setItem("nino", nino)

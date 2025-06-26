@@ -13,6 +13,7 @@ const Card = () => {
   const navigate = useNavigate();
   const { hmrc } = useSelector((state) => state.tax);
   const filteredItems = JSON.parse(sessionStorage.getItem("filteredItems"))
+  const reportingPeriod = JSON.parse(sessionStorage.getItem("reportingPeriod"));
   let totalIncome = 0;
   filteredItems?.forEach((element) => {
     totalIncome += Number(element.totalIncome);
@@ -54,7 +55,7 @@ const Card = () => {
           </div>
           <PDFDownloadLink
             document={
-              <PDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} />
+              <PDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} reportingPeriod={reportingPeriod} />
             }
           >
             <p className="jaldi text-[30px] leading-[50px] text-[#003049]">Click here to download</p>
