@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   centerText: { textAlign: 'center' },
   label: { fontSize: 12, fontWeight: 'bold', marginBottom: 4 },
   labelWrap: { flexDirection: 'column', marginBottom: 10 },
+  labelWrapLongText: { flexDirection: 'column', marginBottom: 10, flex: 1 },
   name: { fontSize: 10 },
   row: {
     flexDirection: 'row',
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFCFB6',
     padding: 20,
     marginBottom: 10,
+    gap: 10
   },
   box: {
     height: 30,
@@ -62,6 +64,11 @@ const styles = StyleSheet.create({
     opacity: 0,
     visibility: 'hidden',
   },
+  firstTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
   sectionTitle: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -81,6 +88,10 @@ const MyPDF = ({ hmrc, filteredItems, netEarning, reportingPeriod }) => (
           {moment(reportingPeriod?.periodStartDate).format('MMMM D, YYYY')} -{' '}
           {moment(reportingPeriod?.periodEndDate).format('MMMM D, YYYY')} (Quarter 1)
         </Text>
+      </View>
+      <View style={styles.row}>
+        <Text>This return was successfully submitted to the HMRC on july 4,2025. HMRC Submission Reference number 2828828288</Text>
+
       </View>
 
       {/* Personal Information */}
@@ -109,12 +120,12 @@ const MyPDF = ({ hmrc, filteredItems, netEarning, reportingPeriod }) => (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Business Details</Text>
         <View style={styles.row}>
-          <View style={styles.labelWrap}>
-            <Text style={styles.label}>Business name</Text>
+          <View style={styles.labelWrapLongText}>
+            <Text style={styles.label}>Business name --- unless it's your own name</Text>
             <Text style={styles.name}>----</Text>
           </View>
-          <View style={styles.labelWrap}>
-            <Text style={styles.label}>Business address</Text>
+          <View style={styles.labelWrapLongText}>
+            <Text style={styles.label}>First line of your business address (unless you work from home)</Text>
             <Text style={styles.name}>21 Part Street</Text>
             <Text style={styles.name}>Sheffield, Hertfordshire</Text>
           </View>
@@ -122,11 +133,11 @@ const MyPDF = ({ hmrc, filteredItems, netEarning, reportingPeriod }) => (
 
         <View style={styles.row}>
           <View style={styles.labelWrap}>
-            <Text style={styles.label}>Business Description</Text>
+            <Text style={styles.label}>Business Description (business type)</Text>
             <Text style={styles.name}>------</Text>
           </View>
           <View style={styles.labelWrap}>
-            <Text style={styles.label}>Postcode</Text>
+            <Text style={styles.label}>Postcode of your business address</Text>
             <View style={styles.boxesWrap}>
               {'AL13EU'.split('').map((char, i) => (
                 <View style={styles.box} key={i}>
@@ -145,12 +156,12 @@ const MyPDF = ({ hmrc, filteredItems, netEarning, reportingPeriod }) => (
             <Text style={styles.sectionTitle}>Business Income ({item.name})</Text>
 
             <View style={styles.row}>
-              <View style={styles.labelWrap}>
-                <Text style={styles.label}>Total Turnover</Text>
+              <View style={styles.labelWrapLongText}>
+                <Text style={styles.label}>Your Total Turnover --- the takings, fees, sales or money earned by your business</Text>
                 {renderBoxesWithCurrency(item.totalIncome)}
               </View>
               <View style={styles.labelWrap}>
-                <Text style={styles.label}>Other Income</Text>
+                <Text style={styles.label}>Any Other Business Income</Text>
                 {renderBoxesWithCurrency(item.totalIncome)}
               </View>
             </View>
@@ -168,6 +179,7 @@ const MyPDF = ({ hmrc, filteredItems, netEarning, reportingPeriod }) => (
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Business Expenses</Text>
+            <Text style={styles.sectionTitle}>Total Expenses</Text>
             <View style={[styles.row, { flexDirection: 'column', backgroundColor: '#FFCFB6' }]}>
               {!item.expenses.filter((exp) => exp.value).length ? (
                 <Text>No expenses in this business type</Text>
@@ -205,22 +217,87 @@ const MyPDF = ({ hmrc, filteredItems, netEarning, reportingPeriod }) => (
         <View style={styles.row}>
           <View style={styles.labelWrap}>
             <Text style={styles.label}>
-              {Number(netEarning) > 0 ? 'Net Profit' : 'Net Loss'}
+              {Number(netEarning) > 0 ? 'Net Profit --- if your business income is more than your expenses' : 'Net Loss --- if your expenses are not than your business income'}
             </Text>
             {renderBoxesWithCurrency(netEarning)}
           </View>
         </View>
       </View>
 
+      {/* Taxable Profit or loss */}
+      <View break>
+        <View style={styles.section}>
+          <Text style={styles.firstTitle}>Calculating your taxable profit or loss</Text>
+          <Text style={styles.sectionTitle}>You may have to adjust your net profit or loss for disallowable expenses or capital allowances to arrive at your taxable profit or your loss for tax purpose.</Text>
+          <View style={styles.row}>
+            <View style={styles.labelWrapLongText}>
+              <Text style={styles.label}>Goods and services for your own use</Text>
+              <Text style={{ visibility: "hidden", opacity: 0 }}>Ramdom Accomodating text</Text>
+              {renderBoxesWithCurrency("------")}
+            </View>
+            <View style={styles.labelWrapLongText}>
+              <Text style={styles.label}>Total deductions from net profit or additions to net loss</Text>
+              {renderBoxesWithCurrency("------")}
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.labelWrapLongText}>
+              <Text style={styles.label}>Total additions to net profit or deductions from net loss</Text>
+              {renderBoxesWithCurrency("------")}
+            </View>
+            <View style={styles.labelWrapLongText}>
+              <Text style={styles.label}>Net business profit for tax purposes </Text>
+              <Text style={{ visibility: "hidden", opacity: 0 }}>Ramdom Accomodating text</Text>
+
+              {renderBoxesWithCurrency("------")}
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.labelWrapLongText}>
+              <Text style={styles.label}>Income, receipts and other profits included in business income or expenses but not taxable as business profits</Text>
+              {renderBoxesWithCurrency("------")}
+            </View>
+            <View style={styles.labelWrapLongText}>
+              <Text style={styles.label}>Net business loss for tax purposes </Text>
+              <Text style={{ visibility: "hidden", opacity: 0 }}>Ramdom Accomodating text</Text>
+              <Text style={{ visibility: "hidden", opacity: 0 }}>Ramdom Accomodating text</Text>
+
+              {renderBoxesWithCurrency("------")}
+            </View>
+          </View>
+        </View>
+      </View>
+
       {/* CIS Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>CIS Deductions and Tax</Text>
+      <View style={styles.section} break>
+        <Text style={styles.sectionTitle}>CIS Deductions and Tax Taken Off</Text>
         <View style={styles.row}>
           <View style={styles.labelWrap}>
             <Text style={styles.label}>
-              Construction Industry Scheme (CIS)
+              Total Construction Industry Scheme (CIS) deduction taken from your payments by contractors
             </Text>
-            {renderBoxesWithCurrency('1111')}
+            {renderBoxesWithCurrency('------')}
+          </View>
+        </View>
+        <View style={styles.row}>
+          <View style={styles.labelWrap}>
+            <Text style={styles.label}>
+              Other tax taken off trading income
+            </Text>
+            {renderBoxesWithCurrency('------')}
+          </View>
+        </View>
+      </View>
+      {/* NICs */}
+      <View style={styles.section} break>
+        <Text style={styles.firstTitle}>Class 2 and Class 4 National Insurance contributions (NICS)</Text>
+        <Text style={styles.sectionTitle}>if your total profits from all self enployment aand partnerships for 2024-25 are less than £4,244 you do not have to pay Class 2 National Insurance contributions, but you may want to pay voluntry to protect your right to certain benefits</Text>
+        <View style={styles.row}>
+          <View style={styles.labelWrap}>
+            <Text style={styles.label}>
+              Adjustment to profit chargable to Class 4 NICs
+            </Text>
+            {renderBoxesWithCurrency('--------')}
           </View>
         </View>
       </View>

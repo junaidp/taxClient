@@ -7,6 +7,7 @@ import action from "../../assets/action.png";
 import { useNavigate } from "react-router-dom";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import PDF from "../../components/common/pdf"
+import LandLordPDF from "../../components/common/landlord-pdf"
 import { useSelector } from "react-redux";
 
 const Card = () => {
@@ -27,6 +28,22 @@ const Card = () => {
   });
 
   const netEarning = totalIncome - totalExpenses
+
+
+  function isLandLordPdf() {
+    let isLandLord = false
+    filteredItems.forEach((business) => {
+      if (
+        business.name === "Landlord (Foreign Property)" || business.name === "Landlord (Furnished Holiday Lettings) UK and EEA" || business.name === "Landlord (UK Property)") {
+        isLandLord = true
+      }
+      else {
+        isLandLord = false
+      }
+    })
+    return isLandLord
+  }
+
   return (
     <div className="card-positioning-wrap">
       <Progress title="91% complete" width="91%" />
@@ -55,7 +72,7 @@ const Card = () => {
           </div>
           <PDFDownloadLink
             document={
-              <PDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} reportingPeriod={reportingPeriod} />
+              isLandLordPdf() ? <LandLordPDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} reportingPeriod={reportingPeriod} /> : <PDF hmrc={hmrc} filteredItems={filteredItems} netEarning={netEarning.toString()} reportingPeriod={reportingPeriod} />
             }
           >
             <p className="jaldi text-[30px] leading-[50px] text-[#003049]">Click here to download</p>
